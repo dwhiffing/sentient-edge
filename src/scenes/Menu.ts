@@ -21,9 +21,6 @@ export class Menu extends Scene {
 
     this.scene.launch('Hud')
     this.scene.start('WorldMap')
-    this.registry.set('gold', 0)
-    this.registry.set('health', 10)
-    this.registry.set('enemy-health', -1)
     this.input.once('pointerdown', () => {
       this.scene.start('WorldMap')
     })

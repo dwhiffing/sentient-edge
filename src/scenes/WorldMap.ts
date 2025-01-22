@@ -1,6 +1,6 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
-import { MAP_DATA } from '../constants'
+import { CELL_ORDER, MAP_DATA } from '../constants'
 
 export class WorldMap extends Scene {
   background: Phaser.GameObjects.Image
@@ -18,7 +18,6 @@ export class WorldMap extends Scene {
 
   create() {
     this.background = this.add.image(0, 0, 'map').setOrigin(0)
-    this.data.set('zoomIndex', -1)
 
     const { width, height } = this.cameras.main
 
@@ -38,15 +37,10 @@ export class WorldMap extends Scene {
       return rectangle
     })
 
-    this.spots = this.add.group({
-      defaultKey: 'spritesheet',
-    })
-
-    this.player = new Player(this)
-    this.player.sprite.setPosition(32, this.cameras.main.height - 32)
+    this.spots = this.add.group({ defaultKey: 'spritesheet' })
 
     this.input.on('pointerdown', () => {
-      if (this.data.get('zoomIndex') === -1) {
+      if (this.registry.get('active-zoom') === -1) {
         const xIndex = Math.floor(this.player.sprite.x / (width / 3))
         const yIndex = Math.floor(this.player.sprite.y / (height / 3))
         const zoomIndex = (xIndex % 3) + yIndex * 3
@@ -55,7 +49,16 @@ export class WorldMap extends Scene {
         const spot = this.getNearestSpot()
         if (spot) {
           this.registry.set('hud-text', '')
-          this.registry.set('active-node-index', spot.getData('id'))
+          this.registry.set('active-node', spot.getData('id'))
+          this.registry.set(
+            'unlocked-nodes',
+            Array.from(
+              new Set([
+                ...(this.registry.get('unlocked-nodes') ?? []),
+                spot.getData('id'),
+              ]),
+            ),
+          )
           this.scene.switch(
             spot.getData('type').includes('fight') ? 'Fight' : 'Shop',
           )
@@ -63,8 +66,34 @@ export class WorldMap extends Scene {
       }
     })
 
-    this.revealMap(6)
-    this.zoom(6)
+    this.player = new Player(this, 32, this.cameras.main.height - 32)
+
+    this.checkCells()
+  }
+
+  checkCells() {
+    CELL_ORDER.forEach((cellIndex, index) => {
+      if (cellIndex === 6) {
+        this.revealCell(cellIndex)
+        return
+      }
+      const prevCellIndex = CELL_ORDER[index - 1]
+      if (
+        this.registry.values['cleared-nodes']?.includes(
+          MAP_DATA.find(
+            (d) => d.cellIndex === prevCellIndex && d.type === 'fight-boss',
+          )?.id,
+        )
+      ) {
+        this.revealCell(cellIndex)
+      }
+    })
+    if (this.registry.get('active-zoom') !== -1) {
+      this.zoom(this.registry.get('active-zoom'))
+    } else {
+      this.registry.set('active-zoom', CELL_ORDER[0])
+      this.unzoom()
+    }
   }
 
   unzoom() {
@@ -76,7 +105,7 @@ export class WorldMap extends Scene {
     this.covers.forEach((s) => s.setAlpha(s.body!.enable ? 1 : 0))
     this.player.sprite.setScale(1)
     // move player to center of zoom coord
-    const zoomIndex = this.data.get('zoomIndex')
+    const zoomIndex = this.registry.get('active-zoom')
     const zoomX = zoomIndex % 3
     const zoomY = Math.floor(zoomIndex / 3)
     this.player.speed = 25
@@ -84,7 +113,7 @@ export class WorldMap extends Scene {
     this.player.sword.setVisible(false)
     this.player.sprite.x = 0.5 * (width / 3) + (width / 3) * zoomX
     this.player.sprite.y = 0.5 * (height / 3) + (height / 3) * zoomY
-    this.data.set('zoomIndex', -1)
+    this.registry.set('active-zoom', -1)
   }
 
   zoom(zoomIndex: number) {
@@ -101,12 +130,14 @@ export class WorldMap extends Scene {
     MAP_DATA.filter((d) => d.cellIndex === zoomIndex).forEach((d) => {
       const spot = this.spots.get(d.x * width, d.y * height)
       const frame = d.type.includes('fight') ? 4 : 5
+
       spot
         .setFrame(frame)
         .setScale(2)
         .setData('name', d.name)
         .setData('type', d.type)
         .setData('id', d.id)
+        .setVisible(this.registry.get('unlocked-nodes')?.includes(d.id))
     })
     this.covers.forEach((s) => s.setAlpha(0))
 
@@ -119,10 +150,11 @@ export class WorldMap extends Scene {
     this.player.sprite.x = 0.5 * width
     this.player.sprite.y = 0.5 * height
 
-    this.data.set('zoomIndex', zoomIndex)
+    this.registry.set('active-zoom', zoomIndex)
   }
 
-  revealMap(index: number) {
+  revealCell(index: number) {
+    if (!this.covers) return
     this.covers[index].setAlpha(0)
     const body = this.covers[index].body! as Phaser.Physics.Arcade.Body
     body.enable = false
@@ -131,24 +163,41 @@ export class WorldMap extends Scene {
   getNearestSpot() {
     return this.spots.getChildren().find((_s) => {
       const s = _s as Phaser.GameObjects.Sprite
-      return (
-        s.alpha === 1 &&
-        Phaser.Math.Distance.BetweenPoints(s, this.player.sprite) < 15
-      )
+
+      if (Phaser.Math.Distance.BetweenPoints(s, this.player.sprite) > 15)
+        return false
+
+      if (s.getData('type') === 'fight-boss') {
+        const cellNodes = MAP_DATA.filter(
+          (d) =>
+            d.cellIndex === this.registry.get('active-zoom') &&
+            d.type === 'fight',
+        )
+
+        return cellNodes.every((n) =>
+          this.registry.values['cleared-nodes']?.includes(n.id),
+        )
+      }
+      return s.alpha === 1
     })
   }
 
   update() {
     this.player.update()
 
-    if (this.data.get('zoomIndex') > -1) {
+    if (this.registry.get('active-zoom') > -1) {
       if (
         this.player.sprite.x < 10 ||
         this.player.sprite.x > this.cameras.main.width - 10 ||
         this.player.sprite.y < 10 ||
         this.player.sprite.y > this.cameras.main.height - 10
       ) {
-        this.unzoom()
+        if (
+          MAP_DATA.filter((d) => d.type === 'fight-boss').some((d) =>
+            this.registry.get('cleared-nodes')?.includes(d.id),
+          )
+        )
+          this.unzoom()
       }
 
       this.registry.set(

@@ -10,7 +10,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.justHit = false
   }
   spawn() {
-    this.health = 8
+    this.health = 2
     this.setTintFill(0xff0000)
     const x = Phaser.Math.Between(20, 236)
     const y = Phaser.Math.Between(20, 236)

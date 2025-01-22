@@ -1,4 +1,5 @@
-type INode = {
+export const CELL_ORDER = [6, 7, 8, 5, 4, 3, 0, 1, 2]
+export type INode = {
   type: 'fight' | 'fight-boss' | 'shop'
   id: string
   name: string

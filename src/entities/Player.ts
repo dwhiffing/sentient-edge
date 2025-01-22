@@ -6,14 +6,9 @@ export class Player {
   health: number
   justHit: boolean
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene
-    this.sprite = this.scene.physics.add.sprite(
-      this.scene.cameras.main.width / 2,
-      this.scene.cameras.main.height / 2,
-      'spritesheet',
-      0,
-    )
+    this.sprite = this.scene.physics.add.sprite(x, y, 'spritesheet', 0)
     this.speed = 30
     this.health = this.scene.registry.get('health')
     this.justHit = false

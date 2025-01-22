@@ -2,13 +2,14 @@ import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
 import { Enemy } from '../entities/Enemy'
 import { Gold } from '../entities/Gold'
-import { MAP_DATA } from '../constants'
+import { INode, MAP_DATA } from '../constants'
 
 export class Fight extends Scene {
   background: Phaser.GameObjects.Image
   player: Player
   enemies: Phaser.GameObjects.Group
   gold: Phaser.GameObjects.Group
+  spot: INode
 
   constructor() {
     super('Fight')
@@ -21,21 +22,21 @@ export class Fight extends Scene {
       'map2',
     )
 
-    this.player = new Player(this)
+    this.player = new Player(
+      this,
+      this.cameras.main.width / 2,
+      this.cameras.main.height / 2,
+    )
     this.player.sprite.setScale(2)
     this.player.speed = 60
 
     this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })
 
-    const spot = MAP_DATA.find(
-      (d) => d.id === this.registry.get('active-node-index'),
-    )
+    this.spot = MAP_DATA.find((d) => d.id === this.registry.get('active-node'))!
 
-    console.log(spot?.enemies)
-
-    if (spot && spot.enemies) {
-      this.spawnEnemy(spot.enemies.min, spot.enemies.max)
+    if (this.spot.enemies) {
+      this.spawnEnemy(this.spot.enemies.min, this.spot.enemies.max)
     }
 
     this.input.on('pointerdown', () => {
@@ -72,6 +73,15 @@ export class Fight extends Scene {
         }
 
         if (this.enemies.children.entries.every((c) => !c.active)) {
+          this.registry.set(
+            'cleared-nodes',
+            Array.from(
+              new Set([
+                ...(this.registry.get('cleared-nodes') ?? []),
+                this.spot.id,
+              ]),
+            ),
+          )
           this.time.delayedCall(1000, this.backToMap.bind(this))
         }
       }
