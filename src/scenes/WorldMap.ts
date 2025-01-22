@@ -5,14 +5,14 @@ const MAP_DATA = [
   {
     type: 'fight',
     name: 'Desert',
-    x: 0.25,
-    y: 0.85,
+    x: 0.5,
+    y: 0.5,
   },
   {
     type: 'shop',
     name: 'Desert Shop',
-    x: 0.1,
-    y: 0.9,
+    x: 0.4,
+    y: 0.8,
   },
 ]
 
@@ -21,11 +21,13 @@ export class WorldMap extends Scene {
   player: Player
   covers: Phaser.GameObjects.Rectangle[]
   spots: Phaser.GameObjects.Sprite[]
-  text: Phaser.GameObjects.BitmapText
-  textBackground: Phaser.GameObjects.Rectangle
 
   constructor() {
     super('WorldMap')
+  }
+
+  init() {
+    this.registry.set('health', 10)
   }
 
   create() {
@@ -33,8 +35,6 @@ export class WorldMap extends Scene {
     this.data.set('zoomIndex', -1)
 
     const { width, height } = this.cameras.main
-
-    this.physics.world.setBounds(0, 0, width, height - 12)
 
     this.covers = Array.from({ length: 9 }).map((_, i) => {
       const rectangle = this.add
@@ -56,66 +56,76 @@ export class WorldMap extends Scene {
       const frame = d.type === 'fight' ? 4 : 5
       return this.add
         .sprite(d.x * width, d.y * height, 'spritesheet', frame)
-        .setName(d.name)
+        .setData('name', d.name)
+        .setData('type', d.type)
+        .setScale(2)
         .setAlpha(0)
     })
 
     this.player = new Player(this)
-
-    // this.revealMap(0)
-    // this.revealMap(1)
-    // this.revealMap(2)
-    // this.revealMap(3)
-    // this.revealMap(4)
-    // this.revealMap(5)
-    // this.revealMap(7)
-    // this.revealMap(8)
-    this.revealMap(6)
-
-    this.textBackground = this.add
-      .rectangle(0, height - 12, width, 12, 0x000000)
-      .setOrigin(0, 0)
-      .setAlpha(0)
-    this.text = this.add
-      .bitmapText(0, height - 12, 'clarity', '', 8)
-      .setAlpha(0)
-
-    const layer = this.add.layer([this.textBackground, this.text])
-    const layer2 = this.add.layer([
-      this.background,
-      this.player.sprite,
-      ...this.spots,
-    ])
-
-    this.cameras.main.ignore(layer)
-    const camera = this.cameras.add()
-    camera.ignore(layer2)
+    this.player.sprite.setPosition(32, this.cameras.main.height - 32)
 
     this.input.on('pointerdown', () => {
-      // find index of cell player is in when clicked
-      const xIndex = Math.floor(this.player.sprite.x / (width / 3))
-      const yIndex = Math.floor(this.player.sprite.y / (height / 3))
-      const zoomIndex = (xIndex % 3) + yIndex * 3
-      if (this.data.get('zoomIndex') !== -1) {
-        this.data.set('zoomIndex', -1)
-        this.cameras.main.setZoom(1, 1).setScroll(0, 0)
-        this.spots.forEach((s) => s.setAlpha(0))
-        this.text.setAlpha(0)
-        this.textBackground.setAlpha(0)
+      if (this.data.get('zoomIndex') === -1) {
+        const xIndex = Math.floor(this.player.sprite.x / (width / 3))
+        const yIndex = Math.floor(this.player.sprite.y / (height / 3))
+        const zoomIndex = (xIndex % 3) + yIndex * 3
+        this.zoom(zoomIndex)
       } else {
-        this.spots.forEach((s) => s.setAlpha(1))
-        this.text.setAlpha(1)
-        this.textBackground.setAlpha(1)
-        this.cameras.main
-          .setZoom(3, 3)
-          .setScroll(
-            -width / 3 + (width / 3) * xIndex + 1,
-            -height / 3 + (height / 3) * yIndex,
-          )
-        this.data.set('zoomIndex', zoomIndex)
-        // this.scene.start('Fight')
+        const spot = this.getNearestSpot()
+        if (spot) {
+          this.registry.set('hud-text', '')
+          this.scene.switch(spot.getData('type') === 'fight' ? 'Fight' : 'Shop')
+        }
       }
     })
+
+    this.revealMap(6)
+    this.zoom(6)
+  }
+
+  unzoom() {
+    const { width, height } = this.cameras.main
+    this.background.setScale(1)
+    this.background.setPosition(0, 0)
+    this.spots.forEach((s) => s.setAlpha(0))
+    // @ts-ignore
+    this.covers.forEach((s) => s.setAlpha(s.body!.enable ? 1 : 0))
+    this.player.sprite.setScale(1)
+    // move player to center of zoom coord
+    const zoomIndex = this.data.get('zoomIndex')
+    const zoomX = zoomIndex % 3
+    const zoomY = Math.floor(zoomIndex / 3)
+    this.player.speed = 25
+
+    this.player.sword.setVisible(false)
+    this.player.sprite.x = 0.5 * (width / 3) + (width / 3) * zoomX
+    this.player.sprite.y = 0.5 * (height / 3) + (height / 3) * zoomY
+    this.data.set('zoomIndex', -1)
+  }
+
+  zoom(zoomIndex: number) {
+    const { width, height } = this.cameras.main
+
+    const xIndex = zoomIndex % 3
+    const yIndex = Math.floor(zoomIndex / 3)
+
+    this.player.sword.setVisible(true)
+    this.player.speed = 50
+    this.player.sprite.setScale(2)
+    this.spots.forEach((s) => s.setAlpha(1))
+    this.covers.forEach((s) => s.setAlpha(0))
+
+    this.background.setScale(3)
+    this.background.setPosition(
+      (-width / 3) * 3 * xIndex,
+      (-height / 3) * 3 * yIndex,
+    )
+
+    this.player.sprite.x = 0.5 * width
+    this.player.sprite.y = 0.5 * height
+
+    this.data.set('zoomIndex', zoomIndex)
   }
 
   revealMap(index: number) {
@@ -124,16 +134,31 @@ export class WorldMap extends Scene {
     body.enable = false
   }
 
+  getNearestSpot() {
+    return this.spots.find(
+      (s) => Phaser.Math.Distance.BetweenPoints(s, this.player.sprite) < 15,
+    )
+  }
+
   update() {
     this.player.update()
-    this.physics.collide(this.covers, this.player.sprite)
-    // if spot is near, set text to near spot name, otherwise blank string
 
-    if (this.data.get('zoomIndex') > -1)
-      this.text.setText(
-        this.spots.find(
-          (s) => Phaser.Math.Distance.BetweenPoints(s, this.player.sprite) < 15,
-        )?.name ?? '',
+    if (this.data.get('zoomIndex') > -1) {
+      if (
+        this.player.sprite.x < 10 ||
+        this.player.sprite.x > this.cameras.main.width - 10 ||
+        this.player.sprite.y < 10 ||
+        this.player.sprite.y > this.cameras.main.height - 10
+      ) {
+        this.unzoom()
+      }
+
+      this.registry.set(
+        'hud-text',
+        this.getNearestSpot()?.getData('name') ?? '',
       )
+    } else {
+      this.physics.collide(this.covers, this.player.sprite)
+    }
   }
 }

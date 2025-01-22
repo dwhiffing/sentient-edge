@@ -37,6 +37,7 @@ export class Boot extends Scene {
       repeatDelay: 0,
       repeat: -1,
     })
+
     this.scene.start('Menu')
   }
 }

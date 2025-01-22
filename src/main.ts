@@ -3,6 +3,7 @@ import { Fight } from './scenes/Fight'
 import { Shop } from './scenes/Shop'
 import { WorldMap } from './scenes/WorldMap'
 import { Menu } from './scenes/Menu'
+import { Hud } from './scenes/Hud'
 
 import { Game, Types } from 'phaser'
 
@@ -23,7 +24,7 @@ const config: Types.Core.GameConfig = {
     },
   },
   pixelArt: true,
-  scene: [Boot, Menu, Fight, Shop, WorldMap],
+  scene: [Boot, Menu, Fight, Shop, WorldMap, Hud],
 }
 
 export default new Game(config)
