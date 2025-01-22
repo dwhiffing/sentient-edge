@@ -1,26 +1,12 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
-
-const MAP_DATA = [
-  {
-    type: 'fight',
-    name: 'Desert',
-    x: 0.5,
-    y: 0.5,
-  },
-  {
-    type: 'shop',
-    name: 'Desert Shop',
-    x: 0.4,
-    y: 0.8,
-  },
-]
+import { MAP_DATA } from '../constants'
 
 export class WorldMap extends Scene {
   background: Phaser.GameObjects.Image
   player: Player
   covers: Phaser.GameObjects.Rectangle[]
-  spots: Phaser.GameObjects.Sprite[]
+  spots: Phaser.GameObjects.Group
 
   constructor() {
     super('WorldMap')
@@ -52,14 +38,8 @@ export class WorldMap extends Scene {
       return rectangle
     })
 
-    this.spots = MAP_DATA.map((d) => {
-      const frame = d.type === 'fight' ? 4 : 5
-      return this.add
-        .sprite(d.x * width, d.y * height, 'spritesheet', frame)
-        .setData('name', d.name)
-        .setData('type', d.type)
-        .setScale(2)
-        .setAlpha(0)
+    this.spots = this.add.group({
+      defaultKey: 'spritesheet',
     })
 
     this.player = new Player(this)
@@ -75,7 +55,10 @@ export class WorldMap extends Scene {
         const spot = this.getNearestSpot()
         if (spot) {
           this.registry.set('hud-text', '')
-          this.scene.switch(spot.getData('type') === 'fight' ? 'Fight' : 'Shop')
+          this.registry.set('active-node-index', spot.getData('id'))
+          this.scene.switch(
+            spot.getData('type').includes('fight') ? 'Fight' : 'Shop',
+          )
         }
       }
     })
@@ -88,7 +71,7 @@ export class WorldMap extends Scene {
     const { width, height } = this.cameras.main
     this.background.setScale(1)
     this.background.setPosition(0, 0)
-    this.spots.forEach((s) => s.setAlpha(0))
+    this.spots.setVisible(false)
     // @ts-ignore
     this.covers.forEach((s) => s.setAlpha(s.body!.enable ? 1 : 0))
     this.player.sprite.setScale(1)
@@ -113,7 +96,18 @@ export class WorldMap extends Scene {
     this.player.sword.setVisible(true)
     this.player.speed = 50
     this.player.sprite.setScale(2)
-    this.spots.forEach((s) => s.setAlpha(1))
+    this.spots.clear()
+
+    MAP_DATA.filter((d) => d.cellIndex === zoomIndex).forEach((d) => {
+      const spot = this.spots.get(d.x * width, d.y * height)
+      const frame = d.type.includes('fight') ? 4 : 5
+      spot
+        .setFrame(frame)
+        .setScale(2)
+        .setData('name', d.name)
+        .setData('type', d.type)
+        .setData('id', d.id)
+    })
     this.covers.forEach((s) => s.setAlpha(0))
 
     this.background.setScale(3)
@@ -135,9 +129,13 @@ export class WorldMap extends Scene {
   }
 
   getNearestSpot() {
-    return this.spots.find(
-      (s) => Phaser.Math.Distance.BetweenPoints(s, this.player.sprite) < 15,
-    )
+    return this.spots.getChildren().find((_s) => {
+      const s = _s as Phaser.GameObjects.Sprite
+      return (
+        s.alpha === 1 &&
+        Phaser.Math.Distance.BetweenPoints(s, this.player.sprite) < 15
+      )
+    })
   }
 
   update() {

@@ -2,6 +2,7 @@ import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
 import { Enemy } from '../entities/Enemy'
 import { Gold } from '../entities/Gold'
+import { MAP_DATA } from '../constants'
 
 export class Fight extends Scene {
   background: Phaser.GameObjects.Image
@@ -27,15 +28,24 @@ export class Fight extends Scene {
     this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })
 
-    this.spawnEnemy(3)
+    const spot = MAP_DATA.find(
+      (d) => d.id === this.registry.get('active-node-index'),
+    )
+
+    console.log(spot?.enemies)
+
+    if (spot && spot.enemies) {
+      this.spawnEnemy(spot.enemies.min, spot.enemies.max)
+    }
 
     this.input.on('pointerdown', () => {
       this.player.swing()
     })
   }
 
-  spawnEnemy(count = 1) {
-    for (let i = 0; i < count; i++) {
+  spawnEnemy(min: number, max: number) {
+    const amount = Phaser.Math.RND.between(min, max)
+    for (let i = 0; i < amount; i++) {
       const _enemy = this.enemies.get()
       if (_enemy) _enemy.spawn()
     }
