@@ -2,6 +2,7 @@ import { Boot } from './scenes/Boot'
 import { Fight } from './scenes/Fight'
 import { Shop } from './scenes/Shop'
 import { WorldMap } from './scenes/WorldMap'
+import { CellMap } from './scenes/CellMap'
 import { Menu } from './scenes/Menu'
 import { Hud } from './scenes/Hud'
 
@@ -24,7 +25,7 @@ const config: Types.Core.GameConfig = {
     },
   },
   pixelArt: true,
-  scene: [Boot, Menu, Fight, Shop, WorldMap, Hud],
+  scene: [Boot, Menu, Fight, Shop, WorldMap, CellMap, Hud],
 }
 
 const game = new Game(config)

@@ -1,3 +1,5 @@
+import { MAP_DATA } from '../constants'
+
 export class Player {
   scene: Phaser.Scene
   sprite: Phaser.Physics.Arcade.Sprite
@@ -64,6 +66,22 @@ export class Player {
     this.scene.time.delayedCall(800, () => {
       this.sword.setAngle(0)
     })
+  }
+
+  getClearedNodes = () => this.scene.registry.values['cleared-nodes'] ?? []
+
+  hasKilledABoss = () =>
+    MAP_DATA.filter((d) => d.type === 'fight-boss').some((d) =>
+      this.getClearedNodes().includes(d.id),
+    )
+
+  isNearEdge() {
+    return (
+      this.sprite.x < 10 ||
+      this.sprite.x > this.scene.cameras.main.width - 10 ||
+      this.sprite.y < 10 ||
+      this.sprite.y > this.scene.cameras.main.height - 10
+    )
   }
 
   update() {
