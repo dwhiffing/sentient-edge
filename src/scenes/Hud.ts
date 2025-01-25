@@ -1,4 +1,5 @@
 import { Scene } from 'phaser'
+import { registry } from '../utils/registry'
 
 export class Hud extends Scene {
   topText: Phaser.GameObjects.BitmapText
@@ -24,15 +25,13 @@ export class Hud extends Scene {
   }
 
   updateText = () => {
-    const gold = this.registry.get('gold')
-    const health = this.registry.get('health')
-    const enemyHealth = this.registry.get('enemy-health')
+    const gold = registry.values.gold
+    const health = registry.values.health
+    const enemyHealth = registry.values.enemyHealth
     const enemyText = enemyHealth === -1 ? '' : `Enemy: ${enemyHealth ?? 0}`
 
     const topText = `Gold: ${gold ?? 0} Health: ${health ?? 0} ${enemyText}`
     this.topText.setText(topText)
-
-    const bottomText = this.registry.get('hud-text')
-    this.bottomText.setText(bottomText)
+    this.bottomText.setText(registry.values.hudText)
   }
 }

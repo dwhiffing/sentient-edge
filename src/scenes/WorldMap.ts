@@ -1,6 +1,7 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
-import { CELL_ORDER, MAP_DATA } from '../constants'
+import { CELL_ORDER, MAP_DATA } from '../utils/constants'
+import { registry } from '../utils/registry'
 
 export class WorldMap extends Scene {
   background: Phaser.GameObjects.Image
@@ -14,17 +15,23 @@ export class WorldMap extends Scene {
   create() {
     this.background = this.add.image(0, 0, 'map').setOrigin(0)
     this.covers = this.createCovers()
+    this.updateCovers()
+
     this.player = new Player(this, 32, this.cameras.main.height - 32)
     this.player.sword.setVisible(false)
-    this.updateCovers()
 
     this.input.on('pointerdown', this.onPointerDown)
 
-    if (this.registry.get('active-zoom') !== -1) {
-      this.goToCell(this.registry.get('active-zoom'))
+    if (registry.values.activeZoom !== -1) {
+      this.goToCell(registry.values.activeZoom)
     } else {
-      this.registry.set('active-zoom', CELL_ORDER[0])
+      registry.set('activeZoom', CELL_ORDER[0])
     }
+  }
+
+  update() {
+    this.player.update()
+    this.physics.collide(this.covers, this.player.sprite)
   }
 
   createCovers() {
@@ -45,10 +52,12 @@ export class WorldMap extends Scene {
     CELL_ORDER.forEach((cellIndex, index) => {
       if (cellIndex === 6) return this.revealCell(cellIndex)
 
-      const prevCellBossId = MAP_DATA.find(
-        (d) => d.cellIndex === CELL_ORDER[index - 1] && d.type === 'fight-boss',
-      )?.id
-      if (this.registry.values['cleared-nodes']?.includes(prevCellBossId)) {
+      const prevCellBossId =
+        MAP_DATA.find(
+          (d) =>
+            d.cellIndex === CELL_ORDER[index - 1] && d.type === 'fight-boss',
+        )?.id ?? ''
+      if (registry.values.clearedNodes?.includes(prevCellBossId)) {
         this.revealCell(cellIndex)
       }
     })
@@ -63,7 +72,7 @@ export class WorldMap extends Scene {
   }
 
   goToCell(cellIndex: number) {
-    this.registry.set('active-zoom', cellIndex)
+    registry.set('activeZoom', cellIndex)
     this.scene.start('CellMap')
   }
 
@@ -73,10 +82,5 @@ export class WorldMap extends Scene {
     this.covers[index].setAlpha(0)
     const body = this.covers[index].body! as Phaser.Physics.Arcade.Body
     body.enable = false
-  }
-
-  update() {
-    this.player.update()
-    this.physics.collide(this.covers, this.player.sprite)
   }
 }

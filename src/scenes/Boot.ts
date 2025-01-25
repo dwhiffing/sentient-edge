@@ -1,4 +1,5 @@
 import { Scene } from 'phaser'
+import { registry } from '../utils/registry'
 
 export class Boot extends Scene {
   constructor() {
@@ -12,6 +13,13 @@ export class Boot extends Scene {
     this.load.on('progress', (progress: number) => {
       bar.width = 256 * progress
     })
+
+    try {
+      this.registry.events.on('changedata', registry.saveGame)
+      registry.loadSave()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   preload() {

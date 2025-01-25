@@ -1,3 +1,5 @@
+import { registry } from '../utils/registry'
+
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   health: number
   justHit: boolean
@@ -27,9 +29,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.setActive(false)
       this.setVisible(false)
       this.setPosition(-20, -20)
-      this.scene.registry.set('enemy-health', -1)
+      registry.set('enemyHealth', -1)
     } else {
-      this.scene.registry.set('enemy-health', this.health)
+      registry.set('enemyHealth', this.health)
       this.scene.time.delayedCall(250, () => {
         this.setTintFill(0xff0000)
         this.scene.time.delayedCall(50, () => {

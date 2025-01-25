@@ -1,4 +1,5 @@
-import { MAP_DATA } from '../constants'
+import { MAP_DATA } from '../utils/constants'
+import { registry } from '../utils/registry'
 
 export class Player {
   scene: Phaser.Scene
@@ -12,7 +13,7 @@ export class Player {
     this.scene = scene
     this.sprite = this.scene.physics.add.sprite(x, y, 'spritesheet', 0)
     this.speed = 30
-    this.health = this.scene.registry.get('health')
+    this.health = registry.values.health
     this.justHit = false
     this.sprite.body!.setSize(5, 5)
     this.sprite.setCollideWorldBounds(true)
@@ -45,7 +46,7 @@ export class Player {
 
     this.health -= amount
 
-    this.scene.registry.set('health', this.health)
+    registry.set('health', this.health)
     this.sprite.setTintFill(0xff0000)
     if (this.health <= 0) {
       this.die()
@@ -68,7 +69,7 @@ export class Player {
     })
   }
 
-  getClearedNodes = () => this.scene.registry.values['cleared-nodes'] ?? []
+  getClearedNodes = () => registry.values.clearedNodes ?? []
 
   hasKilledABoss = () =>
     MAP_DATA.filter((d) => d.type === 'fight-boss').some((d) =>

@@ -30,25 +30,4 @@ const config: Types.Core.GameConfig = {
 
 const game = new Game(config)
 
-try {
-  game.registry.events.on('changedata', () => {
-    localStorage.setItem(
-      '--sentient-edge-save-data',
-      JSON.stringify(game.registry.values),
-    )
-  })
-
-  const saveDataString = localStorage.getItem('--sentient-edge-save-data')
-  if (saveDataString) {
-    const saveData = JSON.parse(saveDataString)
-    Object.entries(saveData).forEach(([k, v]) => game.registry.set(k, v))
-  } else {
-    game.registry.set('unlocked-nodes', ['desert-5'])
-    game.registry.set('active-zoom', 6)
-    game.registry.set('gold', 0)
-    game.registry.set('health', 10)
-  }
-  game.registry.set('enemy-health', -1)
-} catch (e) {}
-
 export default game

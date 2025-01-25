@@ -14,11 +14,14 @@ export class Menu extends Scene {
       .setCenterAlign()
       .setOrigin(0.5)
 
-    this.scene.launch('Hud')
-
     // TODO remove me
-    this.scene.start('WorldMap')
+    this.startGame()
 
-    this.input.once('pointerdown', () => this.scene.start('WorldMap'))
+    this.input.once('pointerdown', this.startGame)
+  }
+
+  startGame = () => {
+    this.scene.launch('Hud')
+    this.scene.start('WorldMap')
   }
 }

@@ -1,3 +1,5 @@
+import { registry } from '../utils/registry'
+
 export class Gold extends Phaser.Physics.Arcade.Sprite {
   amount: number
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -18,6 +20,6 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
     this.setActive(false)
     this.setVisible(false)
     this.setPosition(-20, -20)
-    this.scene.registry.inc('gold', this.amount)
+    registry.set('gold', registry.values.gold + this.amount)
   }
 }

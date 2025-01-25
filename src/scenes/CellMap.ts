@@ -1,6 +1,7 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
-import { MAP_DATA } from '../constants'
+import { MAP_DATA } from '../utils/constants'
+import { registry } from '../utils/registry'
 
 export class CellMap extends Scene {
   background: Phaser.GameObjects.Image
@@ -12,23 +13,23 @@ export class CellMap extends Scene {
   }
 
   init() {
-    this.registry.set('health', 10)
+    registry.set('health', 10)
   }
 
   create() {
-    const zoomIndex = this.registry.get('active-zoom')
-    const w = this.cameras.main.width / 3
+    const zoomIndex = registry.values.activeZoom
+    const w = this.cameras.main.width
     const zoomX = zoomIndex % 3
     const zoomY = Math.floor(zoomIndex / 3)
     this.background = this.add
-      .image(-w * 3 * zoomX, -w * 3 * zoomY, 'map')
+      .image(-w * zoomX, -w * zoomY, 'map')
       .setOrigin(0)
       .setScale(3)
 
     this.spots = this.add.group({ defaultKey: 'spritesheet' })
     this.updateSpots()
 
-    this.player = new Player(this, 0.5 * w + w * zoomX, 0.5 * w + w * zoomY)
+    this.player = new Player(this, w / 2, w / 2)
     this.player.sword.setVisible(false)
     this.player.speed = 70
     this.player.sprite.setScale(2)
@@ -36,9 +37,20 @@ export class CellMap extends Scene {
     this.input.on('pointerdown', this.onPointerDown)
   }
 
+  update() {
+    this.player.update()
+
+    if (this.player.isNearEdge() && this.player.hasKilledABoss()) {
+      this.unzoom()
+    }
+
+    const nearSpotName = this.getNearestSpot()?.getData('name') ?? ''
+    registry.set('hudText', nearSpotName)
+  }
+
   updateSpots() {
     const { width, height } = this.cameras.main
-    const zoomIndex = this.registry.get('active-zoom')
+    const zoomIndex = registry.values.activeZoom
 
     MAP_DATA.filter((d) => d.cellIndex === zoomIndex).forEach((d) => {
       const spot = this.spots.get(d.x * width, d.y * height)
@@ -50,7 +62,7 @@ export class CellMap extends Scene {
         .setData('name', d.name)
         .setData('type', d.type)
         .setData('id', d.id)
-        .setVisible(this.registry.get('unlocked-nodes')?.includes(d.id))
+        .setVisible(registry.values.unlockedNodes?.includes(d.id))
     })
   }
 
@@ -58,32 +70,21 @@ export class CellMap extends Scene {
     const spot = this.getNearestSpot()
     if (!spot) return
 
-    this.registry.set('hud-text', '')
+    registry.set('hudText', '')
 
     const id = spot.getData('id')
-    this.registry.set('active-node', id)
+    registry.set('activeNode', id)
 
-    const unlocked = this.registry.get('unlocked-nodes') ?? []
+    const unlocked = registry.values.unlockedNodes ?? []
     const uniq = Array.from(new Set([...unlocked, id]))
-    this.registry.set('unlocked-nodes', uniq)
+    registry.set('unlockedNodes', uniq)
 
     const newScene = spot.getData('type').includes('fight') ? 'Fight' : 'Shop'
     this.scene.switch(newScene)
   }
 
-  update() {
-    this.player.update()
-
-    if (this.player.isNearEdge() && this.player.hasKilledABoss()) {
-      this.unzoom()
-    }
-
-    const nearSpotName = this.getNearestSpot()?.getData('name') ?? ''
-    this.registry.set('hud-text', nearSpotName)
-  }
-
   unzoom() {
-    this.registry.set('active-zoom', -1)
+    registry.set('activeZoom', -1)
     this.scene.start('WorldMap')
   }
 
@@ -108,7 +109,6 @@ export class CellMap extends Scene {
 
   getCellFightNodes = () =>
     MAP_DATA.filter(
-      (d) =>
-        d.cellIndex === this.registry.get('active-zoom') && d.type === 'fight',
+      (d) => d.cellIndex === registry.values.activeZoom && d.type === 'fight',
     )
 }

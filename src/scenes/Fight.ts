@@ -2,7 +2,8 @@ import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
 import { Enemy } from '../entities/Enemy'
 import { Gold } from '../entities/Gold'
-import { INode, MAP_DATA } from '../constants'
+import { INode, MAP_DATA } from '../utils/constants'
+import { registry } from '../utils/registry'
 
 export class Fight extends Scene {
   background: Phaser.GameObjects.Image
@@ -26,9 +27,9 @@ export class Fight extends Scene {
     this.player.sprite.setScale(2)
     this.player.speed = 60
 
-    this.spot = MAP_DATA.find((d) => d.id === this.registry.get('active-node'))!
+    this.spot = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
-    if (this.spot.enemies) {
+    if (this.spot?.enemies) {
       this.spawnEnemy(this.spot.enemies.min, this.spot.enemies.max)
     }
 
@@ -52,9 +53,9 @@ export class Fight extends Scene {
 
   checkIfFinished() {
     if (!this.enemies.children.entries.every((c) => !c.active)) {
-      const cleared = this.registry.get('cleared-nodes') ?? []
+      const cleared = registry.values.clearedNodes ?? []
       const uniq = Array.from(new Set([...cleared, this.spot.id]))
-      this.registry.set('cleared-nodes', uniq)
+      registry.set('clearedNodes', uniq)
       this.time.delayedCall(1000, this.backToMap.bind(this))
     }
   }
