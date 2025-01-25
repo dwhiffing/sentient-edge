@@ -1,5 +1,6 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
+import { Bullet } from '../entities/Bullet'
 import { Enemy } from '../entities/Enemy'
 import { Gold } from '../entities/Gold'
 import { INode, MAP_DATA } from '../utils/constants'
@@ -9,6 +10,7 @@ export class Fight extends Scene {
   background: Phaser.GameObjects.Sprite
   player: Player
   enemies: Phaser.GameObjects.Group
+  bullets: Phaser.GameObjects.Group
   gold: Phaser.GameObjects.Group
   spot: INode
 
@@ -23,6 +25,11 @@ export class Fight extends Scene {
     this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })
     this.player = new Player(this, { speed: 60, sword: true })
+    this.bullets = this.add.group({
+      classType: Bullet,
+      maxSize: 100,
+      runChildUpdate: true,
+    })
 
     this.spot = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
@@ -41,27 +48,7 @@ export class Fight extends Scene {
     this.physics.overlap(this.player.sword, this.enemies, this.hitSwordEnemy)
     this.physics.overlap(this.player.sprite, this.enemies, this.hitPlayerEnemy)
     this.physics.overlap(this.player.sprite, this.gold, this.hitPlayerGold)
-  }
-
-  hitPlayerEnemy = (_player: unknown, _enemy: unknown) => {
-    this.player.damage(1)
-  }
-
-  hitPlayerGold = (_player: unknown, _gold: unknown) => {
-    const gold = _gold as Gold
-    gold.pickup()
-  }
-
-  hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {
-    if (this.player.sword.angle === 0) return
-
-    const enemy = _enemy as Enemy
-    if (!enemy.active) return
-    enemy.damage(1)
-    if (enemy.health <= 0) {
-      this.spawnGold(enemy.x, enemy.y)
-      this.checkIfFinished()
-    }
+    this.physics.overlap(this.player.sprite, this.bullets, this.hitPlayerBullet)
   }
 
   spawnEnemies(min: number, max: number) {
@@ -84,5 +71,36 @@ export class Fight extends Scene {
 
   backToMap() {
     this.scene.start('WorldMap')
+  }
+
+  hitPlayerBullet = (_player: unknown, _bullet: unknown) => {
+    if (!this.player.sprite.active) return
+
+    const bullet = _bullet as Bullet
+    bullet.damage(1)
+    this.player.damage(1)
+  }
+
+  hitPlayerEnemy = (_player: unknown, _enemy: unknown) => {
+    if (!this.player.sprite.active) return
+
+    this.player.damage(1)
+  }
+
+  hitPlayerGold = (_player: unknown, _gold: unknown) => {
+    const gold = _gold as Gold
+    gold.pickup()
+  }
+
+  hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {
+    if (this.player.sword.angle === 0) return
+
+    const enemy = _enemy as Enemy
+    if (!enemy.active) return
+    enemy.damage(1)
+    if (enemy.health <= 0) {
+      this.spawnGold(enemy.x, enemy.y)
+      this.checkIfFinished()
+    }
   }
 }

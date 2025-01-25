@@ -1,9 +1,14 @@
+import { Fight } from '../scenes/Fight'
 import { registry } from '../utils/registry'
+import { Bullet } from './Bullet'
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   health: number
+  shootRate: number
   justHit: boolean
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  declare scene: Fight
+
+  constructor(scene: Fight, x: number, y: number) {
     super(scene, x, y, 'spritesheet', 25)
 
     let flop = 0
@@ -21,7 +26,24 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setSize(16, 16)
 
     this.health = 0
+    this.shootRate = 500
     this.justHit = false
+
+    if (this.shootRate > 0) {
+      this.scene.time.addEvent({
+        delay: this.shootRate,
+        repeat: -1,
+        callback: this.shoot,
+      })
+    }
+  }
+
+  shoot = (count = 2, spread = 20) => {
+    if (!this.active) return
+
+    const p = this.scene.player
+    const target = { x: p.sprite.x, y: p.sprite.y - p.spriteBody.halfHeight }
+    shoot(this.scene.bullets, this, target, count, spread)
   }
 
   spawn() {
@@ -56,4 +78,23 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     new Promise((resolve) => {
       this.scene.time.delayedCall(delay, resolve)
     })
+}
+
+const shoot = (
+  bulletGroup: Phaser.GameObjects.Group,
+  source: { x: number; y: number },
+  target: { x: number; y: number },
+  count = 1,
+  spread = 0,
+) => {
+  const dx = target.x - source.x
+  const dy = target.y - source.y
+  const baseAngle = Math.atan2(dy, dx)
+  const spreadAngle = (spread * Math.PI) / 180
+
+  for (let i = 0; i < count; i++) {
+    const bullet = bulletGroup.get() as Bullet
+    const angleOffset = (i - (count - 1) / 2) * spreadAngle
+    bullet.spawn(source, baseAngle + angleOffset, 120)
+  }
 }
