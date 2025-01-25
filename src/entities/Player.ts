@@ -48,6 +48,8 @@ export class Player {
   }
 
   update() {
+    if (!this.sprite.active) return
+
     const p = this.scene.input.activePointer
     const s = this.sprite
     const w = this.sword
@@ -87,7 +89,7 @@ export class Player {
   }
 
   swing() {
-    if (this.sword.angle !== 0) return
+    if (!this.sprite.active || this.sword.angle !== 0) return
 
     this.sprite.anims.play(`player-stab`, true)
     this.sword.setAngle(this.sword.flipX ? -90 : 90)
@@ -114,7 +116,10 @@ export class Player {
 
   die() {
     this.sprite.setActive(false).setVisible(false)
-    this.sword.setActive(false).setVisible(false)
+    // this.sword.setActive(false).setVisible(false)
+    this.scene.add
+      .sprite(this.sprite.x, this.sprite.y, 'spritesheet', 7)
+      .setOrigin(0.5, 1)
     this.scene.time.delayedCall(1000, () => this.scene.scene.start('WorldMap'))
   }
 
