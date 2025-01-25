@@ -16,7 +16,7 @@ export class Boot extends Scene {
 
     try {
       this.registry.events.on('changedata', registry.saveGame)
-      registry.loadSave()
+      registry.init(this.game)
     } catch (e) {
       console.log(e)
     }

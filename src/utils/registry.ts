@@ -1,8 +1,22 @@
-import game from '../main'
-
 const saveKey = '--sentient-edge-save-data'
 
 export class Registry {
+  game: Phaser.Game
+
+  init = (game: Phaser.Game) => {
+    this.game = game
+    this.loadSave()
+  }
+
+  loadSave = () => {
+    const saveDataString = localStorage.getItem(saveKey)
+    if (saveDataString) {
+      this.setRegistryObject(JSON.parse(saveDataString))
+    } else {
+      this.initSave()
+    }
+  }
+
   initSave = () => {
     this.setRegistryObject({
       lastZoom: 6,
@@ -17,30 +31,21 @@ export class Registry {
     })
   }
 
-  loadSave = () => {
-    const saveDataString = localStorage.getItem(saveKey)
-    if (saveDataString) {
-      this.setRegistryObject(JSON.parse(saveDataString))
-    } else {
-      this.initSave()
-    }
-  }
-
   saveGame = () => {
-    localStorage.setItem(saveKey, JSON.stringify(game.registry.values))
+    localStorage.setItem(saveKey, JSON.stringify(this.game.registry.values))
   }
 
   get values() {
-    return game.registry.values as IState
+    return this.game.registry.values as IState
   }
 
   set = (key: keyof IState, value: string | number | string[]) => {
     if (Array.isArray(value)) value = Array.from(new Set(value))
-    game.registry.set(key, value)
+    this.game.registry.set(key, value)
   }
 
   setRegistryObject = (object: Partial<IState>) => {
-    Object.entries(object).forEach(([k, v]) => game.registry.set(k, v))
+    Object.entries(object).forEach(([k, v]) => this.game.registry.set(k, v))
   }
 }
 
