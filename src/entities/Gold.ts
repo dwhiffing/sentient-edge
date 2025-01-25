@@ -4,9 +4,10 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
   amount: number
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'spritesheet', 3)
+    super(scene, x, y, 'spritesheet', 48)
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
+    this.setSize(12, 12)
     this.amount = 1
   }
 

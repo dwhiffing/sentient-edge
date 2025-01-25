@@ -1,6 +1,12 @@
 export const CELL_ORDER = [6, 7, 8, 5, 4, 3, 0, 1, 2]
+export const NODE_FRAMES: Record<INodeType, number> = {
+  shop: 56,
+  fight: 57,
+  'fight-boss': 58,
+}
+type INodeType = 'fight' | 'fight-boss' | 'shop'
 export type INode = {
-  type: 'fight' | 'fight-boss' | 'shop'
+  type: INodeType
   id: string
   name: string
   cellIndex: number

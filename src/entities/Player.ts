@@ -9,8 +9,7 @@ type IPlayerParams = {
   speed?: number
 }
 
-const SWORD_OFFSET_X = 12
-const SWORD_OFFSET_Y = 14
+const SWORD_OFFSET_X = 10
 
 export class Player {
   scene: Phaser.Scene
@@ -29,15 +28,19 @@ export class Player {
     const y = params.y ?? w / 2
     const scale = params.scale ?? 1
 
+    this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 40)
+    this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
+    this.swordBody.setSize(12, 6)
+    this.sword.setScale(scale).setOrigin(0.5, 0.7).setVisible(!!params.sword)
+
     this.sprite = this.scene.physics.add.sprite(x, y, 'spritesheet', 0)
     this.spriteBody = this.sprite.body as Phaser.Physics.Arcade.Body
-    this.spriteBody.setSize(5, 5)
-    this.sprite.setScale(scale).setCollideWorldBounds(true).play('player-walk')
-
-    this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 2)
-    this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
-    this.swordBody.setSize(10, 3)
-    this.sword.setScale(scale).setOrigin(0.5, 1).setVisible(!!params.sword)
+    this.spriteBody.setSize(15, 15)
+    this.sprite
+      .setScale(scale)
+      .setCollideWorldBounds(true)
+      .setOrigin(0.5, 1)
+      .setOffset(8, 16)
 
     this.speed = params.speed ?? 30
     this.health = registry.values.health
@@ -52,15 +55,23 @@ export class Player {
     const dx = p.x - s.x
     const dy = p.y - s.y
     if (Math.abs(dx) > 2) {
-      this.sprite.setFlipX(dx > 0)
-      this.sword.setFlipX(dx > 0)
-      this.sword.setOffset(dx > 0 ? SWORD_OFFSET_X : -6, SWORD_OFFSET_Y)
-      if (w.angle !== 0) w.setAngle(w.flipX ? 90 : -90)
+      this.sprite.setFlipX(dx < 0)
+      this.sword.setFlipX(dx < 0)
+      if (w.angle !== 0) w.setAngle(w.flipX ? -90 : 90)
     }
 
-    this.sword.setPosition(s.x + SWORD_OFFSET_X * (dx > 0 ? 1 : -1), s.y)
+    this.sword.setOffset(this.sword.flipX ? 0 : 16, 19)
+    let so = SWORD_OFFSET_X
+    let sy = s.y - 11
+    if (this.sword.angle !== 0) {
+      so += 5
+      sy += 2
+    }
+    let sx = s.x + so * (this.sword.flipX ? -1 : 1)
+    this.sword.setPosition(sx, sy)
 
     const dist = Phaser.Math.Distance.Between(p.x, p.y, s.x, s.y)
+    const affix = this.sword.visible ? '-sword' : ''
     if (dist > 1) {
       const angle = Math.atan2(dy, dx)
 
@@ -68,17 +79,18 @@ export class Player {
         Math.cos(angle) * this.speed,
         Math.sin(angle) * this.speed,
       )
-      s.anims.play('player-walk', true)
+      if (this.sword.angle === 0) s.anims.play(`player-walk${affix}`, true)
     } else {
       this.spriteBody.setVelocity(0)
-      s.anims.stop()
+      if (this.sword.angle === 0) s.anims.play(`player-idle${affix}`)
     }
   }
 
   swing() {
     if (this.sword.angle !== 0) return
 
-    this.sword.setAngle(this.sword.flipX ? 90 : -90)
+    this.sprite.anims.play(`player-stab`, true)
+    this.sword.setAngle(this.sword.flipX ? -90 : 90)
     this.scene.time.delayedCall(800, () => this.sword.setAngle(0))
   }
 
@@ -109,7 +121,7 @@ export class Player {
   isNearEdge = () =>
     this.sprite.x < 10 ||
     this.sprite.x > this.scene.cameras.main.width - 10 ||
-    this.sprite.y < 10 ||
+    this.sprite.y < 20 ||
     this.sprite.y > this.scene.cameras.main.height - 10
 
   hasKilledABoss = () =>

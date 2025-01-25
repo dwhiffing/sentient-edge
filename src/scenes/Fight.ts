@@ -22,7 +22,7 @@ export class Fight extends Scene {
 
     this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })
-    this.player = new Player(this, { scale: 2, speed: 60, sword: true })
+    this.player = new Player(this, { speed: 60, sword: true })
 
     this.spot = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
@@ -56,6 +56,7 @@ export class Fight extends Scene {
     if (this.player.sword.angle === 0) return
 
     const enemy = _enemy as Enemy
+    if (!enemy.active) return
     enemy.damage(1)
     if (enemy.health <= 0) {
       this.spawnGold(enemy.x, enemy.y)
@@ -77,7 +78,7 @@ export class Fight extends Scene {
       const cleared = registry.values.clearedNodes ?? []
       const uniq = Array.from(new Set([...cleared, this.spot.id]))
       registry.set('clearedNodes', uniq)
-      this.time.delayedCall(1000, this.backToMap.bind(this))
+      // this.time.delayedCall(1000, this.backToMap.bind(this))
     }
   }
 

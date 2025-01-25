@@ -1,6 +1,6 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
-import { MAP_DATA } from '../utils/constants'
+import { MAP_DATA, NODE_FRAMES } from '../utils/constants'
 import { registry } from '../utils/registry'
 
 export class CellMap extends Scene {
@@ -30,7 +30,7 @@ export class CellMap extends Scene {
     this.nodes = this.add.group({ defaultKey: 'spritesheet' })
     this.updateNodes()
 
-    this.player = new Player(this, { speed: 70, scale: 2 })
+    this.player = new Player(this, { speed: 70 })
 
     this.input.on('pointerdown', this.enterNearbyNode)
   }
@@ -52,11 +52,10 @@ export class CellMap extends Scene {
 
     MAP_DATA.filter((d) => d.cellIndex === zoomIndex).forEach((d) => {
       const spot = this.nodes.get(d.x * width, d.y * height)
-      const frame = d.type.includes('fight') ? 4 : 5
+      const frame = NODE_FRAMES[d.type]
 
       spot
         .setFrame(frame)
-        .setScale(2)
         .setData('name', d.name)
         .setData('type', d.type)
         .setData('id', d.id)

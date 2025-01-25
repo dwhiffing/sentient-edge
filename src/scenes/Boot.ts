@@ -28,18 +28,53 @@ export class Boot extends Scene {
     this.load.image('map2', 'map2.png')
     this.load.bitmapFont('clarity', 'clarity.png', 'clarity.xml')
     this.load.spritesheet('spritesheet', 'spritesheet.png', {
-      frameWidth: 16,
-      frameHeight: 16,
+      frameWidth: 32,
+      frameHeight: 32,
     })
   }
 
   create() {
     this.anims.create({
+      key: 'player-idle',
+      frames: [{ key: 'spritesheet', frame: 0 }],
+      duration: 500,
+      repeatDelay: 0,
+      repeat: -1,
+    })
+
+    this.anims.create({
       key: 'player-walk',
       frames: [
-        { key: 'spritesheet', frame: 0 },
         { key: 'spritesheet', frame: 1 },
+        { key: 'spritesheet', frame: 2 },
       ],
+      duration: 500,
+      repeatDelay: 0,
+      repeat: -1,
+    })
+
+    this.anims.create({
+      key: 'player-idle-sword',
+      frames: [{ key: 'spritesheet', frame: 3 }],
+      duration: 500,
+      repeatDelay: 0,
+      repeat: -1,
+    })
+
+    this.anims.create({
+      key: 'player-walk-sword',
+      frames: [
+        { key: 'spritesheet', frame: 4 },
+        { key: 'spritesheet', frame: 5 },
+      ],
+      duration: 500,
+      repeatDelay: 0,
+      repeat: -1,
+    })
+
+    this.anims.create({
+      key: 'player-stab',
+      frames: [{ key: 'spritesheet', frame: 6 }],
       duration: 500,
       repeatDelay: 0,
       repeat: -1,
