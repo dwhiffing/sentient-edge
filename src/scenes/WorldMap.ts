@@ -17,6 +17,8 @@ export class WorldMap extends Scene {
     this.covers = this.createCovers()
     this.updateCovers()
 
+    registry.set('hudText', '')
+
     this.player = new Player(this, { x: 0, y: 0, scale: 0.5 })
     const x = registry.values.lastZoom % 3
     const y = Math.floor(registry.values.lastZoom / 3)

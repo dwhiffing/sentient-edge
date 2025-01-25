@@ -1,9 +1,5 @@
 # tasks
 
-add node shop inventory system
-add shop ui + gold spending
-shop should have player as cursor and click to buy things
-
 add bullets
 add enemy stat system + different types
 add enemy movement
@@ -13,6 +9,8 @@ add reset save option to menu
 
 when node is cleared, should display flag
 fight scene should pick map frame based on biome
+
+change gold amount based on enemy strength, use different sprite based on value
 
 develop progression and complete list of stub levels, ensure you can get to end of game
 add win scene when you beat the final boss

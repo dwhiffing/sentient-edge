@@ -6,7 +6,7 @@ import { INode, MAP_DATA } from '../utils/constants'
 import { registry } from '../utils/registry'
 
 export class Fight extends Scene {
-  background: Phaser.GameObjects.Image
+  background: Phaser.GameObjects.Sprite
   player: Player
   enemies: Phaser.GameObjects.Group
   gold: Phaser.GameObjects.Group

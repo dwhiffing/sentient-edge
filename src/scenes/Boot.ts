@@ -43,6 +43,27 @@ export class Boot extends Scene {
       repeatDelay: 0,
       repeat: -1,
     })
+    this.anims.create({
+      key: 'shopkeep-idle',
+      frames: [{ key: 'spritesheet', frame: 16 }],
+      duration: 900,
+      repeatDelay: 0,
+      repeat: -1,
+    })
+    this.anims.create({
+      key: 'shopkeep-talk',
+      frames: [
+        { key: 'spritesheet', frame: 16 },
+        { key: 'spritesheet', frame: 17 },
+        { key: 'spritesheet', frame: 18 },
+        { key: 'spritesheet', frame: 19 },
+        { key: 'spritesheet', frame: 18 },
+        { key: 'spritesheet', frame: 17 },
+      ],
+      duration: 900,
+      repeatDelay: 0,
+      repeat: -1,
+    })
 
     this.anims.create({
       key: 'player-walk',
