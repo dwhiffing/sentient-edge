@@ -22,23 +22,48 @@ export class Fight extends Scene {
 
     this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })
-
-    this.player = new Player(this, width / 2, height / 2)
-    this.player.sprite.setScale(2)
-    this.player.speed = 60
+    this.player = new Player(this, { scale: 2, speed: 60, sword: true })
 
     this.spot = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
-    if (this.spot?.enemies) {
-      this.spawnEnemy(this.spot.enemies.min, this.spot.enemies.max)
+    if (this.spot.enemies) {
+      this.spawnEnemies(this.spot.enemies.min, this.spot.enemies.max)
     }
 
-    this.input.on('pointerdown', () => {
-      this.player.swing()
-    })
+    this.input.on('pointerdown', () => this.player.swing())
   }
 
-  spawnEnemy(min: number, max: number) {
+  update() {
+    this.player.update()
+
+    if (this.player.isNearEdge()) this.backToMap()
+
+    this.physics.overlap(this.player.sword, this.enemies, this.hitSwordEnemy)
+    this.physics.overlap(this.player.sprite, this.enemies, this.hitPlayerEnemy)
+    this.physics.overlap(this.player.sprite, this.gold, this.hitPlayerGold)
+  }
+
+  hitPlayerEnemy = (_player: unknown, _enemy: unknown) => {
+    this.player.damage(1)
+  }
+
+  hitPlayerGold = (_player: unknown, _gold: unknown) => {
+    const gold = _gold as Gold
+    gold.pickup()
+  }
+
+  hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {
+    if (this.player.sword.angle === 0) return
+
+    const enemy = _enemy as Enemy
+    enemy.damage(1)
+    if (enemy.health <= 0) {
+      this.spawnGold(enemy.x, enemy.y)
+      this.checkIfFinished()
+    }
+  }
+
+  spawnEnemies(min: number, max: number) {
     const amount = Phaser.Math.RND.between(min, max)
     for (let i = 0; i < amount; i++) this.enemies.get()?.spawn()
   }
@@ -47,12 +72,8 @@ export class Fight extends Scene {
     this.gold.get().spawn(x, y)
   }
 
-  backToMap() {
-    this.scene.start('WorldMap')
-  }
-
   checkIfFinished() {
-    if (!this.enemies.children.entries.every((c) => !c.active)) {
+    if (this.enemies.children.entries.every((c) => !c.active)) {
       const cleared = registry.values.clearedNodes ?? []
       const uniq = Array.from(new Set([...cleared, this.spot.id]))
       registry.set('clearedNodes', uniq)
@@ -60,29 +81,7 @@ export class Fight extends Scene {
     }
   }
 
-  update() {
-    this.player.update()
-
-    this.physics.overlap(this.player.sword, this.enemies, (_sword, _enemy) => {
-      if (this.player.sword.angle === 0) return
-
-      const enemy = _enemy as Enemy
-      enemy.damage(1)
-      if (enemy.health <= 0) {
-        this.spawnGold(enemy.x, enemy.y)
-      }
-
-      this.checkIfFinished()
-    })
-
-    this.physics.overlap(this.player.sprite, this.enemies, () =>
-      this.player.damage(1),
-    )
-
-    this.physics.overlap(this.player.sprite, this.gold, (_player, _gold) =>
-      (_gold as Gold).pickup(),
-    )
-
-    if (this.player.isNearEdge()) this.backToMap()
+  backToMap() {
+    this.scene.start('WorldMap')
   }
 }

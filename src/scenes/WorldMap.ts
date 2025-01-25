@@ -17,16 +17,18 @@ export class WorldMap extends Scene {
     this.covers = this.createCovers()
     this.updateCovers()
 
-    this.player = new Player(this, 32, this.cameras.main.height - 32)
-    this.player.sword.setVisible(false)
-
-    this.input.on('pointerdown', this.onPointerDown)
+    this.player = new Player(this, { x: 0, y: 0 })
 
     if (registry.values.activeZoom !== -1) {
       this.goToCell(registry.values.activeZoom)
     } else {
       registry.set('activeZoom', CELL_ORDER[0])
     }
+
+    this.input.on('pointerdown', () => {
+      this.player.sprite.setPosition(32, this.cameras.main.height - 32)
+      this.goToCell(this.getPlayerCellIndex())
+    })
   }
 
   update() {
@@ -50,37 +52,32 @@ export class WorldMap extends Scene {
 
   updateCovers() {
     CELL_ORDER.forEach((cellIndex, index) => {
-      if (cellIndex === 6) return this.revealCell(cellIndex)
+      if (cellIndex === 6) return this.removeCover(cellIndex)
 
+      const bossNodes = MAP_DATA.filter((d) => d.type === 'fight-boss')
       const prevCellBossId =
-        MAP_DATA.find(
-          (d) =>
-            d.cellIndex === CELL_ORDER[index - 1] && d.type === 'fight-boss',
-        )?.id ?? ''
+        bossNodes.find((d) => d.cellIndex === CELL_ORDER[index - 1])?.id ?? ''
       if (registry.values.clearedNodes?.includes(prevCellBossId)) {
-        this.revealCell(cellIndex)
+        this.removeCover(cellIndex)
       }
     })
   }
 
-  onPointerDown = () => {
+  removeCover(index: number) {
+    this.covers[index].setAlpha(0)
+    const body = this.covers[index].body! as Phaser.Physics.Arcade.Body
+    body.enable = false
+  }
+
+  getPlayerCellIndex() {
     const { width, height } = this.cameras.main
     const xIndex = Math.floor(this.player.sprite.x / (width / 3))
     const yIndex = Math.floor(this.player.sprite.y / (height / 3))
-    const cellIndex = (xIndex % 3) + yIndex * 3
-    this.goToCell(cellIndex)
+    return (xIndex % 3) + yIndex * 3
   }
 
   goToCell(cellIndex: number) {
     registry.set('activeZoom', cellIndex)
     this.scene.start('CellMap')
-  }
-
-  revealCell(index: number) {
-    if (!this.covers) return
-
-    this.covers[index].setAlpha(0)
-    const body = this.covers[index].body! as Phaser.Physics.Arcade.Body
-    body.enable = false
   }
 }

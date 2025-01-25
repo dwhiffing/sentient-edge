@@ -15,7 +15,7 @@ export class Menu extends Scene {
       .setOrigin(0.5)
 
     // TODO remove me
-    this.startGame()
+    // this.startGame()
 
     this.input.once('pointerdown', this.startGame)
   }

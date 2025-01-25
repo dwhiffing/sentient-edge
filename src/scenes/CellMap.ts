@@ -6,7 +6,7 @@ import { registry } from '../utils/registry'
 export class CellMap extends Scene {
   background: Phaser.GameObjects.Image
   player: Player
-  spots: Phaser.GameObjects.Group
+  nodes: Phaser.GameObjects.Group
 
   constructor() {
     super('CellMap')
@@ -21,20 +21,18 @@ export class CellMap extends Scene {
     const w = this.cameras.main.width
     const zoomX = zoomIndex % 3
     const zoomY = Math.floor(zoomIndex / 3)
+
     this.background = this.add
       .image(-w * zoomX, -w * zoomY, 'map')
       .setOrigin(0)
       .setScale(3)
 
-    this.spots = this.add.group({ defaultKey: 'spritesheet' })
-    this.updateSpots()
+    this.nodes = this.add.group({ defaultKey: 'spritesheet' })
+    this.updateNodes()
 
-    this.player = new Player(this, w / 2, w / 2)
-    this.player.sword.setVisible(false)
-    this.player.speed = 70
-    this.player.sprite.setScale(2)
+    this.player = new Player(this, { speed: 70, scale: 2 })
 
-    this.input.on('pointerdown', this.onPointerDown)
+    this.input.on('pointerdown', this.enterNearbyNode)
   }
 
   update() {
@@ -44,16 +42,16 @@ export class CellMap extends Scene {
       this.unzoom()
     }
 
-    const nearSpotName = this.getNearestSpot()?.getData('name') ?? ''
+    const nearSpotName = this.getNearestNode()?.getData('name') ?? ''
     registry.set('hudText', nearSpotName)
   }
 
-  updateSpots() {
+  updateNodes() {
     const { width, height } = this.cameras.main
     const zoomIndex = registry.values.activeZoom
 
     MAP_DATA.filter((d) => d.cellIndex === zoomIndex).forEach((d) => {
-      const spot = this.spots.get(d.x * width, d.y * height)
+      const spot = this.nodes.get(d.x * width, d.y * height)
       const frame = d.type.includes('fight') ? 4 : 5
 
       spot
@@ -66,8 +64,8 @@ export class CellMap extends Scene {
     })
   }
 
-  onPointerDown = () => {
-    const spot = this.getNearestSpot()
+  enterNearbyNode = () => {
+    const spot = this.getNearestNode()
     if (!spot) return
 
     registry.set('hudText', '')
@@ -88,8 +86,8 @@ export class CellMap extends Scene {
     this.scene.start('WorldMap')
   }
 
-  getNearestSpot = () =>
-    this.spots.getChildren().find((_s) => {
+  getNearestNode = () =>
+    this.nodes.getChildren().find((_s) => {
       const spot = _s as Phaser.GameObjects.Sprite
 
       const dist = Phaser.Math.Distance.BetweenPoints(spot, this.player.sprite)
@@ -104,7 +102,7 @@ export class CellMap extends Scene {
 
   getClearedAllCellFightNodes = () =>
     this.getCellFightNodes().every((n) =>
-      this.player.getClearedNodes().includes(n.id),
+      (registry.values.clearedNodes ?? []).includes(n.id),
     )
 
   getCellFightNodes = () =>
