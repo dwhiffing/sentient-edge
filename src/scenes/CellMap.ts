@@ -23,7 +23,7 @@ export class CellMap extends Scene {
     const zoomY = Math.floor(zoomIndex / 3)
 
     this.background = this.add
-      .image(-w * zoomX, -w * zoomY, 'map')
+      .sprite(-w * zoomX, -w * zoomY, 'map', 0)
       .setOrigin(0)
       .setScale(3)
 
@@ -81,6 +81,7 @@ export class CellMap extends Scene {
   }
 
   unzoom() {
+    registry.set('lastZoom', registry.values.activeZoom)
     registry.set('activeZoom', -1)
     this.scene.start('WorldMap')
   }

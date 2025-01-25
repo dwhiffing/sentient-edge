@@ -33,5 +33,8 @@ export class Hud extends Scene {
     const topText = `Gold: ${gold ?? 0} Health: ${health ?? 0} ${enemyText}`
     this.topText.setText(topText)
     this.bottomText.setText(registry.values.hudText)
+
+    this.bottomText.setVisible(registry.values.activeZoom !== -1)
+    this.bottomBar.setVisible(registry.values.activeZoom !== -1)
   }
 }

@@ -10,13 +10,12 @@ import { Game, Types } from 'phaser'
 
 const config: Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 256,
-  height: 256,
+  width: 200,
+  height: 200,
   parent: 'game-container',
   backgroundColor: '#028af8',
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    zoom: Phaser.Scale.MAX_ZOOM,
   },
   physics: {
     default: 'arcade',

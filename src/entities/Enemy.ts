@@ -25,8 +25,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   spawn() {
-    const x = Phaser.Math.Between(20, 236)
-    const y = Phaser.Math.Between(20, 236)
+    const x = Phaser.Math.Between(20, this.scene.cameras.main.width - 20)
+    const y = Phaser.Math.Between(20, this.scene.cameras.main.width - 20)
     this.setPosition(x, y)
 
     this.health = 2

@@ -17,16 +17,16 @@ export class WorldMap extends Scene {
     this.covers = this.createCovers()
     this.updateCovers()
 
-    this.player = new Player(this, { x: 0, y: 0 })
+    this.player = new Player(this, { x: 0, y: 0, scale: 0.5 })
+    const x = registry.values.lastZoom % 3
+    const y = Math.floor(registry.values.lastZoom / 3)
+    this.player.sprite.setPosition(x * 66 + 33, y * 66 + 33)
 
     if (registry.values.activeZoom !== -1) {
       this.goToCell(registry.values.activeZoom)
-    } else {
-      registry.set('activeZoom', CELL_ORDER[0])
     }
 
     this.input.on('pointerdown', () => {
-      this.player.sprite.setPosition(32, this.cameras.main.height - 32)
       this.goToCell(this.getPlayerCellIndex())
     })
   }

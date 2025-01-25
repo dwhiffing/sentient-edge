@@ -5,6 +5,7 @@ const saveKey = '--sentient-edge-save-data'
 export class Registry {
   initSave = () => {
     this.setRegistryObject({
+      lastZoom: 6,
       activeZoom: 6,
       activeNode: '',
       enemyHealth: -1,
@@ -44,6 +45,7 @@ export class Registry {
 }
 
 type IState = {
+  lastZoom: number
   activeZoom: number
   activeNode: string
   enemyHealth: number

@@ -18,7 +18,7 @@ export class Fight extends Scene {
 
   create() {
     const { width, height } = this.cameras.main
-    this.background = this.add.image(width / 2, height / 2, 'map2')
+    this.background = this.add.sprite(width / 2, height / 2, 'map', 1)
 
     this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })

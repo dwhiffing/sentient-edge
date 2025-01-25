@@ -11,7 +11,7 @@ export class Boot extends Scene {
     const bar = this.add.rectangle(0, 64, 10, 128, 0xffffff).setOrigin(0, 0)
 
     this.load.on('progress', (progress: number) => {
-      bar.width = 256 * progress
+      bar.width = this.cameras.main.width * progress
     })
 
     try {
@@ -24,8 +24,10 @@ export class Boot extends Scene {
 
   preload() {
     this.load.setPath('assets')
-    this.load.image('map', 'map.png')
-    this.load.image('map2', 'map2.png')
+    this.load.spritesheet('map', 'map.png', {
+      frameWidth: 200,
+      frameHeight: 200,
+    })
     this.load.bitmapFont('clarity', 'clarity.png', 'clarity.xml')
     this.load.spritesheet('spritesheet', 'spritesheet.png', {
       frameWidth: 32,
