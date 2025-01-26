@@ -1,42 +1,4 @@
-export const CELL_ORDER = [6, 7, 8, 5, 4, 3, 0, 1, 2]
-export const NODE_FRAMES: Record<INodeType, number> = {
-  shop: 56,
-  fight: 57,
-  'fight-boss': 58,
-}
-
-type IPurchasable = {
-  key: number
-  cost: number
-  type: string
-  text: string
-  frame: number
-}
-export const ITEMS: IPurchasable[] = [
-  {
-    key: 0,
-    cost: 5,
-    type: 'potion',
-    frame: 51,
-    text: 'That costs {cost} gold.  It will\nupgrade your health.',
-  },
-  {
-    key: 1,
-    cost: 10,
-    type: 'random',
-    frame: 52,
-    text: 'That costs {cost} gold.  It will\nupgrade your speed.',
-  },
-  {
-    key: 2,
-    cost: 20,
-    type: 'ring',
-    frame: 53,
-    text: 'That costs {cost} gold.  It will\nupgrade your strength.',
-  },
-]
-
-type INodeType = 'fight' | 'fight-boss' | 'shop'
+export type INodeType = 'fight' | 'fight-boss' | 'shop'
 export type INode = {
   type: INodeType
   id: string
@@ -50,8 +12,8 @@ export type INode = {
     max: number
   }
 }
-export const MAP_DATA: INode[] = [
-  // LEVEL 1
+
+const LEVEL_1: INode[] = [
   {
     type: 'fight',
     id: 'desert-1',
@@ -59,7 +21,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 6,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['enemy-1'], min: 1, max: 1 },
+    enemies: { pool: ['snake'], min: 1, max: 1 },
   },
   {
     type: 'fight',
@@ -68,7 +30,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 6,
     x: 0.4,
     y: 0.5,
-    enemies: { pool: ['enemy-1'], min: 2, max: 2 },
+    enemies: { pool: ['snake'], min: 2, max: 2 },
   },
   {
     type: 'fight',
@@ -77,7 +39,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 6,
     x: 0.5,
     y: 0.5,
-    enemies: { pool: ['enemy-1'], min: 3, max: 3 },
+    enemies: { pool: ['snake'], min: 3, max: 3 },
   },
   {
     type: 'fight-boss',
@@ -86,7 +48,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 6,
     x: 0.6,
     y: 0.5,
-    enemies: { pool: ['enemy-1'], min: 4, max: 4 },
+    enemies: { pool: ['snake'], min: 4, max: 4 },
   },
   {
     type: 'shop',
@@ -96,7 +58,9 @@ export const MAP_DATA: INode[] = [
     x: 0.4,
     y: 0.8,
   },
-  // LEVEL 2
+]
+
+const LEVEL_2: INode[] = [
   {
     type: 'fight',
     id: 'desert-6',
@@ -104,7 +68,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 7,
     x: 0.3,
     y: 0.8,
-    enemies: { pool: ['enemy-1'], min: 1, max: 1 },
+    enemies: { pool: ['snake'], min: 1, max: 1 },
   },
   {
     type: 'fight',
@@ -113,7 +77,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 7,
     x: 0.4,
     y: 0.8,
-    enemies: { pool: ['enemy-1'], min: 2, max: 2 },
+    enemies: { pool: ['snake'], min: 2, max: 2 },
   },
   {
     type: 'fight',
@@ -122,7 +86,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 7,
     x: 0.5,
     y: 0.8,
-    enemies: { pool: ['enemy-1'], min: 3, max: 3 },
+    enemies: { pool: ['snake'], min: 3, max: 3 },
   },
   {
     type: 'fight-boss',
@@ -131,7 +95,7 @@ export const MAP_DATA: INode[] = [
     cellIndex: 7,
     x: 0.6,
     y: 0.5,
-    enemies: { pool: ['enemy-1'], min: 4, max: 4 },
+    enemies: { pool: ['snake'], min: 4, max: 4 },
   },
   {
     type: 'shop',
@@ -142,3 +106,5 @@ export const MAP_DATA: INode[] = [
     y: 0.8,
   },
 ]
+
+export const MAP_DATA: INode[] = [...LEVEL_1, ...LEVEL_2]
