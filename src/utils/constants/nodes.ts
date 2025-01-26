@@ -96,7 +96,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
-    items: ['damageMeleeBase', 'damageMeleeMulti'],
+    items: ['damageMeleeBase', 'damageMeleeMulti', 'damageMeleeFreq'],
   },
   {
     type: 'shop',
@@ -106,7 +106,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
-    items: ['damageRangeBase', 'damageRangeMulti'],
+    items: ['damageRangeBase', 'damageRangeMulti', 'durationMeleeBase'],
   },
   {
     type: 'shop',

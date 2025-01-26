@@ -15,7 +15,7 @@ export class Registry {
     if (saveDataString) {
       this.setRegistryObject(JSON.parse(saveDataString))
     } else {
-      this.initSave()
+      this.initSaveFinished()
     }
   }
 
@@ -64,6 +64,8 @@ export type IPlayerStats = {
 
 export type ISwordStats = {
   damageMeleeBase: number
+  damageMeleeFreq: number
+  durationMeleeBase: number
   damageRangeBase: number
   earnRateBase: number
   speedMeleeBase: number
@@ -109,6 +111,8 @@ const initialSave: IState = {
     speedMeleeMulti: 0,
     damageMeleeBase: 0,
     damageRangeBase: 0,
+    damageMeleeFreq: 0,
+    durationMeleeBase: 0,
     earnRateBase: 0,
     speedMeleeBase: 0,
     sizeBase: 0,
@@ -133,6 +137,8 @@ const finishedSave: IState = {
     earnRateMulti: 9,
     speedMeleeMulti: 9,
     damageMeleeBase: 9,
+    damageMeleeFreq: 3,
+    durationMeleeBase: 3,
     damageRangeBase: 9,
     earnRateBase: 9,
     speedMeleeBase: 9,

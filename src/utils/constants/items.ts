@@ -51,6 +51,30 @@ export const ITEMS: IPurchasable[] = [
     ],
   },
   {
+    key: 'damageMeleeFreq',
+    type: 'random',
+    frame: 52,
+    temporary: false,
+    text: 'That costs {cost} gold.  It will\nupgrade your melee frequency.',
+    effects: [
+      { cost: 10, effects: [{ statKey: 'damageMeleeFreq', change: -50 }] },
+      { cost: 20, effects: [{ statKey: 'damageMeleeFreq', change: -50 }] },
+      { cost: 30, effects: [{ statKey: 'damageMeleeFreq', change: -50 }] },
+    ],
+  },
+  {
+    key: 'durationMeleeBase',
+    type: 'random',
+    frame: 52,
+    temporary: false,
+    text: 'That costs {cost} gold.  It will\nupgrade your melee duration.',
+    effects: [
+      { cost: 10, effects: [{ statKey: 'durationMeleeBase', change: 200 }] },
+      { cost: 20, effects: [{ statKey: 'durationMeleeBase', change: 200 }] },
+      { cost: 30, effects: [{ statKey: 'durationMeleeBase', change: 200 }] },
+    ],
+  },
+  {
     key: 'damageMeleeMulti',
     type: 'ring',
     frame: 53,

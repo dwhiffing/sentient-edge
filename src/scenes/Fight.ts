@@ -123,6 +123,7 @@ export class Fight extends Scene {
     if (!enemy.active) return
     enemy.takeDamage(
       this.player.stats.damageMeleeBase * this.player.stats.damageMeleeMulti,
+      this.player.stats.damageMeleeFreq,
     )
     if (enemy.health <= 0) {
       this.spawnGold(enemy.x, enemy.y)

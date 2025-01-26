@@ -162,7 +162,7 @@ export class Player {
     this.sword.setDepth(0)
     this.shoot(this.stats.rangeCount)
 
-    await this.delay(400)
+    await this.delay(this.stats.durationMeleeBase)
     this.sword.setAngle(0)
     this.sword.setFrame(41)
     this.sword.setDepth(2)
@@ -253,6 +253,8 @@ const baseStats: Record<IUpgradeKeys, number> = {
   speedMoveMulti: 1,
 
   damageMeleeBase: 1,
+  damageMeleeFreq: 250,
+  durationMeleeBase: 250,
   damageMeleeMulti: 1,
 
   damageRangeBase: 1,

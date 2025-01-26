@@ -63,7 +63,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     // this.speed = stats.speed
   }
 
-  takeDamage = async (amount = 0) => {
+  takeDamage = async (amount = 0, delay = 150) => {
     if (this.justHit || !this.active || !this.visible) return
 
     this.justHit = true
@@ -76,9 +76,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.setPosition(-20, -20)
     } else {
       this.setTintFill(0xff0000)
-      await this.delay(150)
+      await this.delay(delay)
       this.setTint(this.color)
-      await this.delay(150)
       this.justHit = false
     }
   }
