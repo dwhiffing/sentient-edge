@@ -4,6 +4,7 @@ import { registry } from '../utils/registry'
 export class Gold extends Phaser.Physics.Arcade.Sprite {
   amount: number
   declare scene: Fight
+
   constructor(scene: Fight, x: number, y: number) {
     super(scene, x, y, 'spritesheet', 48)
     this.scene.add.existing(this)
@@ -12,8 +13,15 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
     this.amount = 1
   }
 
-  spawn(x: number, y: number) {
+  spawn(x: number, y: number, amount = 1) {
     this.setActive(true).setVisible(true).setPosition(x, y)
+    this.amount = amount
+    this.setFrame(48)
+    if (amount > 50) {
+      this.setFrame(49)
+    } else if (amount > 100) {
+      this.setFrame(50)
+    }
   }
 
   pickup() {

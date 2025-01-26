@@ -6,6 +6,7 @@ type IEnemyStats = {
   rangeDamage: number[]
   color: number
   health: number[]
+  gold: number[]
 }
 
 export const ENEMIES: IEnemyStats[] = [
@@ -17,6 +18,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [4, 4],
     meleeDamage: [1, 4],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0x00ff00,
@@ -26,6 +28,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [2, 8],
     rangeDamage: [1, 1],
+    gold: [10, 20],
   },
   {
     color: 0xffffff,
@@ -35,6 +38,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [100, 100],
     meleeDamage: [10, 30],
     rangeDamage: [2, 4],
+    gold: [100, 120],
   },
   {
     color: 0xffffff,
@@ -44,6 +48,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0xffffff,
@@ -53,6 +58,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0xffffff,
@@ -62,6 +68,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0xffffff,
@@ -71,6 +78,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0xffffff,
@@ -80,6 +88,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0xffffff,
@@ -89,6 +98,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0xffffff,
@@ -98,6 +108,7 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     key: 'skeleton',
@@ -107,6 +118,7 @@ export const ENEMIES: IEnemyStats[] = [
     color: 0xffffff,
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
   {
     color: 0xffffff,
@@ -116,5 +128,6 @@ export const ENEMIES: IEnemyStats[] = [
     health: [10, 10],
     meleeDamage: [1, 1],
     rangeDamage: [1, 1],
+    gold: [1, 10],
   },
 ]

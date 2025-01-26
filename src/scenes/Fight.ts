@@ -65,10 +65,6 @@ export class Fight extends Scene {
     }
   }
 
-  spawnGold(x: number, y: number) {
-    this.gold.get().spawn(x, y)
-  }
-
   checkIfFinished() {
     if (this.enemies.children.entries.every((c) => !c.active)) {
       const cleared = registry.values.clearedNodes ?? []
@@ -126,7 +122,8 @@ export class Fight extends Scene {
       this.player.stats.damageMeleeFreq,
     )
     if (enemy.health <= 0) {
-      this.spawnGold(enemy.x, enemy.y)
+      this.gold.get().spawn(enemy.x, enemy.y, enemy.gold)
+
       this.checkIfFinished()
     }
   }
