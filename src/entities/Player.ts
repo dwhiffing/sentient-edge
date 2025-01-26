@@ -46,10 +46,10 @@ export class Player {
     })
 
     this.isPointerOut = false
-    this.scene.input.on('gameout', () => {
+    this.scene.game.events.on(Phaser.Core.Events.BLUR, () => {
       this.isPointerOut = true
     })
-    this.scene.input.on('gameover', () => {
+    this.scene.game.events.on(Phaser.Core.Events.FOCUS, () => {
       this.isPointerOut = false
     })
 
