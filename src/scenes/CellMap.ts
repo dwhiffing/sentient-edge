@@ -30,7 +30,7 @@ export class CellMap extends Scene {
     this.nodes = this.add.group({ defaultKey: 'spritesheet' })
     this.updateNodes()
 
-    this.player = new Player(this, { speed: 70 })
+    this.player = new Player(this)
 
     this.input.on('pointerdown', this.enterNearbyNode)
   }

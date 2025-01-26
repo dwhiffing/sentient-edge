@@ -21,12 +21,16 @@ export class Player {
   health: number
   justHit: boolean
 
-  constructor(scene: Phaser.Scene, params: IPlayerParams) {
+  constructor(scene: Phaser.Scene, params: IPlayerParams = {}) {
     this.scene = scene
     const w = this.scene.cameras.main.width
     const x = params.x ?? w / 2
     const y = params.y ?? w / 2
     const scale = params.scale ?? 1
+
+    this.speed = params.speed ?? 60
+    this.health = registry.values.health
+    this.justHit = false
 
     this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 40)
     this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
@@ -41,10 +45,6 @@ export class Player {
       .setCollideWorldBounds(true)
       .setOrigin(0.5, 1)
       .setOffset(8, 16)
-
-    this.speed = params.speed ?? 30
-    this.health = registry.values.health
-    this.justHit = false
   }
 
   update() {

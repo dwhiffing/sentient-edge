@@ -31,7 +31,7 @@ export class Shop extends Scene {
     this.activeItemKey = -1
     this.allowPurchase = true
 
-    this.player = new Player(this, { speed: 60 })
+    this.player = new Player(this, { x: width / 2, y: height - 20 })
 
     this.input.on('pointerdown', () => {
       if (this.activeItemKey !== -1) {

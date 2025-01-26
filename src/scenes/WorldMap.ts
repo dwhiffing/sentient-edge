@@ -19,7 +19,7 @@ export class WorldMap extends Scene {
 
     registry.set('hudText', '')
 
-    this.player = new Player(this, { x: 0, y: 0, scale: 0.5 })
+    this.player = new Player(this, { x: 0, y: 0, scale: 0.5, speed: 30 })
     const x = registry.values.lastZoom % 3
     const y = Math.floor(registry.values.lastZoom / 3)
     this.player.sprite.setPosition(x * 66 + 33, y * 66 + 33)
