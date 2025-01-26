@@ -30,7 +30,7 @@ export class CellMap extends Scene {
     this.nodes = this.add.group({ defaultKey: 'spritesheet' })
     this.updateNodes()
 
-    this.player = new Player(this)
+    this.player = new Player(this, { sword: true })
     registry.set('health', this.player.stats.healthMax)
 
     this.input.on('pointerdown', this.enterNearbyNode)

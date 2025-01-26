@@ -39,11 +39,6 @@ export class Player {
     this.justHit = false
     this.attackReady = true
 
-    this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 40)
-    this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
-    this.swordBody.setSize(12, 6)
-    this.sword.setScale(scale).setOrigin(0.5, 0.7).setVisible(!!params.sword)
-
     this.bullets = this.scene.add.group({
       classType: Bullet,
       maxSize: 10,
@@ -66,6 +61,16 @@ export class Player {
       .setCollideWorldBounds(true)
       .setOrigin(0.5, 1)
       .setOffset(8, 16)
+      .setDepth(1)
+
+    this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 41)
+    this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
+    this.swordBody.setSize(12, 6)
+    this.sword
+      .setScale(scale)
+      .setOrigin(0.5, 0.7)
+      .setVisible(!!params.sword)
+      .setDepth(2)
   }
 
   update() {
@@ -88,24 +93,33 @@ export class Player {
       if (w.angle !== 0) w.setAngle(w.flipX ? -90 : 90)
     }
 
-    this.sword.setOffset(this.sword.flipX ? 0 : 16, 19)
-    let so = SWORD_OFFSET_X
-    let sy = s.y - 11
+    this.sword.setOffset(this.sword.flipX ? 0 : 19, 19)
+    let so = SWORD_OFFSET_X * this.sprite.scaleX
+    let sy = s.y - (this.attackReady ? 11 : 7) * this.sprite.scaleX
     if (this.sword.angle !== 0) {
       so += 5
-      sy += 2
+      sy += -2
+      this.sword.setFrame(40)
     }
     let sx = s.x + so * (this.sword.flipX ? -1 : 1)
     this.sword.setPosition(sx, sy)
 
     const dist = Phaser.Math.Distance.Between(p.x, p.y, s.x, s.y)
-    const affix = this.sword.visible ? '-sword' : ''
+    const affix = this.sword.visible && this.attackReady ? '-sword' : ''
     if (dist > 2) {
       const angle = Math.atan2(dy, dx)
 
+      const slowMulti = this.attackReady ? 1 : 0.5
       const speed =
-        BASE_SPEED * this.stats.speedMoveMulti * this.speedMultiplier
+        BASE_SPEED *
+        this.stats.speedMoveMulti *
+        this.speedMultiplier *
+        slowMulti
       this.spriteBody.setVelocity(
+        Math.cos(angle) * speed,
+        Math.sin(angle) * speed,
+      )
+      this.swordBody.setVelocity(
         Math.cos(angle) * speed,
         Math.sin(angle) * speed,
       )
@@ -144,10 +158,13 @@ export class Player {
     this.attackReady = false
     this.sprite.anims.play(`player-stab`, true)
     this.sword.setAngle(this.sword.flipX ? -90 : 90)
+    this.sword.setDepth(0)
     this.shoot(this.stats.rangeCount)
 
-    await this.delay(100)
+    await this.delay(400)
     this.sword.setAngle(0)
+    this.sword.setFrame(41)
+    this.sword.setDepth(2)
     await this.delay(this.stats.speedMeleeBase * this.stats.speedMeleeMulti)
     this.attackReady = true
   }
@@ -178,19 +195,21 @@ export class Player {
     }
   }
 
-  die() {
+  die = async () => {
     this.sprite.setActive(false).setVisible(false)
     // this.sword.setActive(false).setVisible(false)
     this.scene.add
       .sprite(this.sprite.x, this.sprite.y, 'spritesheet', 7)
       .setOrigin(0.5, 1)
-    this.scene.time.delayedCall(1000, () => this.scene.scene.start('WorldMap'))
     registry.set('gold', 0)
     const up = registry.values.upgrades
     ITEMS.filter((i) => i.temporary).forEach((item) => {
       up[item.key as IUpgradeKeys] = 0
     })
     registry.set('upgrades', up)
+
+    await this.delay(1000)
+    this.scene.scene.start('WorldMap')
   }
 
   isNearEdge = () =>

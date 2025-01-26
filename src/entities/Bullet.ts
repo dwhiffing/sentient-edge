@@ -1,6 +1,6 @@
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'spritesheet', 41)
+    super(scene, x, y, 'spritesheet', 42)
 
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
