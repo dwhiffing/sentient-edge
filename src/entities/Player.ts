@@ -25,6 +25,7 @@ export class Player {
   health: number
   speedMultiplier: number
   justHit: boolean
+  isPointerOut: boolean
 
   constructor(scene: Phaser.Scene, params: IPlayerParams = {}) {
     this.scene = scene
@@ -49,6 +50,14 @@ export class Player {
       runChildUpdate: true,
     })
 
+    this.isPointerOut = false
+    this.scene.input.on('gameout', () => {
+      this.isPointerOut = true
+    })
+    this.scene.input.on('gameover', () => {
+      this.isPointerOut = false
+    })
+
     this.sprite = this.scene.physics.add.sprite(x, y, 'spritesheet', 0)
     this.spriteBody = this.sprite.body as Phaser.Physics.Arcade.Body
     this.spriteBody.setSize(15, 15)
@@ -65,6 +74,11 @@ export class Player {
     const p = this.scene.input.activePointer
     const s = this.sprite
     const w = this.sword
+
+    if (this.isPointerOut) {
+      this.stop()
+      return
+    }
 
     const dx = p.x - s.x
     const dy = p.y - s.y
@@ -97,9 +111,15 @@ export class Player {
       )
       if (this.sword.angle === 0) s.anims.play(`player-walk${affix}`, true)
     } else {
-      this.spriteBody.setVelocity(0)
-      if (this.sword.angle === 0) s.anims.play(`player-idle${affix}`)
+      this.stop()
     }
+  }
+
+  stop() {
+    this.swordBody.setVelocity(0)
+    this.spriteBody.setVelocity(0)
+    const affix = this.sword.visible && this.attackReady ? '-sword' : ''
+    if (this.sword.angle === 0) this.sprite.anims.play(`player-idle${affix}`)
   }
 
   shoot = (count = 0, spread = 20) => {
