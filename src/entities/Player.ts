@@ -46,7 +46,7 @@ export class Player {
       runChildUpdate: true,
     })
 
-    this.isPointerOut = false
+    this.isPointerOut = !this.scene.game.hasFocus
     this.scene.game.events.on(Phaser.Core.Events.BLUR, () => {
       this.isPointerOut = true
     })
@@ -81,11 +81,6 @@ export class Player {
     const s = this.sprite
     const w = this.sword
 
-    if (this.isPointerOut) {
-      this.stop()
-      return
-    }
-
     const dx = p.x - s.x
     const dy = p.y - s.y
     if (Math.abs(dx) > 2) {
@@ -104,6 +99,11 @@ export class Player {
     }
     let sx = s.x + so * (this.sword.flipX ? -1 : 1)
     this.sword.setPosition(sx, sy)
+
+    if (this.isPointerOut) {
+      this.stop()
+      return
+    }
 
     const dist = Phaser.Math.Distance.Between(p.x, p.y, s.x, s.y)
     const affix = this.sword.visible && this.attackReady ? '-sword' : ''
