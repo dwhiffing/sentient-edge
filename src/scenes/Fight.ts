@@ -87,22 +87,28 @@ export class Fight extends Scene {
     const enemy = _enemy as Enemy
     if (!enemy.active) return
 
-    bullet.damage(1)
-    enemy.damage(1)
+    bullet.takeDamage(1)
+    enemy.takeDamage(
+      this.player.stats.damageRangeBase * this.player.stats.damageRangeMulti,
+    )
   }
 
   hitPlayerBullet = (_player: unknown, _bullet: unknown) => {
     if (!this.player.sprite.active) return
 
     const bullet = _bullet as Bullet
-    bullet.damage(1)
-    this.player.damage(1)
+    bullet.takeDamage(1)
+    //  TODO: take enemy range damage
+    // need to associated bullet with enemy
+    // player.takeDamage(enemy.rangeDamage,true)
+    this.player.takeDamage(1, true)
   }
 
   hitPlayerEnemy = (_player: unknown, _enemy: unknown) => {
     if (!this.player.sprite.active) return
 
-    this.player.damage(1)
+    const enemy = _enemy as Enemy
+    this.player.takeDamage(enemy.meleeDamage)
   }
 
   hitPlayerGold = (_player: unknown, _gold: unknown) => {
@@ -115,7 +121,9 @@ export class Fight extends Scene {
 
     const enemy = _enemy as Enemy
     if (!enemy.active) return
-    enemy.damage(1)
+    enemy.takeDamage(
+      this.player.stats.damageMeleeBase * this.player.stats.damageMeleeMulti,
+    )
     if (enemy.health <= 0) {
       this.spawnGold(enemy.x, enemy.y)
       this.checkIfFinished()

@@ -121,8 +121,9 @@ export class Player {
     // this.shoot()
   }
 
-  damage = async (amount = 0) => {
+  takeDamage = async (amount = 0, isRanged = false) => {
     if (this.justHit || !this.sprite.active || !this.sprite.visible) return
+
 
     this.justHit = true
     this.health -= amount

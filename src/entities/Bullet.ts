@@ -14,7 +14,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed)
   }
 
-  damage = (_amount: number) => {
+  takeDamage = (_amount: number) => {
     if (!this.active || !this.visible) return
 
     this.die()

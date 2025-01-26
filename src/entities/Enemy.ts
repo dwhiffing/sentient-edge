@@ -6,6 +6,8 @@ import { shoot } from '../utils/shoot'
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   health: number
   color: number
+  _meleeDamage: number[]
+  _rangeDamage: number[]
   shootRate: number
   justHit: boolean
   declare scene: Fight
@@ -53,13 +55,15 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     this.health = Phaser.Math.RND.between(stats.health[0], stats.health[1])
     this.shootRate = stats.shootRate
+    this._meleeDamage = stats.meleeDamage
+    this._rangeDamage = stats.rangeDamage
     this.setFrame(stats.frame)
     this.color = stats.color
     this.setTint(this.color)
     // this.speed = stats.speed
   }
 
-  damage = async (amount = 0) => {
+  takeDamage = async (amount = 0) => {
     if (this.justHit || !this.active || !this.visible) return
 
     this.justHit = true
@@ -77,6 +81,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       await this.delay(150)
       this.justHit = false
     }
+  }
+
+  get meleeDamage() {
+    return Phaser.Math.RND.between(this._meleeDamage[0], this._meleeDamage[1])
+  }
+
+  get rangeDamage() {
+    return Phaser.Math.RND.between(this._rangeDamage[0], this._rangeDamage[1])
   }
 
   delay = (delay: number) =>
