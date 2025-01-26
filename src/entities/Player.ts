@@ -1,5 +1,7 @@
 import { MAP_DATA } from '../utils/constants'
 import { registry } from '../utils/registry'
+import { shoot } from '../utils/shoot'
+import { Bullet } from './Bullet'
 
 type IPlayerParams = {
   x?: number
@@ -17,6 +19,7 @@ export class Player {
   spriteBody: Phaser.Physics.Arcade.Body
   sword: Phaser.Physics.Arcade.Sprite
   swordBody: Phaser.Physics.Arcade.Body
+  bullets: Phaser.GameObjects.Group
   speed: number
   health: number
   justHit: boolean
@@ -36,6 +39,12 @@ export class Player {
     this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
     this.swordBody.setSize(12, 6)
     this.sword.setScale(scale).setOrigin(0.5, 0.7).setVisible(!!params.sword)
+
+    this.bullets = this.scene.add.group({
+      classType: Bullet,
+      maxSize: 10,
+      runChildUpdate: true,
+    })
 
     this.sprite = this.scene.physics.add.sprite(x, y, 'spritesheet', 0)
     this.spriteBody = this.sprite.body as Phaser.Physics.Arcade.Body
@@ -88,12 +97,28 @@ export class Player {
     }
   }
 
+  shoot = (count = 3, spread = 20) => {
+    if (!this.sprite.active) return
+
+    const f = this.sprite.flipX ? -1 : 1
+    const source = {
+      x: this.sprite.x + 20 * f,
+      y: this.sprite.y - this.spriteBody.halfHeight,
+    }
+    const target = {
+      x: source.x + 50 * f,
+      y: source.y,
+    }
+    shoot(this.bullets, source, target, count, spread)
+  }
+
   swing() {
     if (!this.sprite.active || this.sword.angle !== 0) return
 
     this.sprite.anims.play(`player-stab`, true)
     this.sword.setAngle(this.sword.flipX ? -90 : 90)
     this.scene.time.delayedCall(800, () => this.sword.setAngle(0))
+    // this.shoot()
   }
 
   damage = async (amount = 0) => {

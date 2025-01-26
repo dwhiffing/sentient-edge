@@ -1,14 +1,16 @@
 # tasks
 
-add bullets
 add enemy stat system + different types
 add enemy movement
 
 add player upgrade system
 add reset save option to menu
 
+add health bars
 when node is cleared, should display flag
 fight scene should pick map frame based on biome
+add homing bullets
+player moves slower while swinging
 
 change gold amount based on enemy strength, use different sprite based on value
 

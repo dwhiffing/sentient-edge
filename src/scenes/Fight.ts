@@ -49,6 +49,7 @@ export class Fight extends Scene {
     this.physics.overlap(this.player.sprite, this.enemies, this.hitPlayerEnemy)
     this.physics.overlap(this.player.sprite, this.gold, this.hitPlayerGold)
     this.physics.overlap(this.player.sprite, this.bullets, this.hitPlayerBullet)
+    this.physics.overlap(this.enemies, this.player.bullets, this.hitEnemyBullet)
   }
 
   spawnEnemies(min: number, max: number) {
@@ -71,6 +72,15 @@ export class Fight extends Scene {
 
   backToMap() {
     this.scene.start('WorldMap')
+  }
+
+  hitEnemyBullet = (_enemy: unknown, _bullet: unknown) => {
+    const bullet = _bullet as Bullet
+    const enemy = _enemy as Enemy
+    if (!enemy.active) return
+
+    bullet.damage(1)
+    enemy.damage(1)
   }
 
   hitPlayerBullet = (_player: unknown, _bullet: unknown) => {
