@@ -28,7 +28,7 @@ export class Hud extends Scene {
   }
 
   updateText = () => {
-    const gold = registry.values.gold
+    const gold = Math.floor(registry.values.gold)
     const health = registry.values.health
     const enemyHealth = registry.values.enemyHealth
     const enemyText = enemyHealth === -1 ? '' : `Enemy: ${enemyHealth ?? 0}`

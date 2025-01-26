@@ -13,7 +13,7 @@ export class CellMap extends Scene {
   }
 
   init() {
-    registry.set('health', 10)
+    if (this.player) registry.set('health', this.player.stats.healthMax)
   }
 
   create() {
@@ -31,6 +31,7 @@ export class CellMap extends Scene {
     this.updateNodes()
 
     this.player = new Player(this)
+    registry.set('health', this.player.stats.healthMax)
 
     this.input.on('pointerdown', this.enterNearbyNode)
   }

@@ -1,15 +1,16 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
-import { registry } from '../utils/registry'
-import { ITEMS } from '../utils/constants'
+import { IUpgradeKeys, registry } from '../utils/registry'
+import { INode, ITEMS, MAP_DATA } from '../utils/constants'
 
 export class Shop extends Scene {
   background: Phaser.GameObjects.Sprite
   shopkeep: Phaser.GameObjects.Sprite
   player: Player
   items: Phaser.Physics.Arcade.Sprite[]
-  activeItemKey: number
+  activeItemKey?: IUpgradeKeys
   allowPurchase: boolean
+  node: INode
 
   constructor() {
     super('Shop')
@@ -22,19 +23,20 @@ export class Shop extends Scene {
       .sprite(width / 2, height / 2 - 10, 'spritesheet', 0)
       .play('shopkeep-idle')
       .setOrigin(0.5, 1)
-    this.items = [
-      this.createItem(0, 0),
-      this.createItem(1, 1),
-      this.createItem(2, 2),
-    ]
 
-    this.activeItemKey = -1
+    this.activeItemKey = undefined
     this.allowPurchase = true
 
     this.player = new Player(this, { x: width / 2, y: height - 20 })
 
+    this.node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
+
+    this.items = (this.node.items ?? []).map((key, i) =>
+      this.createItem(key, i),
+    )
+
     this.input.on('pointerdown', () => {
-      if (this.activeItemKey !== -1) {
+      if (this.activeItemKey) {
         this.buyItem(this.activeItemKey)
       }
     })
@@ -53,11 +55,11 @@ export class Shop extends Scene {
     if (!overlap) {
       registry.set('hudText', '')
       this.shopkeep.play('shopkeep-idle')
-      this.activeItemKey = -1
+      this.activeItemKey = undefined
     }
   }
 
-  createItem = (key: number, index: number) => {
+  createItem = (key: string, index: number) => {
     const _item = ITEMS.find((i) => i.key === key)!
 
     const { width, height } = this.cameras.main
@@ -67,11 +69,9 @@ export class Shop extends Scene {
       .setOrigin(0.5, 0.5)
       .setSize(20, 20)
       .setData('key', key)
-      .setData('cost', _item.cost)
-      .setData('text', _item.text.replace('{cost}', `${_item.cost}`))
   }
 
-  buyItem = (key: number) => {
+  buyItem = (key: string) => {
     if (!this.allowPurchase) return
 
     this.allowPurchase = false
@@ -82,8 +82,17 @@ export class Shop extends Scene {
 
     const _item = ITEMS.find((i) => i.key === key)!
     const currentGold = registry.values.gold
-    if (currentGold >= _item.cost) {
-      registry.set('gold', currentGold - _item.cost)
+
+    // TODO: check if player is at max effect and disable if so
+    const level = registry.values.upgrades[key as IUpgradeKeys]
+    const cost = _item.effects[level]?.cost
+    if (currentGold >= cost) {
+      registry.set('gold', currentGold - cost)
+      const currentUpgrade = registry.values.upgrades
+      registry.set('upgrades', {
+        ...currentUpgrade,
+        [key]: (currentUpgrade[key as keyof typeof currentUpgrade] ?? 0) + 1,
+      })
       this.shopkeepTalk('Pleasure doing business\nwith you! :)', 1500)
     } else {
       this.shopkeepTalk("You can't afford that", 1500)
@@ -101,8 +110,12 @@ export class Shop extends Scene {
 
   hitPlayerItem = (_player: unknown, _item: unknown) => {
     const item = _item as Phaser.Physics.Arcade.Sprite
-    if (registry.values.hudText === '') this.shopkeepTalk(item.getData('text'))
-    this.activeItemKey = item.getData('key') as number
+    this.activeItemKey = item.getData('key') as IUpgradeKeys
+    const itemData = ITEMS.find((i) => i.key === this.activeItemKey)!
+    const level = registry.values.upgrades[this.activeItemKey]
+    const cost = itemData.effects[level]?.cost
+    if (registry.values.hudText === '')
+      this.shopkeepTalk(itemData.text.replace('{cost}', `${cost}`))
   }
 
   backToMap() {

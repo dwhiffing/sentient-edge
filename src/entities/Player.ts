@@ -1,5 +1,5 @@
-import { MAP_DATA } from '../utils/constants'
-import { registry } from '../utils/registry'
+import { ITEMS } from '../utils/constants'
+import { IUpgradeKeys, registry } from '../utils/registry'
 import { shoot } from '../utils/shoot'
 import { Bullet } from './Bullet'
 
@@ -7,11 +7,12 @@ type IPlayerParams = {
   x?: number
   y?: number
   scale?: number
+  speedMultiplier?: number
   sword?: boolean
-  speed?: number
 }
 
 const SWORD_OFFSET_X = 10
+const BASE_SPEED = 40
 
 export class Player {
   scene: Phaser.Scene
@@ -20,8 +21,9 @@ export class Player {
   sword: Phaser.Physics.Arcade.Sprite
   swordBody: Phaser.Physics.Arcade.Body
   bullets: Phaser.GameObjects.Group
-  speed: number
+  attackReady: boolean
   health: number
+  speedMultiplier: number
   justHit: boolean
 
   constructor(scene: Phaser.Scene, params: IPlayerParams = {}) {
@@ -30,10 +32,11 @@ export class Player {
     const x = params.x ?? w / 2
     const y = params.y ?? w / 2
     const scale = params.scale ?? 1
+    this.speedMultiplier = params.speedMultiplier ?? 1
 
-    this.speed = params.speed ?? 60
     this.health = registry.values.health
     this.justHit = false
+    this.attackReady = true
 
     this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 40)
     this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
@@ -83,12 +86,14 @@ export class Player {
 
     const dist = Phaser.Math.Distance.Between(p.x, p.y, s.x, s.y)
     const affix = this.sword.visible ? '-sword' : ''
-    if (dist > 1) {
+    if (dist > 2) {
       const angle = Math.atan2(dy, dx)
 
+      const speed =
+        BASE_SPEED * this.stats.speedMoveMulti * this.speedMultiplier
       this.spriteBody.setVelocity(
-        Math.cos(angle) * this.speed,
-        Math.sin(angle) * this.speed,
+        Math.cos(angle) * speed,
+        Math.sin(angle) * speed,
       )
       if (this.sword.angle === 0) s.anims.play(`player-walk${affix}`, true)
     } else {
@@ -97,8 +102,8 @@ export class Player {
     }
   }
 
-  shoot = (count = 3, spread = 20) => {
-    if (!this.sprite.active) return
+  shoot = (count = 0, spread = 20) => {
+    if (!this.sprite.active || count === 0) return
 
     const f = this.sprite.flipX ? -1 : 1
     const source = {
@@ -112,18 +117,31 @@ export class Player {
     shoot(this.bullets, source, target, count, spread)
   }
 
-  swing() {
-    if (!this.sprite.active || this.sword.angle !== 0) return
+  async swing() {
+    if (!this.sprite.active || this.sword.angle !== 0 || !this.attackReady)
+      return
 
+    this.attackReady = false
     this.sprite.anims.play(`player-stab`, true)
     this.sword.setAngle(this.sword.flipX ? -90 : 90)
-    this.scene.time.delayedCall(800, () => this.sword.setAngle(0))
-    // this.shoot()
+    this.shoot(this.stats.rangeCount)
+
+    await this.delay(100)
+    this.sword.setAngle(0)
+    await this.delay(this.stats.speedMeleeBase * this.stats.speedMeleeMulti)
+    this.attackReady = true
   }
 
   takeDamage = async (amount = 0, isRanged = false) => {
     if (this.justHit || !this.sprite.active || !this.sprite.visible) return
 
+    if (isRanged) {
+      amount -= this.stats.defenseRanged
+    } else {
+      amount -= this.stats.defenseMelee
+    }
+
+    amount = Phaser.Math.Clamp(amount, 0, 999)
 
     this.justHit = true
     this.health -= amount
@@ -147,6 +165,12 @@ export class Player {
       .sprite(this.sprite.x, this.sprite.y, 'spritesheet', 7)
       .setOrigin(0.5, 1)
     this.scene.time.delayedCall(1000, () => this.scene.scene.start('WorldMap'))
+    registry.set('gold', 0)
+    const up = registry.values.upgrades
+    ITEMS.filter((i) => i.temporary).forEach((item) => {
+      up[item.key as IUpgradeKeys] = 0
+    })
+    registry.set('upgrades', up)
   }
 
   isNearEdge = () =>
@@ -159,4 +183,47 @@ export class Player {
     new Promise((resolve) => {
       this.scene.time.delayedCall(delay, resolve)
     })
+
+  get stats() {
+    return ITEMS.reduce(
+      (obj, item) => {
+        const up = registry.values.upgrades[item.key as IUpgradeKeys]
+
+        item?.effects.slice(0, up).forEach((effectLevel) => {
+          effectLevel.effects.forEach((effect) => {
+            obj[effect.statKey] ??= 0
+            obj[effect.statKey] += effect.change
+          })
+        })
+
+        return obj
+      },
+      { ...baseStats },
+    )
+  }
+}
+
+const baseStats: Record<IUpgradeKeys, number> = {
+  healthMax: 10,
+  defenseMelee: 0,
+  defenseRanged: 0,
+
+  rangeCount: 0,
+  sizeBase: 1,
+  speedMoveMulti: 1,
+
+  damageMeleeBase: 1,
+  damageMeleeMulti: 1,
+
+  damageRangeBase: 1,
+  damageRangeMulti: 1,
+
+  earnRateBase: 0,
+  earnRateMulti: 1,
+
+  speedMeleeBase: 1200,
+  speedMeleeMulti: 1,
+
+  // rangeSpeed:0,
+  // rangeHoming:0,
 }

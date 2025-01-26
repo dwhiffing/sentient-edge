@@ -1,3 +1,5 @@
+import { IUpgradeKeys } from '../registry'
+
 export type INodeType = 'fight' | 'fight-boss' | 'shop'
 export type INode = {
   type: INodeType
@@ -12,6 +14,7 @@ export type INode = {
     min: number
     max: number
   }
+  items?: IUpgradeKeys[]
 }
 
 const LEVEL_1: INode[] = [
@@ -93,6 +96,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
+    items: ['damageMeleeBase', 'damageMeleeMulti'],
   },
   {
     type: 'shop',
@@ -102,6 +106,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
+    items: ['damageRangeBase', 'damageRangeMulti'],
   },
   {
     type: 'shop',
@@ -111,6 +116,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
+    items: ['earnRateBase', 'earnRateMulti'],
   },
 ]
 
@@ -213,6 +219,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.4,
     y: 0.8,
+    items: ['defenseMelee', 'defenseRanged'],
   },
   {
     type: 'shop',
@@ -222,6 +229,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.4,
     y: 0.8,
+    items: ['speedMeleeBase', 'speedMeleeMulti'],
   },
   {
     type: 'shop',
@@ -231,6 +239,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.4,
     y: 0.8,
+    items: ['healthMax'],
   },
 ]
 
@@ -313,6 +322,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.4,
     y: 0.8,
+    items: ['rangeCount'],
   },
   {
     type: 'shop',
@@ -322,6 +332,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.4,
     y: 0.8,
+    items: ['sizeBase'],
   },
 ]
 
@@ -384,6 +395,7 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.4,
     y: 0.8,
+    items: ['speedMoveMulti'],
   },
 ]
 
