@@ -1,26 +1,37 @@
 # tasks
 
-add enemy stat system + different types
-add enemy movement
+add gold drop range to enemy stats, change gold amount based on enemy strength, use different sprite based on value
+add stats for different types of shooting enemies
+add different enemy movement types, assign to different enemies (move in a circle, charge left and right, stomp on player)
+add enemy variants with different color and higher stats
 
-add player upgrade system
-add reset save option to menu
+cycle through player sprites on death, drop sword on death
+implement weapon size
+
+position nodes closer to path
 
 add health bars
 when node is cleared, should display flag
-fight scene should pick map frame based on biome
-add homing bullets
-player moves slower while swinging
+when node is first hovered, should be discovered
+show next level effect in shop text
+handle no more levels to purchase in shop
 
-change gold amount based on enemy strength, use different sprite based on value
+add homing bullets, dies after homing for long enough
 
-develop progression and complete list of stub levels, ensure you can get to end of game
-add win scene when you beat the final boss
+distribute upgrades across shops
+center upgrades if only 1/2
+
+should show boss as soon as others are cleared
+return to map from node you left
+
+add rare enemies that have double health but drop triple gold
+
 add scene where new player picks you up if you make it out of the fight
 add game over scene
-
+add win scene when you beat the final boss
 add credits/help scene
-return to map from node you left
+add reset save option to menu
+mobile controls
 
 # biome types
 
@@ -48,16 +59,35 @@ boss enemies
 
 # come up with player upgrades
 
-player should be able to hold to repeat attack
-player should be slower while attacking or when hurt
-should be able to level up player and sword separately
-player upgrades are lost on death, new player comes and finds you
-player bullet upgrades
-more damage
-larger weapon
+# stats
 
-different shop types
-mostly where does each upgrade go and give them appropriate names
+## defense:
+
+- max health
+- melee defense
+- ranged defense
+
+## offense
+
+- player attack speed multiplier
+- sword base attack speed
+- player melee damage multiplier
+- sword base damage
+- sword size
+- player bullet damage
+- player bullet count
+- player bullet size
+- player bullet speed
+- player homing bullets
+
+## utility
+
+- player speed multiplier
+- sword base speed
+- player earn rate multiplier
+- sword base gold earn rate
+
+put different upgrades in shops
 
 # finish art
 
