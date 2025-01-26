@@ -1,37 +1,7 @@
 import { Scene } from 'phaser'
 import { Player } from '../entities/Player'
 import { registry } from '../utils/registry'
-
-type IPurchasable = {
-  key: number
-  cost: number
-  type: string
-  text: string
-  frame: number
-}
-const ITEMS: IPurchasable[] = [
-  {
-    key: 0,
-    cost: 5,
-    type: 'potion',
-    frame: 51,
-    text: 'That costs {cost} gold.  It will\nupgrade your health.',
-  },
-  {
-    key: 1,
-    cost: 10,
-    type: 'random',
-    frame: 52,
-    text: 'That costs {cost} gold.  It will\nupgrade your speed.',
-  },
-  {
-    key: 2,
-    cost: 20,
-    type: 'ring',
-    frame: 53,
-    text: 'That costs {cost} gold.  It will\nupgrade your strength.',
-  },
-]
+import { ITEMS } from '../utils/constants'
 
 export class Shop extends Scene {
   background: Phaser.GameObjects.Sprite
