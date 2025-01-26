@@ -57,11 +57,31 @@ export class Fight extends Scene {
 
   spawnEnemies(min: number, max: number) {
     const amount = Phaser.Math.RND.between(min, max)
+
+    const w = this.cameras.main.width
+    // size of cell
+    const w2 = (w / 3) * 0.65
+    // offset to center properly
+    const o = w2 / 2 + (w - w2 * 3) / 2
+    // how much do they spread from the center of the cell
+    const s = 6
+
+    // what indexes the enemies can spawn in if we divide the screen into thirds
+    // center is not available
+    let indexes = [0, 1, 2, 3, 5, 6, 7, 8]
     for (let i = 0; i < amount; i++) {
-      const enemy = this.enemies.get() as Enemy
-      enemy.spawn(
-        Phaser.Math.RND.weightedPick(this.node.enemies?.pool ?? ['snake']),
+      const index = Phaser.Math.RND.pick(indexes)
+      indexes = indexes.filter((i) => i !== index)
+      let x = (index % 3) * w2 + o
+      let y = Math.floor(index / 3) * w2 + o
+      x += Phaser.Math.RND.between(-s, s)
+      y += Phaser.Math.RND.between(-s, s)
+      const key = Phaser.Math.RND.weightedPick(
+        this.node.enemies?.pool ?? ['snake'],
       )
+
+      const enemy = this.enemies.get() as Enemy
+      enemy.spawn(x, y, key)
     }
   }
 

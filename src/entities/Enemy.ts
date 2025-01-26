@@ -29,7 +29,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.spriteBody = this.body as Phaser.Physics.Arcade.Body
     this.currentAngle = 0
     this._flop = 0
-    this.spriteBody.setCollideWorldBounds(true)
 
     if (this.shootRate > 0) {
       this.scene.time.addEvent({
@@ -83,12 +82,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     })
   }
 
-  spawn(key: string) {
+  spawn(_x: number, _y: number, key: string) {
     this.key = key
     const d = this.stats.moveMaxDistance * 0.65
-    const x = Phaser.Math.Between(d, this.scene.cameras.main.width - d)
-    const y = Phaser.Math.Between(d, this.scene.cameras.main.width - d)
+
+    const x = Phaser.Math.Clamp(_x, d, this.scene.cameras.main.width - d)
+    const y = Phaser.Math.Clamp(_y, d, this.scene.cameras.main.width - d)
     this.setPosition(x, y)
+    this.setCollideWorldBounds(true)
 
     this.health = Phaser.Math.RND.between(
       this.stats.health[0],
@@ -155,11 +156,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   die = async () => {
+    this.setCollideWorldBounds(false)
     this.setActive(false).setVisible(false)
     this.moveEvent?.destroy()
     this.flopEvent?.destroy()
     await this.delay(50)
-    this.setPosition(-20, -20)
+    this.setPosition(-500, -500)
   }
 
   get meleeDamage() {
