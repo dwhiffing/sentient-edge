@@ -3,16 +3,19 @@ import { ENEMIES } from '../utils/constants'
 import { registry } from '../utils/registry'
 import { shoot } from '../utils/shoot'
 
+const flopRate = 300
+
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   health: number
   color: number
   currentAngle: number
   _flop: number
   target: { x: number; y: number }
-  shootRate: number
   key: string
   justHit: boolean
+  forceStop: boolean
   moveEvent: Phaser.Time.TimerEvent
+  shootEvent: Phaser.Time.TimerEvent
   flopEvent: Phaser.Time.TimerEvent
   spriteBody: Phaser.Physics.Arcade.Body
   declare scene: Fight
@@ -29,17 +32,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.spriteBody = this.body as Phaser.Physics.Arcade.Body
     this.currentAngle = 0
     this._flop = 0
-
-    if (this.shootRate > 0) {
-      this.scene.time.addEvent({
-        delay: this.shootRate,
-        repeat: -1,
-        callback: this.shoot,
-      })
-    }
   }
 
   onMoveEvent = () => {
+    if (this.forceStop) return
+
     const rawDistance = Phaser.Math.Distance.BetweenPoints(this, this.target)
     const distanceRatio = Phaser.Math.Clamp(
       rawDistance / this.stats.moveMaxDistance,
@@ -68,23 +65,64 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(this.spriteBody.velocity.x > 0)
   }
 
-  shoot = (count = 2, spread = 20) => {
+  shoot = async () => {
     if (!this.active) return
 
-    const p = this.scene.player
-    const target = { x: p.sprite.x, y: p.sprite.y - p.spriteBody.halfHeight }
-    shoot(this.scene.bullets, this, target, count, spread)
+    const shouldShoot = Phaser.Math.RND.frac() <= this.stats.rangeShootChance
+    if (!shouldShoot) return
 
-    this.moveEvent = this.scene.time.addEvent({
-      delay: this.stats.moveEventDelay,
-      repeat: -1,
-      callback: this.onMoveEvent,
+    this.forceStop = true
+    this.spriteBody.setVelocity(0, 0)
+
+    const p = this.scene.player
+    let target = { x: p.sprite.x, y: p.sprite.y - p.spriteBody.halfHeight }
+    if (this.stats.rangeTarget === 'random') {
+      const w = this.scene.cameras.main.width
+      const x = Phaser.Math.RND.between(0, w)
+      const y = Phaser.Math.RND.between(0, w)
+      target = { x, y }
+    }
+
+    await this.flash(this.stats.rangeStartDelay)
+
+    shoot(
+      this.scene,
+      this.scene.bullets,
+      this,
+      target,
+      this.stats.rangeCount,
+      this.stats.rangeSpread,
+      this.stats.rangeAccuracy,
+      this.stats.rangeCountDelay,
+      this.stats.rangeBulletSpeed,
+      this.stats.rangeBulletSize,
+    )
+
+    this.forceStop = false
+  }
+
+  flash = async (duration = 800, flashCount = 6) => {
+    let toggle = false
+    this.scene.time.addEvent({
+      delay: duration / flashCount,
+      repeat: flashCount,
+      callback: () => {
+        if (toggle) {
+          this.setTintFill(0xffffff)
+          toggle = false
+        } else {
+          this.clearTint()
+          this.setTint(this.color)
+          toggle = true
+        }
+      },
     })
+    await this.delay(duration + 100)
   }
 
   spawn(_x: number, _y: number, key: string) {
     this.key = key
-    const d = this.stats.moveMaxDistance * 0.65
+    const d = 20
 
     const x = Phaser.Math.Clamp(_x, d, this.scene.cameras.main.width - d)
     const y = Phaser.Math.Clamp(_y, d, this.scene.cameras.main.width - d)
@@ -95,7 +133,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.stats.health[0],
       this.stats.health[1],
     )
-    this.shootRate = this.stats.shootRate
 
     const w = this.scene.cameras.main.width
 
@@ -115,22 +152,29 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.color = this.stats.color
     this.setTint(this.color)
 
-    // TODO: move to enemy stats
-    const flopRate = 300
+    this.scene.time.delayedCall(Phaser.Math.RND.between(0, 500), () => {
+      if (this.stats.rangeSpeed > 0) {
+        this.shootEvent = this.scene.time.addEvent({
+          delay: this.stats.rangeSpeed,
+          repeat: -1,
+          callback: this.shoot,
+        })
+      }
 
-    this.moveEvent = this.scene.time.addEvent({
-      delay: this.stats.moveEventDelay,
-      repeat: -1,
-      callback: this.onMoveEvent,
-    })
+      this.moveEvent = this.scene.time.addEvent({
+        delay: this.stats.moveEventDelay,
+        repeat: -1,
+        callback: this.onMoveEvent,
+      })
 
-    this.flopEvent = this.scene.time.addEvent({
-      repeat: -1,
-      delay: flopRate,
-      callback: () => {
-        this.y += 1 * (this._flop ? -1 : 1)
-        this._flop = this._flop ? 0 : 1
-      },
+      this.flopEvent = this.scene.time.addEvent({
+        repeat: -1,
+        delay: flopRate,
+        callback: () => {
+          this.y += 1 * (this._flop ? -1 : 1)
+          this._flop = this._flop ? 0 : 1
+        },
+      })
     })
   }
 
@@ -158,6 +202,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   die = async () => {
     this.setCollideWorldBounds(false)
     this.setActive(false).setVisible(false)
+    this.shootEvent?.destroy()
     this.moveEvent?.destroy()
     this.flopEvent?.destroy()
     await this.delay(50)

@@ -149,7 +149,7 @@ export class Player {
       x: source.x + 50 * f,
       y: source.y,
     }
-    shoot(this.bullets, source, target, count, spread)
+    shoot(this.scene, this.bullets, source, target, count, spread)
   }
 
   async swing() {

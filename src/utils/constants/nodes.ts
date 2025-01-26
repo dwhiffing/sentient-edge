@@ -9,11 +9,7 @@ export type INode = {
   cellMapFrame: number
   x: number
   y: number
-  enemies?: {
-    pool: string[]
-    min: number
-    max: number
-  }
+  enemies?: { key: string; chance: number; min: number; max: number }[]
   items?: IUpgradeKeys[]
 }
 
@@ -26,7 +22,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['bug'], min: 1, max: 1 },
+    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
   },
   {
     type: 'fight',
@@ -36,7 +32,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.7,
     y: 0.5,
-    enemies: { pool: ['bug'], min: 1, max: 1 },
+    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
   },
   {
     type: 'fight',
@@ -46,7 +42,12 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['bug'], min: 1, max: 1 },
+    enemies: [
+      { key: 'bug', chance: 1, min: 1, max: 2 },
+      { key: 'bug', chance: 0.5, min: 1, max: 1 },
+      { key: 'bug-rare', chance: 0.5, min: 1, max: 1 },
+      { key: 'snake', chance: 0.5, min: 1, max: 2 },
+    ],
   },
   {
     type: 'fight',
@@ -56,7 +57,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.7,
     y: 0.5,
-    enemies: { pool: ['bug'], min: 1, max: 1 },
+    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
   },
   {
     type: 'fight',
@@ -66,7 +67,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.1,
     y: 0.5,
-    enemies: { pool: ['bug', 'snake'], min: 1, max: 1 },
+    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
   },
   {
     type: 'fight',
@@ -76,7 +77,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.2,
     y: 0.5,
-    enemies: { pool: ['bug', 'snake'], min: 1, max: 1 },
+    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
   },
   {
     type: 'fight-boss',
@@ -86,7 +87,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.5,
-    enemies: { pool: ['anubis'], min: 1, max: 1 },
+    enemies: [{ key: 'anubis', chance: 1, min: 1, max: 1 }],
   },
   {
     type: 'shop',
@@ -129,7 +130,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['spider'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
   },
   {
     type: 'fight',
@@ -139,7 +140,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.7,
     y: 0.5,
-    enemies: { pool: ['spider'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
   },
   {
     type: 'fight',
@@ -149,7 +150,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['spider'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
   },
   {
     type: 'fight',
@@ -159,7 +160,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.5,
     y: 0.5,
-    enemies: { pool: ['spider'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
   },
   {
     type: 'fight',
@@ -169,7 +170,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.7,
     y: 0.5,
-    enemies: { pool: ['spider'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
   },
   {
     type: 'fight',
@@ -179,7 +180,10 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.1,
     y: 0.5,
-    enemies: { pool: ['spider', 'snail'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'spider' },
+      { chance: 1, min: 1, max: 1, key: 'snail' },
+    ],
   },
   {
     type: 'fight',
@@ -189,7 +193,10 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.2,
     y: 0.5,
-    enemies: { pool: ['spider', 'snail'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'spider' },
+      { chance: 1, min: 1, max: 1, key: 'snail' },
+    ],
   },
   {
     type: 'fight',
@@ -199,7 +206,10 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['spider', 'snail'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'spider' },
+      { chance: 1, min: 1, max: 1, key: 'snail' },
+    ],
   },
   {
     type: 'fight-boss',
@@ -209,7 +219,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.4,
     y: 0.5,
-    enemies: { pool: ['knight'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'knight' }],
   },
   {
     type: 'shop',
@@ -252,7 +262,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['roller'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'roller' }],
   },
   {
     type: 'fight',
@@ -262,7 +272,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.7,
     y: 0.5,
-    enemies: { pool: ['roller'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'roller' }],
   },
   {
     type: 'fight',
@@ -272,7 +282,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.5,
     y: 0.5,
-    enemies: { pool: ['roller'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'roller' }],
   },
   {
     type: 'fight',
@@ -282,7 +292,10 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.1,
     y: 0.5,
-    enemies: { pool: ['roller', 'ogre'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'roller' },
+      { chance: 1, min: 1, max: 1, key: 'ogre' },
+    ],
   },
   {
     type: 'fight',
@@ -292,7 +305,10 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.2,
     y: 0.5,
-    enemies: { pool: ['roller', 'ogre'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'roller' },
+      { chance: 1, min: 1, max: 1, key: 'ogre' },
+    ],
   },
   {
     type: 'fight',
@@ -302,7 +318,10 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['roller', 'ogre'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'roller' },
+      { chance: 1, min: 1, max: 1, key: 'ogre' },
+    ],
   },
   {
     type: 'fight-boss',
@@ -312,7 +331,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.4,
     y: 0.5,
-    enemies: { pool: ['golem'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'golem' }],
   },
   {
     type: 'shop',
@@ -345,7 +364,10 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.1,
     y: 0.5,
-    enemies: { pool: ['zombie', 'skeleton'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'zombie' },
+      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+    ],
   },
   {
     type: 'fight',
@@ -355,7 +377,10 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.2,
     y: 0.5,
-    enemies: { pool: ['zombie', 'skeleton'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'zombie' },
+      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+    ],
   },
   {
     type: 'fight',
@@ -365,7 +390,10 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.3,
     y: 0.5,
-    enemies: { pool: ['zombie', 'skeleton'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'zombie' },
+      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+    ],
   },
   {
     type: 'fight',
@@ -375,7 +403,10 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.5,
     y: 0.5,
-    enemies: { pool: ['zombie', 'skeleton'], min: 1, max: 1 },
+    enemies: [
+      { chance: 1, min: 1, max: 1, key: 'zombie' },
+      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+    ],
   },
   {
     type: 'fight-boss',
@@ -385,7 +416,7 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.6,
     y: 0.5,
-    enemies: { pool: ['death'], min: 1, max: 1 },
+    enemies: [{ chance: 1, min: 1, max: 1, key: 'death' }],
   },
   {
     type: 'shop',

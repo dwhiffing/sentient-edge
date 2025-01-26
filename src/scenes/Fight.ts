@@ -34,7 +34,7 @@ export class Fight extends Scene {
     this.node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
     if (this.node.enemies) {
-      this.spawnEnemies(this.node.enemies.min, this.node.enemies.max)
+      this.spawnEnemies()
     }
     if (this.node.cellMapFrame) {
       this.background.setFrame(this.node.cellMapFrame)
@@ -55,9 +55,7 @@ export class Fight extends Scene {
     if (this.input.activePointer.isDown) this.player.swing()
   }
 
-  spawnEnemies(min: number, max: number) {
-    const amount = Phaser.Math.RND.between(min, max)
-
+  spawnEnemies() {
     const w = this.cameras.main.width
     // size of cell
     const w2 = (w / 3) * 0.65
@@ -69,20 +67,24 @@ export class Fight extends Scene {
     // what indexes the enemies can spawn in if we divide the screen into thirds
     // center is not available
     let indexes = [0, 1, 2, 3, 5, 6, 7, 8]
-    for (let i = 0; i < amount; i++) {
-      const index = Phaser.Math.RND.pick(indexes)
-      indexes = indexes.filter((i) => i !== index)
-      let x = (index % 3) * w2 + o
-      let y = Math.floor(index / 3) * w2 + o
-      x += Phaser.Math.RND.between(-s, s)
-      y += Phaser.Math.RND.between(-s, s)
-      const key = Phaser.Math.RND.weightedPick(
-        this.node.enemies?.pool ?? ['snake'],
-      )
+    this.node.enemies?.forEach((_enemy) => {
+      const shouldSpawn = Phaser.Math.RND.frac() <= _enemy.chance
+      if (!shouldSpawn) return
 
-      const enemy = this.enemies.get() as Enemy
-      enemy.spawn(x, y, key)
-    }
+      const amount = Phaser.Math.RND.between(_enemy.min, _enemy.max)
+      for (let i = 0; i < amount; i++) {
+        const index = Phaser.Math.RND.pick(indexes)
+        indexes = indexes.filter((i) => i !== index)
+        let x = (index % 3) * w2 + o
+        let y = Math.floor(index / 3) * w2 + o
+
+        x += Phaser.Math.RND.between(-s, s)
+        y += Phaser.Math.RND.between(-s, s)
+
+        const enemy = this.enemies.get() as Enemy
+        enemy.spawn(x, y, _enemy.key)
+      }
+    })
   }
 
   checkIfFinished() {
@@ -142,7 +144,7 @@ export class Fight extends Scene {
       this.player.stats.damageMeleeFreq,
     )
     if (enemy.health <= 0) {
-      this.gold.get().spawn(enemy.x, enemy.y, enemy.gold)
+      this.gold.get()?.spawn(enemy.x, enemy.y, enemy.gold)
 
       this.checkIfFinished()
     }

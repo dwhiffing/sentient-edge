@@ -5,12 +5,14 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
 
-    this.setSize(4, 4).setOrigin(0.5, 0.5).setTint(0xff0000)
+    this.setOrigin(0.5, 0.5).setTint(0xff0000)
   }
 
-  spawn(pos: { x: number; y: number }, angle: number, speed: number) {
+  spawn(pos: { x: number; y: number }, angle: number, speed: number, size = 1) {
     this.setActive(true).setVisible(true)
     this.setPosition(pos.x, pos.y)
+    this.setSize(2 + 2 * size, 2 + 2 * size)
+    this.setFrame(41 + size)
     this.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed)
   }
 
