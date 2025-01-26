@@ -39,8 +39,6 @@ export class Fight extends Scene {
     if (this.node.cellMapFrame) {
       this.background.setFrame(this.node.cellMapFrame)
     }
-
-    this.input.on('pointerdown', () => this.player.swing())
   }
 
   update() {
@@ -53,6 +51,8 @@ export class Fight extends Scene {
     this.physics.overlap(this.player.sprite, this.gold, this.hitPlayerGold)
     this.physics.overlap(this.player.sprite, this.bullets, this.hitPlayerBullet)
     this.physics.overlap(this.enemies, this.player.bullets, this.hitEnemyBullet)
+
+    if (this.input.activePointer.isDown) this.player.swing()
   }
 
   spawnEnemies(min: number, max: number) {

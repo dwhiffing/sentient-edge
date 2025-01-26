@@ -37,7 +37,8 @@ export class Player {
 
     this.health = registry.values.health
     this.justHit = false
-    this.attackReady = true
+    this.attackReady = false
+    this.scene.time.delayedCall(100, () => (this.attackReady = true))
 
     this.bullets = this.scene.add.group({
       classType: Bullet,
