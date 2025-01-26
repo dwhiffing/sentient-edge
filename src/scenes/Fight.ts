@@ -12,7 +12,7 @@ export class Fight extends Scene {
   enemies: Phaser.GameObjects.Group
   bullets: Phaser.GameObjects.Group
   gold: Phaser.GameObjects.Group
-  spot: INode
+  node: INode
 
   constructor() {
     super('Fight')
@@ -31,10 +31,13 @@ export class Fight extends Scene {
       runChildUpdate: true,
     })
 
-    this.spot = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
+    this.node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
-    if (this.spot.enemies) {
-      this.spawnEnemies(this.spot.enemies.min, this.spot.enemies.max)
+    if (this.node.enemies) {
+      this.spawnEnemies(this.node.enemies.min, this.node.enemies.max)
+    }
+    if (this.node.cellMapFrame) {
+      this.background.setFrame(this.node.cellMapFrame)
     }
 
     this.input.on('pointerdown', () => this.player.swing())
@@ -54,7 +57,12 @@ export class Fight extends Scene {
 
   spawnEnemies(min: number, max: number) {
     const amount = Phaser.Math.RND.between(min, max)
-    for (let i = 0; i < amount; i++) this.enemies.get()?.spawn()
+    for (let i = 0; i < amount; i++) {
+      const enemy = this.enemies.get() as Enemy
+      enemy.spawn(
+        Phaser.Math.RND.weightedPick(this.node.enemies?.pool ?? ['snake']),
+      )
+    }
   }
 
   spawnGold(x: number, y: number) {
@@ -64,7 +72,7 @@ export class Fight extends Scene {
   checkIfFinished() {
     if (this.enemies.children.entries.every((c) => !c.active)) {
       const cleared = registry.values.clearedNodes ?? []
-      const uniq = Array.from(new Set([...cleared, this.spot.id]))
+      const uniq = Array.from(new Set([...cleared, this.node.id]))
       registry.set('clearedNodes', uniq)
       // this.time.delayedCall(1000, this.backToMap.bind(this))
     }

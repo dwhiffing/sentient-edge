@@ -45,5 +45,8 @@ export class Hud extends Scene {
 
     this.bottomText.setVisible(registry.values.activeZoom !== -1)
     this.bottomBar.setVisible(registry.values.activeZoom !== -1)
+
+    this.topText.setVisible(registry.values.activeZoom !== -1)
+    this.topBar.setVisible(registry.values.activeZoom !== -1)
   }
 }

@@ -1,15 +1,17 @@
 import { Fight } from '../scenes/Fight'
+import { ENEMIES } from '../utils/constants'
 import { registry } from '../utils/registry'
 import { shoot } from '../utils/shoot'
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   health: number
+  color: number
   shootRate: number
   justHit: boolean
   declare scene: Fight
 
   constructor(scene: Fight, x: number, y: number) {
-    super(scene, x, y, 'spritesheet', 25)
+    super(scene, x, y, 'spritesheet', 0)
 
     let flop = 0
     this.scene.add.existing(this)
@@ -23,12 +25,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       },
     })
 
-    // this.setTint(0x11cc11)
-
     this.setSize(16, 16)
-
-    this.health = 0
-    this.shootRate = 0
     this.justHit = false
 
     if (this.shootRate > 0) {
@@ -48,12 +45,18 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     shoot(this.scene.bullets, this, target, count, spread)
   }
 
-  spawn() {
+  spawn(key: string) {
+    const stats = ENEMIES.find((e) => e.key === key)!
     const x = Phaser.Math.Between(20, this.scene.cameras.main.width - 20)
     const y = Phaser.Math.Between(20, this.scene.cameras.main.width - 20)
     this.setPosition(x, y)
 
-    this.health = 2
+    this.health = Phaser.Math.RND.between(stats.health[0], stats.health[1])
+    this.shootRate = stats.shootRate
+    this.setFrame(stats.frame)
+    this.color = stats.color
+    this.setTint(this.color)
+    // this.speed = stats.speed
   }
 
   damage = async (amount = 0) => {
@@ -69,9 +72,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.setPosition(-20, -20)
     } else {
       this.setTintFill(0xff0000)
-      await this.delay(250)
-      this.clearTint()
-      await this.delay(50)
+      await this.delay(150)
+      this.setTint(this.color)
+      await this.delay(150)
       this.justHit = false
     }
   }

@@ -56,10 +56,15 @@ export class WorldMap extends Scene {
     CELL_ORDER.forEach((cellIndex, index) => {
       if (cellIndex === 6) return this.removeCover(cellIndex)
 
-      const bossNodes = MAP_DATA.filter((d) => d.type === 'fight-boss')
-      const prevCellBossId =
-        bossNodes.find((d) => d.cellIndex === CELL_ORDER[index - 1])?.id ?? ''
-      if (registry.values.clearedNodes?.includes(prevCellBossId)) {
+      const prevCellNodes = MAP_DATA.filter(
+        (d) =>
+          d.cellIndex === CELL_ORDER[index - 1] && d.type.includes('fight'),
+      )
+      if (
+        prevCellNodes.every((node) =>
+          registry.values.clearedNodes?.includes(node.id),
+        )
+      ) {
         this.removeCover(cellIndex)
       }
     })

@@ -38,7 +38,7 @@ export class CellMap extends Scene {
   update() {
     this.player.update()
 
-    if (this.player.isNearEdge() && this.player.hasKilledABoss()) {
+    if (this.player.isNearEdge()) {
       this.unzoom()
     }
 

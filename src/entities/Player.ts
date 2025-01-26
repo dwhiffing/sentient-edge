@@ -154,11 +154,6 @@ export class Player {
     this.sprite.y < 20 ||
     this.sprite.y > this.scene.cameras.main.height - 10
 
-  hasKilledABoss = () =>
-    MAP_DATA.filter((d) => d.type === 'fight-boss').some((d) =>
-      (registry.values.clearedNodes ?? []).includes(d.id),
-    )
-
   delay = (delay: number) =>
     new Promise((resolve) => {
       this.scene.time.delayedCall(delay, resolve)
