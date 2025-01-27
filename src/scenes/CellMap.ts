@@ -50,7 +50,7 @@ export class CellMap extends Scene {
     }
 
     const nearSpotName = this.getNearestNode()?.getData('name') ?? ''
-    if (nearSpotName && nearSpotName !== registry.values.hudText)
+    if (nearSpotName !== registry.values.hudText)
       registry.set('hudText', nearSpotName)
   }
 
@@ -60,7 +60,13 @@ export class CellMap extends Scene {
 
     MAP_DATA.filter((d) => d.cellIndex === zoomIndex).forEach((d) => {
       const spot = this.nodes.get(d.x * width, d.y * height)
-      const frame = NODE_FRAMES[d.type]
+      let frame = NODE_FRAMES[d.type]
+      if (
+        d.type.includes('fight') &&
+        registry.values.clearedNodes.includes(d.id)
+      ) {
+        frame = 59
+      }
 
       spot
         .setFrame(frame)
@@ -99,7 +105,7 @@ export class CellMap extends Scene {
       const spot = _s as Phaser.GameObjects.Sprite
 
       const dist = Phaser.Math.Distance.BetweenPoints(spot, this.player.sprite)
-      if (dist > 15) return false
+      if (dist > 20) return false
 
       if (spot.getData('type') === 'fight-boss') {
         return this.getClearedAllCellFightNodes()
