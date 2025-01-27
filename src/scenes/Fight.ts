@@ -27,7 +27,7 @@ export class Fight extends Scene {
 
     this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })
-    this.player = new Player(this, { sword: true })
+    this.player = new Player(this)
     this.bullets = this.add.group({
       classType: Bullet,
       maxSize: 100,

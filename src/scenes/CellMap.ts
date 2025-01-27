@@ -30,7 +30,6 @@ export class CellMap extends Scene {
     this.player = new Player(this, {
       x: node ? node.x * w : undefined,
       y: node ? node.y * w : undefined,
-      sword: true,
     })
     registry.set('health', this.player.stats.healthMax)
     registry.set('activeNode', 0)

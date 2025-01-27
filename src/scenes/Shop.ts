@@ -31,8 +31,9 @@ export class Shop extends Scene {
 
     this.node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
-    this.items = (this.node.items ?? []).map((key, i) =>
-      this.createItem(key, i),
+    const nodeItems = this.node.items ?? []
+    this.items = nodeItems.map((key, i) =>
+      this.createItem(key, i, nodeItems.length),
     )
 
     this.input.on('pointerdown', () => {
@@ -59,11 +60,16 @@ export class Shop extends Scene {
     }
   }
 
-  createItem = (key: string, index: number) => {
+  createItem = (key: string, index: number, itemCount: number) => {
     const _item = ITEMS.find((i) => i.key === key)!
 
     const { width, height } = this.cameras.main
-    const xo = index === 0 ? -50 : index === 1 ? 0 : 50
+    let xo = 0
+    if (itemCount === 2) {
+      xo = index === 0 ? -25 : 25
+    } else if (itemCount === 3) {
+      xo = index === 0 ? -50 : index === 1 ? 0 : 50
+    }
 
     return this.physics.add
       .sprite(width / 2 + xo, height / 2 + 10, 'spritesheet', _item.frame)
@@ -87,7 +93,9 @@ export class Shop extends Scene {
     // TODO: check if player is at max effect and disable if so
     const level = registry.values.upgrades[key as IUpgradeKeys]
     const cost = _item.effects[level]?.cost
-    if (currentGold >= cost) {
+    if (level >= _item.effects.length) {
+      this.shopkeepTalk("You've already maxed it out")
+    } else if (currentGold >= cost) {
       registry.set('gold', currentGold - cost)
       const currentUpgrade = registry.values.upgrades
       registry.set('upgrades', {
@@ -115,8 +123,13 @@ export class Shop extends Scene {
     const itemData = ITEMS.find((i) => i.key === this.activeItemKey)!
     const level = registry.values.upgrades[this.activeItemKey]
     const cost = itemData.effects[level]?.cost
-    if (registry.values.hudText === '')
-      this.shopkeepTalk(itemData.text.replace('{cost}', `${cost}`))
+    if (registry.values.hudText === '') {
+      if (level < itemData.effects.length) {
+        this.shopkeepTalk(itemData.text.replace('{cost}', `${cost}`))
+      } else {
+        this.shopkeepTalk("You've already maxed it out")
+      }
+    }
   }
 
   backToMap() {

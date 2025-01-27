@@ -8,7 +8,6 @@ type IPlayerParams = {
   y?: number
   scale?: number
   speedMultiplier?: number
-  sword?: boolean
 }
 
 const SWORD_OFFSET_X = 10
@@ -71,11 +70,7 @@ export class Player {
     this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 41)
     this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
     this.swordBody.setSize(12, 6)
-    this.sword
-      .setScale(scale)
-      .setOrigin(0.5, 0.7)
-      .setVisible(!!params.sword)
-      .setDepth(2)
+    this.sword.setScale(scale).setOrigin(0.5, 0.7).setDepth(2)
   }
 
   update() {
