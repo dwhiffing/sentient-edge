@@ -1,54 +1,36 @@
 # tasks
 
-add gold drop range to enemy stats, change gold amount based on enemy strength, use different sprite based on value
-add stats for different types of shooting enemies
-add different enemy movement types, assign to different enemies (move in a circle, charge left and right, stomp on player)
-add enemy variants with different color and higher stats
+# add special movement types: (should blink before hand to indicate its coming)
 
+- move in a circle
+- move from the left to the right side of the screen (sin wave)
+- charge toward player every once in awhile
+
+fight: implement weapon size
+
+# work on progression
+
+distribute upgrades across shops better
+tweak enemy stats
+tweak upgrade stats
+
+# finalize scenes
+
+fight: add homing bullets, dies after homing for long enough
 cycle through player sprites on death, drop sword on death
-implement weapon size
-
-position nodes closer to path
-
-add health bars
-when node is cleared, should display flag
-when node is first hovered, should be discovered
-show next level effect in shop text
-handle no more levels to purchase in shop
-
-add homing bullets, dies after homing for long enough
-
-distribute upgrades across shops
-center upgrades if only 1/2
-
-should show boss as soon as others are cleared
-return to map from node you left
-
-add rare enemies that have double health but drop triple gold
-
 add scene where new player picks you up if you make it out of the fight
 add game over scene
 add win scene when you beat the final boss
+
+improve stats scene
+cellmap: position nodes closer to path
+
 add credits/help scene
 add reset save option to menu
 mobile controls
+cellmap: when node is first hovered, should be discovered?
 
-# biome types
-
-desert: 3 cells, 2+2+4=8 nodes, 3 shops
-forest: 3 cells, 3+3+4=10 nodes, 3 shops
-mountain: 2 cells, 3+4=7 nodes, 2 shops
-castle: 1 cell, 5 nodes, 1 shop
-total of 30 nodes, 9 shops
-
-# enemy biomes
-
-desert: bug, snake, boss: anubis
-forest: spiders, snails boss: forest knight
-mountain: angel, medusa head thing boss: golem
-castle: skeleton, zombie boss: death
-
-# come up with enemy types
+# enemy types
 
 different movement patterns
 enemies that shoot
@@ -57,37 +39,28 @@ fast/weak enemies
 rare enemies (worth 10x gold)
 boss enemies
 
-# come up with player upgrades
+# enemy movement
 
-# stats
+bee: fly around randomly near spawn point
+snake: dash around randomly
+anubis: dash toward player, then wait in place for awhile
 
-## defense:
+spider: dash around randomly and shoot bullets
+snail: move around slowly but very tanky
+knight: dash toward player
 
-- max health
-- melee defense
-- ranged defense
+roller: move in sin wave across screen
+ogre: move around slowly, tanky and shoots bullets
+golem: move slowly, shoot bullets
 
-## offense
+zombie: move around randomly, then dash toward player
+skeleton: dash around randomly and shoot bullets
+death: complex movement with lots of bullets
 
-- player attack speed multiplier
-- sword base attack speed
-- player melee damage multiplier
-- sword base damage
+# player upgrades
+
 - sword size
-- player bullet damage
-- player bullet count
-- player bullet size
-- player bullet speed
-- player homing bullets
-
-## utility
-
-- player speed multiplier
-- sword base speed
-- player earn rate multiplier
-- sword base gold earn rate
-
-put different upgrades in shops
+- homing bullets
 
 # finish art
 

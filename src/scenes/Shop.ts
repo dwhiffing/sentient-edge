@@ -122,10 +122,17 @@ export class Shop extends Scene {
     this.activeItemKey = item.getData('key') as IUpgradeKeys
     const itemData = ITEMS.find((i) => i.key === this.activeItemKey)!
     const level = registry.values.upgrades[this.activeItemKey]
-    const cost = itemData.effects[level]?.cost
+    const effect = itemData.effects[level]
+    const cost = effect?.cost
+    // TODO: display all effects if there is more than 1
+    const change = effect.effects[0].change
     if (registry.values.hudText === '') {
       if (level < itemData.effects.length) {
-        this.shopkeepTalk(itemData.text.replace('{cost}', `${cost}`))
+        this.shopkeepTalk(
+          itemData.text
+            .replace('{cost}', `${cost}`)
+            .replace('{change}', `${change}`),
+        )
       } else {
         this.shopkeepTalk("You've already maxed it out")
       }
