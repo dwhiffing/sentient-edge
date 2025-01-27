@@ -7,6 +7,7 @@ const flopRate = 300
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   health: number
+  maxHealth: number
   color: number
   currentAngle: number
   _flop: number
@@ -129,10 +130,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setPosition(x, y)
     this.setCollideWorldBounds(true)
 
-    this.health = Phaser.Math.RND.between(
+    this.maxHealth = Phaser.Math.RND.between(
       this.stats.health[0],
       this.stats.health[1],
     )
+    this.health = this.maxHealth
 
     const w = this.scene.cameras.main.width
 
@@ -188,6 +190,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.justHit = true
     this.health -= amount
     registry.set('enemyHealth', this.health)
+    registry.set('enemyName', this.stats.label)
+    registry.set('enemyMaxHealth', this.maxHealth)
+
+    this.scene.enemyNameDebounceEvent?.destroy()
+    this.scene.enemyNameDebounceEvent = this.scene.time.delayedCall(2000, () =>
+      registry.set('enemyName', ''),
+    )
 
     if (this.health <= 0) {
       this.die()

@@ -20,6 +20,7 @@ type IShootConfig = {
 type IEnemyStats = IMoveConfig &
   IShootConfig & {
     key: string
+    label: string
     frame: number
     shootRate: number
     meleeDamage: number[]

@@ -14,6 +14,8 @@ export class Fight extends Scene {
   gold: Phaser.GameObjects.Group
   node: INode
   canAttack: boolean
+  enemyNameDebounceEvent: Phaser.Time.TimerEvent
+  lastGoldAmountDebounceEvent: Phaser.Time.TimerEvent
 
   constructor() {
     super('Fight')
@@ -105,6 +107,7 @@ export class Fight extends Scene {
   backToMap() {
     this.scene.start('WorldMap')
     registry.set('activeNode', '')
+    registry.set('enemyName', '')
   }
 
   hitEnemyBullet = (_enemy: unknown, _bullet: unknown) => {
@@ -139,6 +142,11 @@ export class Fight extends Scene {
   hitPlayerGold = (_player: unknown, _gold: unknown) => {
     const gold = _gold as Gold
     gold.pickup()
+    registry.set('lastGold', gold.amount)
+    this.lastGoldAmountDebounceEvent?.destroy()
+    this.lastGoldAmountDebounceEvent = this.time.delayedCall(1500, () => {
+      registry.set('lastGold', 0)
+    })
   }
 
   hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {

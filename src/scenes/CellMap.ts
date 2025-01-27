@@ -50,7 +50,8 @@ export class CellMap extends Scene {
     }
 
     const nearSpotName = this.getNearestNode()?.getData('name') ?? ''
-    registry.set('hudText', nearSpotName)
+    if (nearSpotName && nearSpotName !== registry.values.hudText)
+      registry.set('hudText', nearSpotName)
   }
 
   updateNodes() {

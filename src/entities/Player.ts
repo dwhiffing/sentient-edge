@@ -51,11 +51,11 @@ export class Player {
       this.shouldMove = false
     })
     this.scene.game.events.on('focus', () => {
-      this.shouldMove = true
+      if (this.sprite.active) this.shouldMove = true
     })
 
     this.scene.input.on('pointermove', () => {
-      if (document.hasFocus()) this.shouldMove = true
+      if (document.hasFocus() && this.sprite.active) this.shouldMove = true
     })
 
     this.sprite = this.scene.physics.add.sprite(x, y, 'spritesheet', 0)
@@ -202,6 +202,8 @@ export class Player {
 
   die = async () => {
     this.sprite.setActive(false).setVisible(false)
+    this.shouldMove = false
+    this.stop()
     // this.sword.setActive(false).setVisible(false)
     this.scene.add
       .sprite(this.sprite.x, this.sprite.y, 'spritesheet', 7)

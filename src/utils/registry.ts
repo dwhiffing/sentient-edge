@@ -80,6 +80,9 @@ type IState = {
   activeZoom: number
   activeNode: string
   enemyHealth: number
+  lastGold: number
+  enemyName: string
+  enemyMaxHealth: number
   health: number
   gold: number
   hudText: string
@@ -95,8 +98,11 @@ const initialSave: IState = {
   activeZoom: 6,
   activeNode: '',
   enemyHealth: -1,
+  enemyName: '',
+  enemyMaxHealth: -1,
   health: 10,
   gold: 0,
+  lastGold: 0,
   hudText: '',
   unlockedNodes: ['desert-5'],
   clearedNodes: [],
