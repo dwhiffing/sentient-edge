@@ -33,7 +33,13 @@ export class CellMap extends Scene {
     this.player = new Player(this, { sword: true })
     registry.set('health', this.player.stats.healthMax)
 
-    this.input.on('pointerdown', this.enterNearbyNode)
+    this.input.on(
+      'pointerdown',
+      (_pointer: Phaser.Input.Pointer, targets: any[]) => {
+        if (this.scene.isActive('Stats')) return
+        if (targets.length === 0) this.enterNearbyNode()
+      },
+    )
   }
 
   update() {

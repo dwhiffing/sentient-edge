@@ -5,6 +5,7 @@ import { WorldMap } from './scenes/WorldMap'
 import { CellMap } from './scenes/CellMap'
 import { Menu } from './scenes/Menu'
 import { Hud } from './scenes/Hud'
+import { Stats } from './scenes/Stats'
 
 import { Game, Types } from 'phaser'
 
@@ -24,7 +25,7 @@ const config: Types.Core.GameConfig = {
     },
   },
   pixelArt: true,
-  scene: [Boot, Menu, Fight, Shop, WorldMap, CellMap, Hud],
+  scene: [Boot, Menu, Fight, Shop, WorldMap, CellMap, Hud, Stats],
 }
 
 const game = new Game(config)

@@ -13,6 +13,7 @@ export class Fight extends Scene {
   bullets: Phaser.GameObjects.Group
   gold: Phaser.GameObjects.Group
   node: INode
+  canAttack: boolean
 
   constructor() {
     super('Fight')
@@ -39,6 +40,11 @@ export class Fight extends Scene {
     if (this.node.cellMapFrame) {
       this.background.setFrame(this.node.cellMapFrame)
     }
+
+    this.canAttack = false
+    this.time.delayedCall(300, () => {
+      this.canAttack = true
+    })
   }
 
   update() {
@@ -52,7 +58,7 @@ export class Fight extends Scene {
     this.physics.overlap(this.player.sprite, this.bullets, this.hitPlayerBullet)
     this.physics.overlap(this.enemies, this.player.bullets, this.hitEnemyBullet)
 
-    if (this.input.activePointer.isDown) this.player.swing()
+    if (this.input.activePointer.isDown && this.canAttack) this.player.swing()
   }
 
   spawnEnemies() {
@@ -98,6 +104,7 @@ export class Fight extends Scene {
 
   backToMap() {
     this.scene.start('WorldMap')
+    registry.set('activeNode', '')
   }
 
   hitEnemyBullet = (_enemy: unknown, _bullet: unknown) => {

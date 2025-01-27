@@ -25,7 +25,7 @@ export class Player {
   health: number
   speedMultiplier: number
   justHit: boolean
-  isPointerOut: boolean
+  shouldMove: boolean
 
   constructor(scene: Phaser.Scene, params: IPlayerParams = {}) {
     this.scene = scene
@@ -37,8 +37,8 @@ export class Player {
 
     this.health = registry.values.health
     this.justHit = false
-    this.attackReady = false
-    this.scene.time.delayedCall(100, () => (this.attackReady = true))
+    this.attackReady = true
+    this.shouldMove = false
 
     this.bullets = this.scene.add.group({
       classType: Bullet,
@@ -46,12 +46,16 @@ export class Player {
       runChildUpdate: true,
     })
 
-    this.isPointerOut = !this.scene.game.hasFocus
-    this.scene.game.events.on(Phaser.Core.Events.BLUR, () => {
-      this.isPointerOut = true
+    this.shouldMove = false
+    this.scene.game.events.on('blur', () => {
+      this.shouldMove = false
     })
-    this.scene.game.events.on(Phaser.Core.Events.FOCUS, () => {
-      this.isPointerOut = false
+    this.scene.game.events.on('focus', () => {
+      this.shouldMove = true
+    })
+
+    this.scene.input.on('pointermove', () => {
+      if (document.hasFocus()) this.shouldMove = true
     })
 
     this.sprite = this.scene.physics.add.sprite(x, y, 'spritesheet', 0)
@@ -100,7 +104,7 @@ export class Player {
     let sx = s.x + so * (this.sword.flipX ? -1 : 1)
     this.sword.setPosition(sx, sy)
 
-    if (this.isPointerOut) {
+    if (!this.shouldMove || this.scene.scene.isActive('Stats')) {
       this.stop()
       return
     }
