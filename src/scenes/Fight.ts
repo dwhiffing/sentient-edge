@@ -106,7 +106,6 @@ export class Fight extends Scene {
 
   backToMap() {
     this.scene.start('WorldMap')
-    registry.set('activeNode', '')
     registry.set('enemyName', '')
   }
 

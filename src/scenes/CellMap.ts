@@ -12,15 +12,6 @@ export class CellMap extends Scene {
     super('CellMap')
   }
 
-  init() {
-    if (this.player) {
-      registry.set('health', this.player.stats.healthMax)
-      registry.set('lastGold', 0)
-      registry.set('enemyName', 0)
-      registry.set('activeNode', 0)
-    }
-  }
-
   create() {
     const zoomIndex = registry.values.activeZoom
     const w = this.cameras.main.width
@@ -35,8 +26,14 @@ export class CellMap extends Scene {
     this.nodes = this.add.group({ defaultKey: 'spritesheet' })
     this.updateNodes()
 
-    this.player = new Player(this, { sword: true })
+    const node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
+    this.player = new Player(this, {
+      x: node ? node.x * w : undefined,
+      y: node ? node.y * w : undefined,
+      sword: true,
+    })
     registry.set('health', this.player.stats.healthMax)
+    registry.set('activeNode', 0)
 
     this.input.on(
       'pointerdown',
