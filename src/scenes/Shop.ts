@@ -64,6 +64,7 @@ export class Shop extends Scene {
 
     const { width, height } = this.cameras.main
     const xo = index === 0 ? -50 : index === 1 ? 0 : 50
+
     return this.physics.add
       .sprite(width / 2 + xo, height / 2 + 10, 'spritesheet', _item.frame)
       .setOrigin(0.5, 0.5)

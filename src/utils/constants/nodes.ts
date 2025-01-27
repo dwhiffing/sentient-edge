@@ -44,9 +44,9 @@ const LEVEL_1: INode[] = [
     y: 0.5,
     enemies: [
       { key: 'bug', chance: 1, min: 1, max: 2 },
-      { key: 'bug', chance: 0.5, min: 1, max: 1 },
-      { key: 'bug-rare', chance: 0.5, min: 1, max: 1 },
-      { key: 'snake', chance: 0.5, min: 1, max: 2 },
+      // { key: 'bug', chance: 0.5, min: 1, max: 1 },
+      // { key: 'bug-rare', chance: 0.5, min: 1, max: 1 },
+      // { key: 'snake', chance: 0.5, min: 1, max: 2 },
     ],
   },
   {

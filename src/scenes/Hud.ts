@@ -77,6 +77,12 @@ export class Hud extends Scene {
     } else {
       this.statsButton.show()
     }
+
+    if (registry.values.activeZoom === -1) {
+      this.playerHealthBar.hide()
+    } else {
+      this.playerHealthBar.show()
+    }
     this.topText.setText(registry.values.hudText)
 
     this.topBar.setDisplaySize(

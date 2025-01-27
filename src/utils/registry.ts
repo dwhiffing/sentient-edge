@@ -8,7 +8,6 @@ export class Registry {
   init = (game: Phaser.Game) => {
     this.game = game
     this.loadSave()
-    this.set('activeNode', '')
   }
 
   loadSave = () => {
@@ -16,7 +15,7 @@ export class Registry {
     if (saveDataString) {
       this.setRegistryObject(JSON.parse(saveDataString))
     } else {
-      this.initSaveFinished()
+      this.initSave()
     }
   }
 

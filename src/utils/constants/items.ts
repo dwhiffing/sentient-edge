@@ -124,7 +124,7 @@ export const ITEMS: IPurchasable[] = [
     ],
   },
   {
-    key: 'damageRangedMulti',
+    key: 'damageRangeMulti',
     type: 'random',
     frame: 52,
     temporary: true,

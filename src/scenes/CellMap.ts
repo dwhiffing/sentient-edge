@@ -13,7 +13,12 @@ export class CellMap extends Scene {
   }
 
   init() {
-    if (this.player) registry.set('health', this.player.stats.healthMax)
+    if (this.player) {
+      registry.set('health', this.player.stats.healthMax)
+      registry.set('lastGold', 0)
+      registry.set('enemyName', 0)
+      registry.set('activeNode', 0)
+    }
   }
 
   create() {
@@ -45,7 +50,7 @@ export class CellMap extends Scene {
   update() {
     this.player.update()
 
-    if (this.player.isNearEdge()) {
+    if (this.player.isNearEdge() && this.getHasClearedFirstCell()) {
       this.unzoom()
     }
 
@@ -68,12 +73,18 @@ export class CellMap extends Scene {
         frame = 59
       }
 
+      let visible =
+        d.type === 'shop' || registry.values.unlockedNodes?.includes(d.id)
+      if (d.type === 'fight-boss') {
+        visible = this.getClearedAllCellFightNodes()
+      }
+
       spot
         .setFrame(frame)
         .setData('name', d.name)
         .setData('type', d.type)
         .setData('id', d.id)
-        .setVisible(registry.values.unlockedNodes?.includes(d.id))
+        .setVisible(visible)
     })
   }
 
@@ -117,6 +128,12 @@ export class CellMap extends Scene {
   getClearedAllCellFightNodes = () =>
     this.getCellFightNodes().every((n) =>
       (registry.values.clearedNodes ?? []).includes(n.id),
+    )
+
+  getHasClearedFirstCell = () =>
+    registry.values.activeZoom !== 6 ||
+    MAP_DATA.filter((d) => d.cellIndex === 6 && d.type.includes('fight')).every(
+      (n) => (registry.values.clearedNodes ?? []).includes(n.id),
     )
 
   getCellFightNodes = () =>
