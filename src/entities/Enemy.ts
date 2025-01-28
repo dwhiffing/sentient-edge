@@ -32,6 +32,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setSize(16, 16)
     this.justHit = false
     this.setOrigin(0.5, 0.5)
+    this.setDepth(3)
     this.spriteBody = this.body as Phaser.Physics.Arcade.Body
     this.currentAngle = 0
     this._flop = 0

@@ -33,6 +33,8 @@ export class CellMap extends Scene {
     })
     registry.set('health', this.player.stats.healthMax)
     registry.set('activeNode', 0)
+    registry.set('enemyName', '')
+    registry.set('lastGold', 0)
 
     if (registry.values.showClearedArrow) {
       registry.set('showClearedArrow', false)

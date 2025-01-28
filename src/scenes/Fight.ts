@@ -117,6 +117,7 @@ export class Fight extends Scene {
   backToMap() {
     this.scene.start('WorldMap')
     registry.set('enemyName', '')
+    registry.set('lastGold', 0)
   }
 
   hitEnemyBullet = (_enemy: unknown, _bullet: unknown) => {
@@ -159,7 +160,7 @@ export class Fight extends Scene {
   }
 
   hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {
-    if (this.player.sword.angle === 0) return
+    if (this.player.sword.angle === 0 && this.player.sprite.active) return
 
     const enemy = _enemy as Enemy
     if (!enemy.active) return

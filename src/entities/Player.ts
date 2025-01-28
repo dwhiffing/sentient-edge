@@ -237,6 +237,12 @@ export class Player {
     this.scene.add
       .sprite(this.sprite.x, this.sprite.y, 'spritesheet', 7)
       .setOrigin(0.5, 1)
+
+    this.sword
+      .setAngle(90)
+      .setFrame(this.swordConfig.frame - 1)
+      .setPosition(this.sprite.x + 20, this.sprite.y - 4)
+
     registry.set('gold', 0)
     const up = registry.values.upgrades
     ITEMS.filter((i) => i.temporary).forEach((item) => {
