@@ -52,8 +52,7 @@ export type IPlayerStats = {
   healthMax: number
   defenseMelee: number
   defenseRanged: number
-  damageMeleeMulti: number
-  damageRangeMulti: number
+  damageMulti: number
   rangeCount: number
   // yerRangeSpeed
   // yerRangeHoming
@@ -67,7 +66,6 @@ export type ISwordStats = {
   damageMeleeFreq: number
   durationMeleeBase: number
   damageRangeBase: number
-  earnRateBase: number
   speedMeleeBase: number
   sizeBase: number
 }
@@ -109,8 +107,7 @@ const initialSave: IState = {
     healthMax: 0,
     defenseMelee: 0,
     defenseRanged: 0,
-    damageMeleeMulti: 0,
-    damageRangeMulti: 0,
+    damageMulti: 0,
     rangeCount: 0,
     speedMoveMulti: 0,
     earnRateMulti: 0,
@@ -119,7 +116,6 @@ const initialSave: IState = {
     damageRangeBase: 0,
     damageMeleeFreq: 0,
     durationMeleeBase: 0,
-    earnRateBase: 0,
     speedMeleeBase: 0,
     sizeBase: 0,
     // rangeSpeed:0,
@@ -136,8 +132,7 @@ const finishedSave: IState = {
     healthMax: 9,
     defenseMelee: 9,
     defenseRanged: 9,
-    damageMeleeMulti: 9,
-    damageRangeMulti: 9,
+    damageMulti: 9,
     rangeCount: 9,
     speedMoveMulti: 9,
     earnRateMulti: 9,
@@ -146,7 +141,6 @@ const finishedSave: IState = {
     damageMeleeFreq: 3,
     durationMeleeBase: 3,
     damageRangeBase: 9,
-    earnRateBase: 9,
     speedMeleeBase: 9,
     sizeBase: 9,
     // rangeSpeed:0,

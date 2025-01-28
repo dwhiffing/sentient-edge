@@ -256,12 +256,10 @@ const baseStats: Record<IUpgradeKeys, number> = {
   damageMeleeBase: 1,
   damageMeleeFreq: 250,
   durationMeleeBase: 250,
-  damageMeleeMulti: 1,
 
   damageRangeBase: 1,
-  damageRangeMulti: 1,
+  damageMulti: 1,
 
-  earnRateBase: 0,
   earnRateMulti: 1,
 
   speedMeleeBase: 1200,

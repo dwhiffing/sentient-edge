@@ -28,8 +28,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'speedMoveMulti',
-    type: 'random',
-    frame: 52,
+    type: 'wing',
+    frame: 70,
     temporary: true,
     text: 'That costs {cost} gold.  It will\nchange your speed\nby {change}.',
     effects: [
@@ -40,8 +40,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'damageMeleeBase',
-    type: 'random',
-    frame: 52,
+    type: 'glove',
+    frame: 71,
     temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your melee strength\nby {change}.',
     effects: [
@@ -52,8 +52,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'damageMeleeFreq',
-    type: 'random',
-    frame: 52,
+    type: 'lightning',
+    frame: 54,
     temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your melee frequency\nby {change}.',
     effects: [
@@ -64,8 +64,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'durationMeleeBase',
-    type: 'random',
-    frame: 52,
+    type: 'hourglass',
+    frame: 64,
     temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your melee duration\nby {change}.',
     effects: [
@@ -75,22 +75,21 @@ export const ITEMS: IPurchasable[] = [
     ],
   },
   {
-    key: 'damageMeleeMulti',
-    type: 'ring',
-    frame: 53,
+    key: 'damageMulti',
+    type: 'glove',
+    frame: 71,
     temporary: true,
     text: 'That costs {cost} gold.  It will\nchange your strength\nby {change}.',
     effects: [
-      { cost: 20, effects: [{ statKey: 'damageMeleeMulti', change: 0.2 }] },
-      { cost: 30, effects: [{ statKey: 'damageMeleeMulti', change: 0.3 }] },
-      { cost: 40, effects: [{ statKey: 'damageMeleeMulti', change: 0.4 }] },
+      { cost: 20, effects: [{ statKey: 'damageMulti', change: 0.2 }] },
+      { cost: 30, effects: [{ statKey: 'damageMulti', change: 0.3 }] },
+      { cost: 40, effects: [{ statKey: 'damageMulti', change: 0.4 }] },
     ],
   },
-
   {
     key: 'defenseMelee',
-    type: 'random',
-    frame: 52,
+    type: 'shield-round',
+    frame: 65,
     temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your melee defense\nby {change}.',
     effects: [
@@ -100,9 +99,10 @@ export const ITEMS: IPurchasable[] = [
     ],
   },
   {
+    // face + kite shield
     key: 'defenseRanged',
-    type: 'random',
-    frame: 52,
+    type: 'shield-kite',
+    frame: 66,
     temporary: true,
     text: 'That costs {cost} gold.  It will\nchange your ranged defense\nby {change}.',
     effects: [
@@ -113,8 +113,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'damageRangeBase',
-    type: 'random',
-    frame: 52,
+    type: 'bow',
+    frame: 67,
     temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your ranged strength\nby {change}.',
     effects: [
@@ -124,22 +124,10 @@ export const ITEMS: IPurchasable[] = [
     ],
   },
   {
-    key: 'damageRangeMulti',
-    type: 'random',
-    frame: 52,
-    temporary: true,
-    text: 'That costs {cost} gold.  It will\nchange your ranged strength multi\nby {change}.',
-    effects: [
-      { cost: 10, effects: [{ statKey: 'damageRangeMulti', change: 0.1 }] },
-      { cost: 20, effects: [{ statKey: 'damageRangeMulti', change: 0.2 }] },
-      { cost: 30, effects: [{ statKey: 'damageRangeMulti', change: 0.3 }] },
-    ],
-  },
-  {
     key: 'rangeCount',
-    type: 'random',
-    frame: 52,
-    temporary: true,
+    type: 'fire',
+    frame: 68,
+    temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your range count\nby {change}.',
     effects: [
       { cost: 10, effects: [{ statKey: 'rangeCount', change: 1 }] },
@@ -148,21 +136,9 @@ export const ITEMS: IPurchasable[] = [
     ],
   },
   {
-    key: 'earnRateBase',
-    type: 'random',
-    frame: 52,
-    temporary: false,
-    text: 'That costs {cost} gold.  It will\nchange your earn rate\nby {change}.',
-    effects: [
-      { cost: 10, effects: [{ statKey: 'earnRateBase', change: 1 }] },
-      { cost: 20, effects: [{ statKey: 'earnRateBase', change: 1 }] },
-      { cost: 30, effects: [{ statKey: 'earnRateBase', change: 1 }] },
-    ],
-  },
-  {
     key: 'earnRateMulti',
-    type: 'random',
-    frame: 52,
+    type: 'bag',
+    frame: 69,
     temporary: true,
     text: 'That costs {cost} gold.  It will\nchange your earn rate multi\nby {change}.',
     effects: [
@@ -173,8 +149,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'speedMeleeBase',
-    type: 'random',
-    frame: 52,
+    type: 'lightning',
+    frame: 54,
     temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your attack speed\nby {change}.',
     effects: [
@@ -185,8 +161,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'speedMeleeMulti',
-    type: 'random',
-    frame: 52,
+    type: 'lightning',
+    frame: 54,
     temporary: true,
     text: 'That costs {cost} gold.  It will\nchange your attack speed multi\nby {change}.',
     effects: [
@@ -197,8 +173,8 @@ export const ITEMS: IPurchasable[] = [
   },
   {
     key: 'sizeBase',
-    type: 'random',
-    frame: 52,
+    type: 'up',
+    frame: 55,
     temporary: false,
     text: 'That costs {cost} gold.  It will\nchange your size\nby {change}.',
     effects: [

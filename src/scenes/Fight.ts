@@ -116,7 +116,7 @@ export class Fight extends Scene {
 
     bullet.takeDamage(1)
     enemy.takeDamage(
-      this.player.stats.damageRangeBase * this.player.stats.damageRangeMulti,
+      this.player.stats.damageRangeBase * this.player.stats.damageMulti,
     )
   }
 
@@ -154,7 +154,7 @@ export class Fight extends Scene {
     const enemy = _enemy as Enemy
     if (!enemy.active) return
     enemy.takeDamage(
-      this.player.stats.damageMeleeBase * this.player.stats.damageMeleeMulti,
+      this.player.stats.damageMeleeBase * this.player.stats.damageMulti,
       this.player.stats.damageMeleeFreq,
     )
     if (enemy.health <= 0) {

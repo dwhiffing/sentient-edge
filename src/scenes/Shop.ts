@@ -71,10 +71,26 @@ export class Shop extends Scene {
       xo = index === 0 ? -50 : index === 1 ? 0 : 50
     }
 
+    // player/sword icon
+    this.add.sprite(
+      width / 2 + xo - 8,
+      height / 2 + 10,
+      'spritesheet',
+      _item.temporary ? 53 : 40,
+    )
+    // upgrade icon
+    this.add.sprite(
+      width / 2 + xo + 8,
+      height / 2 + 10,
+      'spritesheet',
+      _item.frame,
+    )
+
     return this.physics.add
-      .sprite(width / 2 + xo, height / 2 + 10, 'spritesheet', _item.frame)
+      .sprite(width / 2 + xo, height / 2 + 10, 'spritesheet', 10)
+      .setVisible(false)
       .setOrigin(0.5, 0.5)
-      .setSize(20, 20)
+      .setSize(30, 20)
       .setData('key', key)
   }
 

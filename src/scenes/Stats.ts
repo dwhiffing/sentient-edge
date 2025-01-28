@@ -45,8 +45,7 @@ const statLabels = {
   healthMax: 'health max',
   defenseMelee: 'defense melee',
   defenseRanged: 'defense ranged',
-  damageMeleeMulti: 'damage melee multi',
-  damageRangeMulti: 'damage range multi',
+  damageMulti: 'damage multi',
   rangeCount: 'range count',
   speedMoveMulti: 'speed move multi',
   earnRateMulti: 'earn rate multi',
@@ -55,7 +54,6 @@ const statLabels = {
   damageMeleeFreq: 'damage melee freq',
   durationMeleeBase: 'duration melee base',
   damageRangeBase: 'damage range base',
-  earnRateBase: 'earn rate base',
   speedMeleeBase: 'speed melee base',
   sizeBase: 'sword size',
 }

@@ -31,7 +31,6 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
     registry.set(
       'gold',
       registry.values.gold +
-        this.amount * this.scene.player.stats.earnRateBase +
         this.amount * this.scene.player.stats.earnRateMulti,
     )
   }
