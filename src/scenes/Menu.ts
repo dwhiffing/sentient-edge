@@ -12,13 +12,7 @@ export class Menu extends Scene {
     const { width, height } = this.cameras.main
     const hasWon = registry.values.hasWon
     this.title = this.add
-      .bitmapText(
-        width / 2,
-        height / 2 - (hasWon ? 40 : 0),
-        'clarity',
-        'Sentient\nEdge',
-        16,
-      )
+      .bitmapText(width / 2, height / 2 - 40, 'clarity', 'Sentient\nEdge', 16)
       .setCenterAlign()
       .setOrigin(0.5)
 
