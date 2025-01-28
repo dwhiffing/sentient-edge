@@ -75,6 +75,9 @@ export type IUpgradeKeys = keyof ISwordStats | keyof IPlayerStats
 type IState = {
   lastZoom: number
   activeZoom: number
+  deathCount: number
+  timePlayed: number
+  hasWon: boolean
   activeNode: string
   enemyHealth: number
   lastGold: number
@@ -103,6 +106,9 @@ const initialSave: IState = {
   gold: 0,
   faceIndex: 0,
   lastGold: 0,
+  deathCount: 0,
+  timePlayed: 0,
+  hasWon: false,
   hudText: '',
   showClearedArrow: false,
   unlockedNodes: [],

@@ -43,6 +43,14 @@ export class Hud extends Scene {
 
     this.updateText()
     this.registry.events.on('changedata', this.updateText)
+
+    this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        registry.set('timePlayed', registry.values.timePlayed + 1)
+      },
+      repeat: -1,
+    })
   }
 
   updateText = () => {

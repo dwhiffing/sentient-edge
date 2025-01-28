@@ -195,7 +195,10 @@ export class Player {
       .setOrigin(this.sword.flipX ? 1 : 0, 0.5)
       .setSize(sx, sy)
 
-    this.head.setPosition(s.x, s.y - (this.sword.angle !== 0 ? 13 : 14))
+    this.head.setPosition(
+      s.x,
+      s.y - (this.sword.angle !== 0 ? 13 : 14) * s.scaleX,
+    )
     let frame = 8 + registry.values.faceIndex * 2
     if (this.sword.angle !== 0) frame += 1
     this.head.setFrame(frame)
@@ -244,6 +247,7 @@ export class Player {
       .setPosition(this.sprite.x + 20, this.sprite.y - 4)
 
     registry.set('gold', 0)
+    registry.set('deathCount', registry.values.deathCount + 1)
     const up = registry.values.upgrades
     ITEMS.filter((i) => i.temporary).forEach((item) => {
       up[item.key as IUpgradeKeys] = 0

@@ -25,7 +25,11 @@ export class Fight extends Scene {
     const { width, height } = this.cameras.main
     this.background = this.add.sprite(width / 2, height / 2, 'map', 1)
 
-    this.enemies = this.add.group({ classType: Enemy, maxSize: 100 })
+    this.enemies = this.add.group({
+      classType: Enemy,
+      maxSize: 100,
+      runChildUpdate: true,
+    })
     this.gold = this.add.group({ classType: Gold, maxSize: 100 })
     this.player = new Player(this)
     this.bullets = this.add.group({
@@ -111,6 +115,16 @@ export class Fight extends Scene {
       if (allCellNodes.every((d) => uniq.includes(d.id))) {
         registry.set('showClearedArrow', true)
       }
+
+      if (
+        MAP_DATA.filter((d) => d.type.includes('fight')).every((d) =>
+          uniq.includes(d.id),
+        )
+      ) {
+        registry.set('hasWon', true)
+        this.scene.stop('Hud')
+        this.scene.start('Menu')
+      }
     }
   }
 
@@ -129,6 +143,11 @@ export class Fight extends Scene {
     enemy.takeDamage(
       this.player.stats.damageRangeBase * this.player.stats.damageMulti,
     )
+
+    if (enemy.health <= 0) {
+      this.gold.get()?.spawn(enemy.x, enemy.y, enemy.gold)
+      this.checkIfFinished()
+    }
   }
 
   hitPlayerBullet = (_player: unknown, _bullet: unknown) => {
