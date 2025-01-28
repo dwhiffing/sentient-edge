@@ -96,11 +96,21 @@ export class Fight extends Scene {
   }
 
   checkIfFinished() {
+    if (registry.values.clearedNodes.includes(this.node.id)) return
+
     if (this.enemies.children.entries.every((c) => !c.active)) {
       const cleared = registry.values.clearedNodes ?? []
       const uniq = Array.from(new Set([...cleared, this.node.id]))
       registry.set('clearedNodes', uniq)
-      // this.time.delayedCall(1000, this.backToMap.bind(this))
+
+      const allCellNodes = MAP_DATA.filter(
+        (d) =>
+          d.cellIndex === registry.values.activeZoom &&
+          d.type.includes('fight'),
+      )
+      if (allCellNodes.every((d) => uniq.includes(d.id))) {
+        registry.set('showClearedArrow', true)
+      }
     }
   }
 

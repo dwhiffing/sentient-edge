@@ -37,7 +37,7 @@ export class Registry {
 
   set = (
     key: keyof IState,
-    value: string | number | string[] | Record<IUpgradeKeys, number>,
+    value: string | number | string[] | boolean | Record<IUpgradeKeys, number>,
   ) => {
     if (Array.isArray(value)) value = Array.from(new Set(value))
     this.game.registry.set(key, value)
@@ -78,6 +78,7 @@ type IState = {
   activeNode: string
   enemyHealth: number
   lastGold: number
+  showClearedArrow: boolean
   enemyName: string
   enemyMaxHealth: number
   health: number
@@ -101,7 +102,8 @@ const initialSave: IState = {
   gold: 0,
   lastGold: 0,
   hudText: '',
-  unlockedNodes: ['desert-5'],
+  showClearedArrow: false,
+  unlockedNodes: [],
   clearedNodes: [],
   upgrades: {
     healthMax: 0,

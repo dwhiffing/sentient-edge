@@ -34,6 +34,11 @@ export class CellMap extends Scene {
     registry.set('health', this.player.stats.healthMax)
     registry.set('activeNode', 0)
 
+    if (registry.values.showClearedArrow) {
+      registry.set('showClearedArrow', false)
+      this.showClearedArrow()
+    }
+
     this.input.on(
       'pointerdown',
       (_pointer: Phaser.Input.Pointer, targets: any[]) => {
@@ -136,4 +141,38 @@ export class CellMap extends Scene {
     MAP_DATA.filter(
       (d) => d.cellIndex === registry.values.activeZoom && d.type === 'fight',
     )
+
+  showClearedArrow() {
+    const w = this.cameras.main.width
+
+    const dir = registry.values.activeZoom as keyof typeof ARROW_DIRS
+    let angle = 270
+    let x = 10
+    let y = w / 2
+    if (dir === 0) {
+      x = w / 2
+      y = 20
+      angle = 0
+    } else if (dir === 1) {
+      x = w - 10
+      y = w / 2
+      angle = 90
+    } else if (dir === 2) {
+      angle = 180
+      x = w / 2
+      y = w - 20
+    }
+    const arrow = this.add
+      .sprite(x, y, 'spritesheet', 55)
+      .setAngle(angle)
+      .setOrigin(0.5, 0.5)
+
+    this.time.addEvent({
+      callback: () => arrow.setAlpha(arrow.alpha === 0.4 ? 1 : 0.4),
+      delay: 400,
+      repeat: -1,
+    })
+  }
 }
+
+const ARROW_DIRS = { 0: 1, 1: 1, 2: 0, 3: 0, 4: 3, 5: 3, 6: 1, 7: 1, 8: 0 }
