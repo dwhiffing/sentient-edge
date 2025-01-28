@@ -110,18 +110,20 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     await this.flash(this.stats.rangeStartDelay)
 
-    shoot(
-      this.scene,
-      this.scene.bullets,
-      this,
-      target,
-      this.stats.rangeCount,
-      this.stats.rangeSpread,
-      this.stats.rangeAccuracy,
-      this.stats.rangeCountDelay,
-      this.stats.rangeBulletSpeed,
-      this.stats.rangeBulletSize,
+    const damage = Phaser.Math.RND.between(
+      this.stats.rangeDamage[0],
+      this.stats.rangeDamage[1],
     )
+
+    shoot(this.scene, this.scene.bullets, this, target, {
+      damage,
+      count: this.stats.rangeCount,
+      spread: this.stats.rangeSpread,
+      accuracy: this.stats.rangeAccuracy,
+      delay: this.stats.rangeCountDelay,
+      speed: this.stats.rangeBulletSpeed,
+      size: this.stats.rangeBulletSize,
+    })
 
     this.forceStop = false
   }

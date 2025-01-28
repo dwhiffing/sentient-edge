@@ -153,7 +153,13 @@ export class Player {
       x: source.x + 50 * f,
       y: source.y,
     }
-    shoot(this.scene, this.bullets, source, target, count, spread)
+    const damage = this.stats.damageRangeBase * this.stats.damageMulti
+    shoot(this.scene, this.bullets, source, target, {
+      damage,
+      count,
+      spread,
+      speed: 120,
+    })
   }
 
   async swing() {

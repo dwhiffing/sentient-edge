@@ -154,11 +154,8 @@ export class Fight extends Scene {
     if (!this.player.sprite.active) return
 
     const bullet = _bullet as Bullet
+    this.player.takeDamage(bullet.damage, true)
     bullet.takeDamage(1)
-    //  TODO: take enemy range damage
-    // need to associated bullet with enemy
-    // player.takeDamage(enemy.rangeDamage,true)
-    this.player.takeDamage(1, true)
   }
 
   hitPlayerEnemy = (_player: unknown, _enemy: unknown) => {

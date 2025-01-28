@@ -99,7 +99,6 @@ export const ITEMS: IPurchasable[] = [
     ],
   },
   {
-    // face + kite shield
     key: 'defenseRanged',
     type: 'shield-kite',
     frame: 66,

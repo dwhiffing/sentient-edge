@@ -153,7 +153,5 @@ const finishedSave: IState = {
     damageRangeBase: 9,
     speedMeleeBase: 9,
     sizeBase: 9,
-    // rangeSpeed:0,
-    // rangeHoming:0,
   },
 }
