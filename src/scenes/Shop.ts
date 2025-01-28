@@ -71,12 +71,13 @@ export class Shop extends Scene {
       xo = index === 0 ? -50 : index === 1 ? 0 : 50
     }
 
+    const faceFrame = 8 + registry.values.faceIndex * 2
     // player/sword icon
     this.add.sprite(
       width / 2 + xo - 8,
       height / 2 + 10,
       'spritesheet',
-      _item.temporary ? 53 : 40,
+      _item.temporary ? faceFrame : 40,
     )
     // upgrade icon
     this.add.sprite(
@@ -106,7 +107,6 @@ export class Shop extends Scene {
     const _item = ITEMS.find((i) => i.key === key)!
     const currentGold = registry.values.gold
 
-    // TODO: check if player is at max effect and disable if so
     const level = registry.values.upgrades[key as IUpgradeKeys]
     const cost = _item.effects[level]?.cost
     if (level >= _item.effects.length) {
@@ -141,7 +141,7 @@ export class Shop extends Scene {
     const effect = itemData.effects[level]
     const cost = effect?.cost
     // TODO: display all effects if there is more than 1
-    const change = effect.effects[0].change
+    const change = effect?.effects[0].change
     if (registry.values.hudText === '') {
       if (level < itemData.effects.length) {
         this.shopkeepTalk(
