@@ -54,7 +54,7 @@ export class Fight extends Scene {
 
     if (this.player.isNearEdge()) this.backToMap()
 
-    this.physics.overlap(this.player.sword, this.enemies, this.hitSwordEnemy)
+    this.physics.overlap(this.player.swordHit, this.enemies, this.hitSwordEnemy)
     this.physics.overlap(this.player.sprite, this.enemies, this.hitPlayerEnemy)
     this.physics.overlap(this.player.sprite, this.gold, this.hitPlayerGold)
     this.physics.overlap(this.player.sprite, this.bullets, this.hitPlayerBullet)

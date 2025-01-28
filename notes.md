@@ -1,12 +1,23 @@
 # tasks
 
+work on progression:
+
+- sword base damage should be 10, and go up by 10 each upgrade
+- each biome should have a different tier of enemy damage/health
+- anubis: 100 health
+- knight: 500 health
+- golem: 1000 health
+- death: 5000 health
+- each biome has a weaker/faster enemy that shoots and a slower/stronger enemy with more health
+- add enemy movement type where they stand still for a bit, then dash
+
+make it clear that your player stats reset on death
+
 # add special movement types: (should blink before hand to indicate its coming)
 
 - move in a circle
 - move from the left to the right side of the screen (sin wave)
 - charge toward player every once in awhile
-
-fight: implement weapon size
 
 # work on progression
 

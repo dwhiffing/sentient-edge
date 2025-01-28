@@ -18,6 +18,8 @@ export class Player {
   sprite: Phaser.Physics.Arcade.Sprite
   spriteBody: Phaser.Physics.Arcade.Body
   sword: Phaser.Physics.Arcade.Sprite
+  swordHit: Phaser.Physics.Arcade.Sprite
+  swordHitBody: Phaser.Physics.Arcade.Body
   swordBody: Phaser.Physics.Arcade.Body
   bullets: Phaser.GameObjects.Group
   attackReady: boolean
@@ -67,10 +69,20 @@ export class Player {
       .setOffset(8, 16)
       .setDepth(1)
 
-    this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', 41)
+    this.swordHit = this.scene.physics.add
+      .sprite(x, y, 'spritesheet', 41)
+      .setVisible(false)
+    this.swordHitBody = this.swordHit.body as Phaser.Physics.Arcade.Body
+
+    const frame = this.swordConfig.frame
+    this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', frame)
+    this.sword
+      .setScale(scale)
+      .setOrigin(0.5, 0.7)
+      .setDepth(2)
+      .setSize(0.1, 0.1)
+      .setPosition(this.sprite.x, this.sprite.y)
     this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
-    this.swordBody.setSize(12, 6)
-    this.sword.setScale(scale).setOrigin(0.5, 0.7).setDepth(2)
   }
 
   update() {
@@ -88,16 +100,7 @@ export class Player {
       if (w.angle !== 0) w.setAngle(w.flipX ? -90 : 90)
     }
 
-    this.sword.setOffset(this.sword.flipX ? 0 : 19, 19)
-    let so = SWORD_OFFSET_X * this.sprite.scaleX
-    let sy = s.y - (this.attackReady ? 11 : 7) * this.sprite.scaleX
-    if (this.sword.angle !== 0) {
-      so += 5
-      sy += -2
-      this.sword.setFrame(40)
-    }
-    let sx = s.x + so * (this.sword.flipX ? -1 : 1)
-    this.sword.setPosition(sx, sy)
+    this.setSwordPosition()
 
     if (!this.shouldMove || this.scene.scene.isActive('Stats')) {
       this.stop()
@@ -130,6 +133,7 @@ export class Player {
   }
 
   stop() {
+    this.swordHitBody.setVelocity(0)
     this.swordBody.setVelocity(0)
     this.spriteBody.setVelocity(0)
     const affix = this.sword.visible && this.attackReady ? '-sword' : ''
@@ -161,12 +165,34 @@ export class Player {
     this.sword.setDepth(0)
     this.shoot(this.stats.rangeCount)
 
+    this.setSwordPosition()
+
     await this.delay(this.stats.durationMeleeBase)
-    this.sword.setAngle(0)
-    this.sword.setFrame(41)
-    this.sword.setDepth(2)
+    this.sword.setAngle(0).setFrame(this.swordConfig.frame).setDepth(2)
     await this.delay(this.stats.speedMeleeBase * this.stats.speedMeleeMulti)
     this.attackReady = true
+  }
+
+  setSwordPosition = () => {
+    const s = this.sprite
+
+    let so = SWORD_OFFSET_X * s.scaleX
+    let _sy = s.y - (this.attackReady ? 20 : 16) * s.scaleX
+    if (this.sword.angle !== 0) {
+      so += 13
+      _sy += 7
+      this.sword.setFrame(this.swordConfig.frame - 1)
+    }
+    let _sx = s.x + so * (this.sword.flipX ? -1 : 1)
+    this.sword.setPosition(_sx, _sy)
+
+    const { ox, oy, sx, sy } = this.swordConfig
+    const hx = s.x + (this.sword.flipX ? -ox : ox)
+    const hy = s.y + oy
+    this.swordHit
+      .setPosition(hx, hy)
+      .setOrigin(this.sword.flipX ? 1 : 0, 0.5)
+      .setSize(sx, sy)
   }
 
   takeDamage = async (amount = 0, isRanged = false) => {
@@ -199,7 +225,6 @@ export class Player {
     this.sprite.setActive(false).setVisible(false)
     this.shouldMove = false
     this.stop()
-    // this.sword.setActive(false).setVisible(false)
     this.scene.add
       .sprite(this.sprite.x, this.sprite.y, 'spritesheet', 7)
       .setOrigin(0.5, 1)
@@ -224,6 +249,10 @@ export class Player {
     new Promise((resolve) => {
       this.scene.time.delayedCall(delay, resolve)
     })
+
+  get swordConfig() {
+    return SWORD_CONFIGS[this.stats.sizeBase]
+  }
 
   get stats() {
     return ITEMS.reduce(
@@ -250,7 +279,7 @@ const baseStats: Record<IUpgradeKeys, number> = {
   defenseRanged: 0,
 
   rangeCount: 0,
-  sizeBase: 1,
+  sizeBase: 0,
   speedMoveMulti: 1,
 
   damageMeleeBase: 1,
@@ -268,3 +297,11 @@ const baseStats: Record<IUpgradeKeys, number> = {
   // rangeSpeed:0,
   // rangeHoming:0,
 }
+
+const SWORD_CONFIGS = [
+  { frame: 41, ox: 6, oy: -10, sx: 8, sy: 5 },
+  { frame: 73, ox: 8, oy: -10, sx: 13, sy: 6 },
+  { frame: 75, ox: 9, oy: -10, sx: 14, sy: 8 },
+  { frame: 77, ox: 12, oy: -10, sx: 18, sy: 9 },
+  { frame: 79, ox: 16, oy: -9, sx: 28, sy: 11 },
+]
