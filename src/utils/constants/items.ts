@@ -90,7 +90,7 @@ export const ITEMS: IPurchasable[] = [
     key: 'defenseMelee',
     type: 'shield-round',
     frame: 65,
-    temporary: false,
+    temporary: true,
     text: 'That costs {cost} gold.  It will\nchange your melee defense\nby {change}.',
     effects: [
       { cost: 10, effects: [{ statKey: 'defenseMelee', change: 1 }] },
