@@ -73,12 +73,15 @@ export class Shop extends Scene {
 
     const faceFrame = 8 + registry.values.faceIndex * 2
     // player/sword icon
-    this.add.sprite(
-      width / 2 + xo - 8,
-      height / 2 + 10,
-      'spritesheet',
-      _item.temporary ? faceFrame : 40,
-    )
+    this.add
+      .sprite(
+        width / 2 + xo - 8,
+        height / 2 + (_item.temporary ? 10 : 2),
+        'spritesheet',
+        _item.temporary ? faceFrame : 40,
+      )
+      .setOrigin(0.5, 0.5)
+
     // upgrade icon
     this.add.sprite(
       width / 2 + xo + 8,
