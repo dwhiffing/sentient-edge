@@ -1,97 +1,30 @@
-type IMoveConfig = {
-  moveTarget: IMoveTargets
-  speed: number
-  moveEventDelay: number
-  moveSpreadBias: number
-  moveMaxDistance: number
-}
-type IShootConfig = {
-  rangeSpeed: number
-  rangeBulletSpeed: number
-  rangeBulletSize: number
-  rangeCount: number
-  rangeSpread: number
-  rangeAccuracy: number
-  rangeShootChance: number
-  rangeCountDelay: number
-  rangeStartDelay: number
-  rangeTarget: IShootTargets
-}
-type IEnemyStats = IMoveConfig &
-  IShootConfig & {
-    key: string
-    label: string
-    frame: number
-    shootRate: number
-    meleeDamage: number[]
-    rangeDamage: number[]
-    health: number[]
-    gold: number[]
-    color: number
-  }
+import {
+  IMoveConfig,
+  IMoveOrder,
+  moveConfigHornet,
+  moveConfigWasp,
+  movementNormal,
+} from './moveConfigs'
+import { IShootConfig, shootNone } from './shootConfigs'
 
-type IShootTargets = 'player' | 'random'
-type IMoveTargets = 'player' | 'center' | 'random' | 'spawn'
-
-const movementNormal: IMoveConfig = {
-  moveTarget: 'center' as IMoveTargets,
-  moveEventDelay: 500,
-  moveSpreadBias: 0.2,
-  moveMaxDistance: 200,
-  speed: 20,
-}
-
-const movementErratic: IMoveConfig = {
-  speed: 10,
-  moveTarget: 'player',
-  moveEventDelay: 600,
-  moveSpreadBias: 0,
-  moveMaxDistance: 200,
-}
-
-const shootNone: IShootConfig = {
-  rangeTarget: 'random',
-  rangeAccuracy: 0,
-  rangeSpeed: 0,
-  rangeCount: 0,
-  rangeBulletSpeed: 120,
-  rangeBulletSize: 1,
-  rangeCountDelay: 0,
-  rangeShootChance: 1,
-  rangeStartDelay: 0,
-  rangeSpread: 0,
-}
-
-const shootRandom: IShootConfig = {
-  rangeTarget: 'random',
-  rangeAccuracy: 50,
-  rangeSpeed: 1500,
-  rangeBulletSpeed: 120,
-  rangeBulletSize: 1,
-  rangeCount: 1,
-  rangeCountDelay: 0,
-  rangeShootChance: 1,
-  rangeStartDelay: 500,
-  rangeSpread: 20,
-}
-
-const shootPlayer: IShootConfig = {
-  rangeTarget: 'player',
-  rangeAccuracy: 50,
-  rangeSpeed: 500,
-  rangeBulletSpeed: 200,
-  rangeBulletSize: 3,
-  rangeCount: 3,
-  rangeShootChance: 0.2,
-  rangeCountDelay: 100,
-  rangeStartDelay: 500,
-  rangeSpread: 0,
+type IEnemyStats = IShootConfig & {
+  key: string
+  label: string
+  frame: number
+  shootRate: number
+  meleeDamage: number[]
+  rangeDamage: number[]
+  health: number[]
+  gold: number[]
+  color: number
+  moveOrder: IMoveOrder
+  moveConfigs: IMoveConfig[]
 }
 
 const defaultStats = {
   ...shootNone,
-  ...movementNormal,
-
+  moveOrder: 'sequence',
+  moveConfigs: [movementNormal],
   health: [10, 10],
   meleeDamage: [1, 1],
   rangeDamage: [1, 1],
@@ -127,15 +60,15 @@ export const ENEMIES: IEnemyStats[] = [
   ...getEnemy(
     {
       key: 'bug',
+      label: 'wasp',
+      color: 0xffff00,
       frame: 24,
       health: [4, 4],
-      meleeDamage: [1, 4],
-      rangeDamage: [1, 1],
-      gold: [1, 10],
-      ...shootPlayer,
-      ...movementErratic,
+      meleeDamage: [1, 1],
+      gold: [4, 8],
+      moveConfigs: moveConfigWasp,
     },
-    { color: 0x00ff00 },
+    { color: 0xff0000, label: 'hornet', moveConfigs: moveConfigHornet },
   ),
   ...getEnemy(
     {

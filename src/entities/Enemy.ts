@@ -11,7 +11,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   color: number
   currentAngle: number
   _flop: number
+  _moveConfigIndex: number
   target: { x: number; y: number }
+  spawnPosition: { x: number; y: number }
   key: string
   justHit: boolean
   forceStop: boolean
@@ -35,12 +37,16 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this._flop = 0
   }
 
-  onMoveEvent = () => {
+  onMoveEvent = async () => {
     if (this.forceStop) return
+
+    if (this.moveConfig.flashDuration) {
+      this.flash(this.moveConfig.flashDuration, 8)
+    }
 
     const rawDistance = Phaser.Math.Distance.BetweenPoints(this, this.target)
     const distanceRatio = Phaser.Math.Clamp(
-      rawDistance / this.stats.moveMaxDistance,
+      rawDistance / this.moveConfig.moveMaxDistance,
       0,
       1,
     )
@@ -55,15 +61,32 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const spreadAngle = mixAngles(
       this.currentAngle,
       randomAngle,
-      this.stats.moveSpreadBias,
+      this.moveConfig.moveSpreadBias,
     )
     this.currentAngle = mixAngles(spreadAngle, targetAngle, targetBias)
 
     this.spriteBody.setVelocity(
-      Math.cos(this.currentAngle) * this.stats.speed,
-      Math.sin(this.currentAngle) * this.stats.speed,
+      Math.cos(this.currentAngle) * this.moveConfig.speed,
+      Math.sin(this.currentAngle) * this.moveConfig.speed,
     )
     this.setFlipX(this.spriteBody.velocity.x > 0)
+
+    this.moveEvent = this.scene.time.addEvent({
+      delay: this.moveConfig.moveEventDelay,
+      callback: this.onMoveEvent,
+    })
+    if (this.stats.moveOrder === 'sequence') {
+      this._moveConfigIndex++
+      if (this._moveConfigIndex >= this.stats.moveConfigs.length) {
+        this._moveConfigIndex = 0
+      }
+    } else {
+      this._moveConfigIndex = Phaser.Math.RND.between(
+        0,
+        this.stats.moveConfigs.length - 1,
+      )
+    }
+    this.setTarget()
   }
 
   shoot = async () => {
@@ -136,20 +159,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     )
     this.health = this.maxHealth
 
-    const w = this.scene.cameras.main.width
+    this.spawnPosition = { x: this.x, y: this.y }
 
-    this.target = { x: this.x, y: this.y }
-
-    if (this.stats.moveTarget === 'player') {
-      this.target = this.scene.player.sprite
-    } else if (this.stats.moveTarget === 'center') {
-      this.target = { x: w / 2, y: w / 2 }
-    } else if (this.stats.moveTarget === 'random') {
-      const y = Phaser.Math.RND.between(d, w - d)
-      const x = Phaser.Math.RND.between(d, w - d)
-      this.target = { x, y }
-    }
-
+    this._moveConfigIndex = 0
+    this.setTarget()
     this.setFrame(this.stats.frame)
     this.color = this.stats.color
     this.setTint(this.color)
@@ -164,8 +177,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       }
 
       this.moveEvent = this.scene.time.addEvent({
-        delay: this.stats.moveEventDelay,
-        repeat: -1,
+        delay: 0,
         callback: this.onMoveEvent,
       })
 
@@ -234,6 +246,26 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   get gold() {
     return Phaser.Math.RND.between(this.stats.gold[0], this.stats.gold[1])
+  }
+
+  get moveConfig() {
+    return this.stats.moveConfigs[this._moveConfigIndex]
+  }
+
+  setTarget() {
+    const w = this.scene.cameras.main.width
+    const d = 20
+    this.target = this.spawnPosition
+
+    if (this.moveConfig.moveTarget === 'player') {
+      this.target = this.scene.player.sprite
+    } else if (this.moveConfig.moveTarget === 'center') {
+      this.target = { x: w / 2, y: w / 2 }
+    } else if (this.moveConfig.moveTarget === 'random') {
+      const y = Phaser.Math.RND.between(d, w - d)
+      const x = Phaser.Math.RND.between(d, w - d)
+      this.target = { x, y }
+    }
   }
 
   delay = (delay: number) =>

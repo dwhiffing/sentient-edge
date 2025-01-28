@@ -22,7 +22,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.3,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
+    enemies: [{ key: 'bug', chance: 1, min: 1, max: 2 }],
   },
   {
     type: 'fight',
@@ -32,7 +32,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.7,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
+    enemies: [{ key: 'bug', chance: 1, min: 3, max: 4 }],
   },
   {
     type: 'fight',
