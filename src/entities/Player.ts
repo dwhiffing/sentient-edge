@@ -18,6 +18,8 @@ export class Player {
   sprite: Phaser.Physics.Arcade.Sprite
   spriteBody: Phaser.Physics.Arcade.Body
   sword: Phaser.Physics.Arcade.Sprite
+  head: Phaser.Physics.Arcade.Sprite
+  headBody: Phaser.Physics.Arcade.Body
   swordHit: Phaser.Physics.Arcade.Sprite
   swordHitBody: Phaser.Physics.Arcade.Body
   swordBody: Phaser.Physics.Arcade.Body
@@ -76,13 +78,15 @@ export class Player {
 
     const frame = this.swordConfig.frame
     this.sword = this.scene.physics.add.sprite(x, y, 'spritesheet', frame)
-    this.sword
-      .setScale(scale)
-      .setOrigin(0.5, 0.7)
-      .setDepth(2)
-      .setSize(0.1, 0.1)
-      .setPosition(this.sprite.x, this.sprite.y)
+    this.sword.setScale(scale).setOrigin(0.5, 0.7).setDepth(2).setSize(0.1, 0.1)
+
     this.swordBody = this.sword.body as Phaser.Physics.Arcade.Body
+
+    this.head = this.scene.physics.add.sprite(x, y, 'spritesheet', 8)
+    this.head.setScale(scale).setOrigin(0.5, 0.5).setDepth(2).setSize(0.1, 0.1)
+    this.headBody = this.head.body as Phaser.Physics.Arcade.Body
+
+    this.setSwordPosition()
   }
 
   update() {
@@ -118,14 +122,11 @@ export class Player {
         this.stats.speedMoveMulti *
         this.speedMultiplier *
         slowMulti
-      this.spriteBody.setVelocity(
-        Math.cos(angle) * speed,
-        Math.sin(angle) * speed,
-      )
-      this.swordBody.setVelocity(
-        Math.cos(angle) * speed,
-        Math.sin(angle) * speed,
-      )
+      const vx = Math.cos(angle) * speed
+      const vy = Math.sin(angle) * speed
+      this.spriteBody.setVelocity(vx, vy)
+      this.swordBody.setVelocity(vx, vy)
+      this.head.setVelocity(vx, vy)
       if (this.sword.angle === 0) s.anims.play(`player-walk${affix}`, true)
     } else {
       this.stop()
@@ -133,9 +134,9 @@ export class Player {
   }
 
   stop() {
-    this.swordHitBody.setVelocity(0)
     this.swordBody.setVelocity(0)
     this.spriteBody.setVelocity(0)
+    this.head.setVelocity(0, 0)
     const affix = this.sword.visible && this.attackReady ? '-sword' : ''
     if (this.sword.angle === 0) this.sprite.anims.play(`player-idle${affix}`)
   }
@@ -193,6 +194,11 @@ export class Player {
       .setPosition(hx, hy)
       .setOrigin(this.sword.flipX ? 1 : 0, 0.5)
       .setSize(sx, sy)
+
+    this.head.setPosition(s.x, s.y - (this.sword.angle !== 0 ? 13 : 14))
+    let frame = 8 + registry.values.faceIndex * 2
+    if (this.sword.angle !== 0) frame += 1
+    this.head.setFrame(frame)
   }
 
   takeDamage = async (amount = 0, isRanged = false) => {
@@ -214,8 +220,10 @@ export class Player {
       this.die()
     } else {
       this.sprite.setTintFill(0xff0000)
+      this.head.setTintFill(0xff0000)
       await this.delay(250)
       this.sprite.clearTint()
+      this.head.clearTint()
       await this.delay(50)
       this.justHit = false
     }
@@ -223,6 +231,7 @@ export class Player {
 
   die = async () => {
     this.sprite.setActive(false).setVisible(false)
+    this.head.setActive(false).setVisible(false)
     this.shouldMove = false
     this.stop()
     this.scene.add
@@ -234,6 +243,7 @@ export class Player {
       up[item.key as IUpgradeKeys] = 0
     })
     registry.set('upgrades', up)
+    registry.set('faceIndex', (registry.values.faceIndex + 1) % 4)
 
     await this.delay(1000)
     this.scene.scene.start('WorldMap')

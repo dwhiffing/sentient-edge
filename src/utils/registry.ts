@@ -81,6 +81,7 @@ type IState = {
   showClearedArrow: boolean
   enemyName: string
   enemyMaxHealth: number
+  faceIndex: number
   health: number
   gold: number
   hudText: string
@@ -100,6 +101,7 @@ const initialSave: IState = {
   enemyMaxHealth: -1,
   health: 10,
   gold: 0,
+  faceIndex: 0,
   lastGold: 0,
   hudText: '',
   showClearedArrow: false,
