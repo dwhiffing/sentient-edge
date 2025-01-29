@@ -44,11 +44,28 @@ const movementErratic: IMoveConfig = {
 
 export const moveConfigWasp = [
   {
-    speed: 30,
+    speed: 15,
     moveTarget: 'spawn',
-    moveEventDelay: 250,
+    moveEventDelay: 500,
     moveSpreadBias: 0.5,
-    moveMaxDistance: 20,
+    moveMaxDistance: 30,
+  } as IMoveConfig,
+]
+
+export const moveConfigSnake = [
+  {
+    speed: 40,
+    moveTarget: 'center',
+    moveEventDelay: 750,
+    moveSpreadBias: 0.5,
+    moveMaxDistance: 200,
+  } as IMoveConfig,
+  {
+    speed: 0,
+    moveTarget: 'random',
+    moveEventDelay: 1500,
+    moveSpreadBias: 0.5,
+    moveMaxDistance: 30,
   } as IMoveConfig,
 ]
 

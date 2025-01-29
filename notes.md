@@ -1,85 +1,73 @@
 # tasks
 
-work on progression:
-
-- sword base damage should be 10, and go up by 10 each upgrade
-- each biome should have a different tier of enemy damage/health
-- anubis: 100 health
-- knight: 500 health
-- golem: 1000 health
-- death: 5000 health
-- each biome has a weaker/faster enemy that shoots and a slower/stronger enemy with more health
-- add enemy movement type where they stand still for a bit, then dash
-
-make it clear that your player stats reset on death
-
-# add special movement types: (should blink before hand to indicate its coming)
-
-- move in a circle
-- move from the left to the right side of the screen (sin wave)
-- charge toward player every once in awhile
-
-# work on progression
-
-distribute upgrades across shops better
-tweak enemy stats
-tweak upgrade stats
-
-# finalize scenes
-
-fight: add homing bullets, dies after homing for long enough
-cycle through player sprites on death, drop sword on death
-add scene where new player picks you up if you make it out of the fight
-add game over scene
-add win scene when you beat the final boss
-
-improve stats scene
-cellmap: position nodes closer to path
-
-add credits/help scene
-add reset save option to menu
-mobile controls
-cellmap: when node is first hovered, should be discovered?
-
-# enemy types
-
-different movement patterns
-enemies that shoot
-strong/slow enemies
-fast/weak enemies
-rare enemies (worth 10x gold)
-boss enemies
+document that you take half damage if you are ready to attack
+ensure you cant bring up stats in fight scene
+take more damage if your attack isn't ready
+explode some colored particles on enemy death
+some enemies should explode on death
 
 # enemy movement
 
+variants should have same movement, just higher stats and alt color/name
+
 bee: fly around randomly near spawn point
-snake: dash around randomly
-anubis: dash toward player, then wait in place for awhile
+snake: move randomly in longer bursts, with short wait between
+anubis: dash toward player, then wait in place for awhile and shoot at player (like roller but with ranged attack)
 
-spider: dash around randomly and shoot bullets
-snail: move around slowly but very tanky
-knight: dash toward player
+spider: dash around randomly (like bee, but shoots bullets)
+snail: move around slowly but very tanky (like slow snake)
+knight: dashes toward player, then shoots a 3 spread, repeat 3 times, then do sin wave
 
-roller: move in sin wave across screen
-ogre: move around slowly, tanky and shoots bullets
-golem: move slowly, shoot bullets
+roller: dash toward player very quickly, wait in place for awhile (like anubis but without ranged attack)
+ogre: move around slowly, tanky, stops for a second, then flashes and shoots big, fast, bullet (slow snake, but with stopping to shoot)
+golem: dashes toward player 5 times, then waits and shoots circular burst around self
 
-zombie: move around randomly, then dash toward player
-skeleton: dash around randomly and shoot bullets
-death: complex movement with lots of bullets
+zombie: constantly moves toward player
+skeleton: dash around randomly and shoot bullets (like snake but with many bullets)
+death: circle + sin wave + bullet hell
 
-# player upgrades
+# work on progression
 
-- sword size
-- homing bullets
+- each biome should have a different tier of enemy damage/health
+- bee: 3 health
+- snake: 10 health
+- anubis: 100 health
+- spider: 20 health
+- snail: 50 health
+- knight: 500 health
+- roller: 80 health
+- ogre: 120 health
+- golem: 1000 health
+- zombie: 250 health
+- skeleton: 200 health
+- death: 5000 health
 
-# finish art
+- sword base damage should be 10, and go up by 10 each upgrade
 
+playtest and tweak:
+
+- enemy behaviour (ensure all behaviours are implemented and working)
+- enemy stats (enemies stats should go up in tiers based on biome)
+- node enemy spawns (should have fewer enemies in early areas, and increase as you get further)
+- upgrade stats (ensure that area enemies are beatable with upgrades available)
+- upgrade costs/ gold drop rates last
+
+cellmap: position nodes closer to path
 finalize map
-make a bg for each biome node (desert, forest, mountain castle)
-more sword sprites?
-sprites for upgrades
+add sounds
+improve stats scene
+nicer menu/win screen
 main menu title art
+add reset save option to menu
+
+add music
+add credits/help scene
+add game over scene (show player is dead, and new player picking you up)
+make a bg for each biome node (desert, forest, mountain, castle, shop)
+
+mobile controls
+fight: add homing bullets, dies after homing for long enough
+cellmap: when node is first hovered, should be discovered?
 
 # add sounds
 
@@ -108,3 +96,5 @@ boss die
 menu/game
 win
 gameover
+
+credits: https://piiixl.itch.io/1-bit-16px-icons-part-1

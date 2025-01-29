@@ -64,9 +64,7 @@ export type IPlayerStats = {
 export type ISwordStats = {
   damageMeleeBase: number
   damageMeleeFreq: number
-  durationMeleeBase: number
   damageRangeBase: number
-  speedMeleeBase: number
   sizeBase: number
 }
 
@@ -125,8 +123,6 @@ const initialSave: IState = {
     damageMeleeBase: 0,
     damageRangeBase: 0,
     damageMeleeFreq: 0,
-    durationMeleeBase: 0,
-    speedMeleeBase: 0,
     sizeBase: 0,
     // rangeSpeed:0,
     // rangeHoming:0,
@@ -136,8 +132,8 @@ const initialSave: IState = {
 const finishedSave: IState = {
   ...initialSave,
   gold: 999,
-  unlockedNodes: MAP_DATA.map((d) => d.id),
-  clearedNodes: MAP_DATA.map((d) => d.id),
+  unlockedNodes: MAP_DATA.map((d) => d.id).slice(0, -2),
+  clearedNodes: MAP_DATA.map((d) => d.id).slice(0, -2),
   upgrades: {
     healthMax: 9,
     defenseMelee: 9,
@@ -149,9 +145,7 @@ const finishedSave: IState = {
     speedMeleeMulti: 9,
     damageMeleeBase: 9,
     damageMeleeFreq: 3,
-    durationMeleeBase: 3,
     damageRangeBase: 9,
-    speedMeleeBase: 9,
     sizeBase: 9,
   },
 }

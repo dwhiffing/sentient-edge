@@ -1,4 +1,8 @@
-import { ITEMS } from '../utils/constants'
+import {
+  ITEMS,
+  PLAYER_ATTACK_DELAY,
+  PLAYER_ATTACK_DURATION,
+} from '../utils/constants'
 import { IUpgradeKeys, registry } from '../utils/registry'
 import { shoot } from '../utils/shoot'
 import { Bullet } from './Bullet'
@@ -116,7 +120,7 @@ export class Player {
     if (dist > 2) {
       const angle = Math.atan2(dy, dx)
 
-      const slowMulti = this.attackReady ? 1 : 0.5
+      const slowMulti = this.attackReady ? 1 : 0.66
       const speed =
         BASE_SPEED *
         this.stats.speedMoveMulti *
@@ -174,9 +178,11 @@ export class Player {
 
     this.setSwordPosition()
 
-    await this.delay(this.stats.durationMeleeBase)
+    await this.delay(PLAYER_ATTACK_DURATION)
+    if (!this.sprite.active) return
     this.sword.setAngle(0).setFrame(this.swordConfig.frame).setDepth(2)
-    await this.delay(this.stats.speedMeleeBase * this.stats.speedMeleeMulti)
+    await this.delay(PLAYER_ATTACK_DELAY * this.stats.speedMeleeMulti)
+    if (!this.sprite.active) return
     this.attackReady = true
   }
 
@@ -217,6 +223,10 @@ export class Player {
       amount -= this.stats.defenseRanged
     } else {
       amount -= this.stats.defenseMelee
+    }
+
+    if (this.attackReady) {
+      amount *= 0.5
     }
 
     amount = Phaser.Math.Clamp(amount, 0, 999)
@@ -277,7 +287,7 @@ export class Player {
     })
 
   get swordConfig() {
-    return SWORD_CONFIGS[this.stats.sizeBase]
+    return SWORD_CONFIGS[this.stats.sizeBase - 1]
   }
 
   get stats() {
@@ -305,23 +315,18 @@ const baseStats: Record<IUpgradeKeys, number> = {
   defenseRanged: 0,
 
   rangeCount: 0,
-  sizeBase: 0,
+  sizeBase: 1,
   speedMoveMulti: 1,
 
   damageMeleeBase: 1,
-  damageMeleeFreq: 250,
-  durationMeleeBase: 250,
+  damageMeleeFreq: 1,
 
   damageRangeBase: 1,
   damageMulti: 1,
 
   earnRateMulti: 1,
 
-  speedMeleeBase: 1200,
   speedMeleeMulti: 1,
-
-  // rangeSpeed:0,
-  // rangeHoming:0,
 }
 
 const SWORD_CONFIGS = [

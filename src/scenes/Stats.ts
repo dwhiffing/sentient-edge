@@ -1,6 +1,7 @@
 import { Scene } from 'phaser'
 import { CellMap } from './CellMap'
 import { WorldMap } from './WorldMap'
+import { IUpgradeKeys } from '../utils/registry'
 
 export class Stats extends Scene {
   topBar: Phaser.GameObjects.Rectangle
@@ -23,10 +24,10 @@ export class Stats extends Scene {
     let worldScene = this.game.scene.getScene('WorldMap') as WorldMap
     let scene = this.scene.isActive('CellScene') ? cellScene : worldScene
 
-    Object.entries(scene.player.stats).forEach(([key, value]) => {
-      text += statLabels[key as keyof typeof statLabels]
+    stats.forEach(({ key, label }) => {
+      text += label
       text += ' - '
-      text += value
+      text += scene.player.stats[key as IUpgradeKeys]
       text += '\n'
     })
 
@@ -41,19 +42,17 @@ export class Stats extends Scene {
   updateText = () => {}
 }
 
-const statLabels = {
-  healthMax: 'health max',
-  defenseMelee: 'defense melee',
-  defenseRanged: 'defense ranged',
-  damageMulti: 'damage multi',
-  rangeCount: 'range count',
-  speedMoveMulti: 'speed move multi',
-  earnRateMulti: 'earn rate multi',
-  speedMeleeMulti: 'speed melee multi',
-  damageMeleeBase: 'damage melee base',
-  damageMeleeFreq: 'damage melee freq',
-  durationMeleeBase: 'duration melee base',
-  damageRangeBase: 'damage range base',
-  speedMeleeBase: 'speed melee base',
-  sizeBase: 'sword size',
-}
+const stats = [
+  { key: 'damageMulti', label: 'hero damage multiplier' },
+  { key: 'speedMeleeMulti', label: 'hero attack speed' },
+  { key: 'healthMax', label: 'hero max health' },
+  { key: 'defenseMelee', label: 'hero melee defense' },
+  { key: 'defenseRanged', label: 'hero ranged defense' },
+  { key: 'speedMoveMulti', label: 'hero move speed' },
+  { key: 'earnRateMulti', label: 'sword gold multiplier' },
+  { key: 'rangeCount', label: 'sword ranged bullet count' },
+  { key: 'damageMeleeBase', label: 'sword base damage' },
+  { key: 'damageMeleeFreq', label: 'sword hits per attack' },
+  { key: 'damageRangeBase', label: 'sword ranged base damage' },
+  { key: 'sizeBase', label: 'sword size' },
+]

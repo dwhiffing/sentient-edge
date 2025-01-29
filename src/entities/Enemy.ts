@@ -29,7 +29,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
 
-    this.setSize(16, 16)
+    this.setSize(20, 20)
     this.justHit = false
     this.setOrigin(0.5, 0.5)
     this.setDepth(3)

@@ -150,7 +150,10 @@ export class Shop extends Scene {
         this.shopkeepTalk(
           itemData.text
             .replace('{cost}', `${cost}`)
-            .replace('{change}', `${change}`),
+            .replace(
+              '{change}',
+              itemData.percent ? `${change * 100}%` : `${change}`,
+            ),
         )
       } else {
         this.shopkeepTalk("You've already maxed it out")

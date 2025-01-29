@@ -147,7 +147,8 @@ export class CellMap extends Scene {
   showClearedArrow() {
     const w = this.cameras.main.width
 
-    const dir = registry.values.activeZoom as keyof typeof ARROW_DIRS
+    const dir =
+      ARROW_DIRS[registry.values.activeZoom as keyof typeof ARROW_DIRS]
     let angle = 270
     let x = 10
     let y = w / 2

@@ -22,7 +22,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.3,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 1, max: 2 }],
+    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
   },
   {
     type: 'fight',
@@ -32,7 +32,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.7,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 3, max: 4 }],
+    enemies: [{ key: 'bug', chance: 1, min: 2, max: 4 }],
   },
   {
     type: 'fight',
@@ -43,10 +43,8 @@ const LEVEL_1: INode[] = [
     x: 0.3,
     y: 0.5,
     enemies: [
-      { key: 'bug', chance: 1, min: 1, max: 2 },
-      // { key: 'bug', chance: 0.5, min: 1, max: 1 },
+      { key: 'snake', chance: 1, min: 1, max: 1 },
       // { key: 'bug-rare', chance: 0.5, min: 1, max: 1 },
-      // { key: 'snake', chance: 0.5, min: 1, max: 2 },
     ],
   },
   {
@@ -57,7 +55,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.7,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
+    enemies: [{ key: 'snake', chance: 1, min: 2, max: 3 }],
   },
   {
     type: 'fight',
@@ -67,7 +65,10 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.1,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
+    enemies: [
+      { key: 'snake', chance: 1, min: 2, max: 3 },
+      { key: 'bug', chance: 1, min: 1, max: 2 },
+    ],
   },
   {
     type: 'fight',
@@ -77,7 +78,10 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.2,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
+    enemies: [
+      { key: 'snake', chance: 1, min: 3, max: 4 },
+      { key: 'bug', chance: 1, min: 2, max: 4 },
+    ],
   },
   {
     type: 'fight-boss',
@@ -97,27 +101,18 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
-    items: ['damageMeleeBase', 'damageMeleeFreq'],
+    items: ['damageMeleeFreq', 'speedMoveMulti'],
   },
+
   {
     type: 'shop',
     id: 'desert-s2',
     name: 'Desert Shop 2',
-    cellIndex: 7,
-    cellMapFrame: 1,
-    x: 0.4,
-    y: 0.8,
-    items: ['damageRangeBase', 'damageMulti', 'durationMeleeBase'],
-  },
-  {
-    type: 'shop',
-    id: 'desert-s3',
-    name: 'Desert Shop 3',
     cellIndex: 8,
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
-    items: ['earnRateMulti'],
+    items: ['healthMax', 'damageMulti'],
   },
 ]
 
@@ -221,35 +216,16 @@ const LEVEL_2: INode[] = [
     y: 0.5,
     enemies: [{ chance: 1, min: 1, max: 1, key: 'knight' }],
   },
+
   {
     type: 'shop',
     id: 'forest-s1',
     name: 'Forest Shop',
-    cellIndex: 5,
-    cellMapFrame: 2,
-    x: 0.4,
-    y: 0.8,
-    items: ['defenseMelee', 'defenseRanged'],
-  },
-  {
-    type: 'shop',
-    id: 'forest-s2',
-    name: 'Forest Shop 2',
     cellIndex: 4,
     cellMapFrame: 2,
     x: 0.4,
     y: 0.8,
-    items: ['speedMeleeBase', 'speedMeleeMulti'],
-  },
-  {
-    type: 'shop',
-    id: 'forest-s3',
-    name: 'Forest Shop 3',
-    cellIndex: 3,
-    cellMapFrame: 2,
-    x: 0.4,
-    y: 0.8,
-    items: ['healthMax'],
+    items: ['rangeCount', 'sizeBase', 'defenseMelee'],
   },
 ]
 
@@ -341,17 +317,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.4,
     y: 0.8,
-    items: ['rangeCount'],
-  },
-  {
-    type: 'shop',
-    id: 'mountain-s2',
-    name: 'Mountain Shop 2',
-    cellIndex: 1,
-    cellMapFrame: 3,
-    x: 0.4,
-    y: 0.8,
-    items: ['sizeBase'],
+    items: ['damageRangeBase', 'speedMeleeMulti'],
   },
 ]
 
@@ -426,7 +392,7 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.4,
     y: 0.8,
-    items: ['speedMoveMulti'],
+    items: ['damageMeleeFreq', 'defenseRanged', 'earnRateMulti'],
   },
 ]
 

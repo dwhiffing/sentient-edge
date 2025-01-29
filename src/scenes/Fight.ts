@@ -3,7 +3,7 @@ import { Player } from '../entities/Player'
 import { Bullet } from '../entities/Bullet'
 import { Enemy } from '../entities/Enemy'
 import { Gold } from '../entities/Gold'
-import { INode, MAP_DATA } from '../utils/constants'
+import { INode, MAP_DATA, PLAYER_ATTACK_DURATION } from '../utils/constants'
 import { registry } from '../utils/registry'
 
 export class Fight extends Scene {
@@ -182,7 +182,7 @@ export class Fight extends Scene {
     if (!enemy.active) return
     enemy.takeDamage(
       this.player.stats.damageMeleeBase * this.player.stats.damageMulti,
-      this.player.stats.damageMeleeFreq,
+      PLAYER_ATTACK_DURATION / this.player.stats.damageMeleeFreq,
     )
     if (enemy.health <= 0) {
       this.gold.get()?.spawn(enemy.x, enemy.y, enemy.gold)
