@@ -70,7 +70,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       Math.cos(this.currentAngle) * this.moveConfig.speed,
       Math.sin(this.currentAngle) * this.moveConfig.speed,
     )
-    this.setFlipX(this.spriteBody.velocity.x > 0)
+    if (this.spriteBody.velocity.x !== 0)
+      this.setFlipX(this.spriteBody.velocity.x > 0)
 
     this.moveEvent = this.scene.time.addEvent({
       delay: this.moveConfig.moveEventDelay,
