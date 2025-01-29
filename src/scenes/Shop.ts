@@ -7,6 +7,7 @@ export class Shop extends Scene {
   background: Phaser.GameObjects.Sprite
   shopkeep: Phaser.GameObjects.Sprite
   player: Player
+  isLeaving: boolean
   items: Phaser.Physics.Arcade.Sprite[]
   activeItemKey?: IUpgradeKeys
   allowPurchase: boolean
@@ -18,12 +19,14 @@ export class Shop extends Scene {
 
   create() {
     const { width, height } = this.cameras.main
-    this.background = this.add.sprite(width / 2, height / 2, 'map', 5)
+    this.cameras.main.fadeFrom(250, 0, 0, 0)
+    this.background = this.add.sprite(width / 2, height / 2, 'map', 6)
     this.shopkeep = this.add
       .sprite(width / 2, height / 2 - 10, 'spritesheet', 0)
       .play('shopkeep-idle')
       .setOrigin(0.5, 1)
 
+    this.isLeaving = false
     this.activeItemKey = undefined
     this.allowPurchase = true
 
@@ -113,6 +116,7 @@ export class Shop extends Scene {
     const level = registry.values.upgrades[key as IUpgradeKeys]
     const cost = _item.effects[level]?.cost
     if (level >= _item.effects.length) {
+      this.sound.play('menu-deny')
       this.shopkeepTalk("You've already maxed it out")
     } else if (currentGold >= cost) {
       registry.set('gold', currentGold - cost)
@@ -121,8 +125,10 @@ export class Shop extends Scene {
         ...currentUpgrade,
         [key]: (currentUpgrade[key as keyof typeof currentUpgrade] ?? 0) + 1,
       })
+      this.sound.play('menu-confirm')
       this.shopkeepTalk('Pleasure doing business\nwith you! :)', 1500)
     } else {
+      this.sound.play('menu-deny')
       this.shopkeepTalk("You can't afford that", 1500)
     }
   }
@@ -138,7 +144,11 @@ export class Shop extends Scene {
 
   hitPlayerItem = (_player: unknown, _item: unknown) => {
     const item = _item as Phaser.Physics.Arcade.Sprite
-    this.activeItemKey = item.getData('key') as IUpgradeKeys
+    const itemKey = item.getData('key') as IUpgradeKeys
+    if (itemKey !== this.activeItemKey) {
+      this.sound.play('menu-select')
+    }
+    this.activeItemKey = itemKey
     const itemData = ITEMS.find((i) => i.key === this.activeItemKey)!
     const level = registry.values.upgrades[this.activeItemKey]
     const effect = itemData.effects[level]
@@ -162,6 +172,15 @@ export class Shop extends Scene {
   }
 
   backToMap() {
-    this.scene.start('CellMap')
+    if (this.isLeaving) return
+
+    this.isLeaving = true
+    this.sound.play('player-exit')
+
+    this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
+      if (p === 1) {
+        this.scene.start('CellMap')
+      }
+    })
   }
 }

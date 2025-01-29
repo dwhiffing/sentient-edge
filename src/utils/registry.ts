@@ -54,8 +54,6 @@ export type IPlayerStats = {
   defenseRanged: number
   damageMulti: number
   rangeCount: number
-  // yerRangeSpeed
-  // yerRangeHoming
   speedMoveMulti: number
   earnRateMulti: number
   speedMeleeMulti: number
@@ -74,6 +72,7 @@ type IState = {
   lastZoom: number
   activeZoom: number
   deathCount: number
+  pauseMusic: boolean
   timePlayed: number
   hasWon: boolean
   activeNode: string
@@ -98,6 +97,7 @@ const initialSave: IState = {
   activeZoom: 6,
   activeNode: '',
   enemyHealth: -1,
+  pauseMusic: false,
   enemyName: '',
   enemyMaxHealth: -1,
   health: 10,

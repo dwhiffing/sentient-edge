@@ -118,6 +118,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.stats.rangeDamage[1],
     )
 
+    this.scene.sound.play('enemy-shoot')
+
     shoot(this.scene, this.scene.bullets, this, target, {
       damage,
       count: this.stats.rangeCount,
@@ -216,6 +218,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       registry.set('enemyName', ''),
     )
 
+    // TODO: if boss, play with slower rate
+    this.scene.sound.play('enemy-hit')
+
     if (this.health <= 0) {
       this.die()
     } else {
@@ -227,6 +232,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   die = async () => {
+    if (!this.active) return
+    this.scene.sound.play('enemy-die')
+
+    // TODO: if boss, player victory chime after a delay
     this.setCollideWorldBounds(false)
     this.setActive(false).setVisible(false)
     this.shootEvent?.destroy()

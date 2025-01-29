@@ -7,6 +7,7 @@ export class CellMap extends Scene {
   background: Phaser.GameObjects.Image
   player: Player
   nodes: Phaser.GameObjects.Group
+  isLeaving: boolean
 
   constructor() {
     super('CellMap')
@@ -17,6 +18,9 @@ export class CellMap extends Scene {
     const w = this.cameras.main.width
     const zoomX = zoomIndex % 3
     const zoomY = Math.floor(zoomIndex / 3)
+
+    this.isLeaving = false
+    this.cameras.main.fadeFrom(250, 0, 0, 0)
 
     this.background = this.add
       .sprite(-w * zoomX, -w * zoomY, 'map', 0)
@@ -53,6 +57,7 @@ export class CellMap extends Scene {
   update() {
     this.player.update()
 
+    if (this.isLeaving) return
     if (this.player.isNearEdge() && this.getHasClearedFirstCell()) {
       this.unzoom()
     }
@@ -94,24 +99,41 @@ export class CellMap extends Scene {
   enterNearbyNode = () => {
     const spot = this.getNearestNode()
     if (!spot) return
+    if (this.isLeaving) return
 
+    this.isLeaving = true
     registry.set('hudText', '')
+    this.sound.play('player-enter')
 
-    const id = spot.getData('id')
-    registry.set('activeNode', id)
+    this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
+      if (p === 1) {
+        const id = spot.getData('id')
+        registry.set('activeNode', id)
 
-    const unlocked = registry.values.unlockedNodes ?? []
-    const uniq = Array.from(new Set([...unlocked, id]))
-    registry.set('unlockedNodes', uniq)
+        const unlocked = registry.values.unlockedNodes ?? []
+        const uniq = Array.from(new Set([...unlocked, id]))
+        registry.set('unlockedNodes', uniq)
 
-    const newScene = spot.getData('type').includes('fight') ? 'Fight' : 'Shop'
-    this.scene.switch(newScene)
+        const newScene = spot.getData('type').includes('fight')
+          ? 'Fight'
+          : 'Shop'
+        this.scene.switch(newScene)
+      }
+    })
   }
 
   unzoom() {
-    registry.set('lastZoom', registry.values.activeZoom)
-    registry.set('activeZoom', -1)
-    this.scene.start('WorldMap')
+    if (this.isLeaving) return
+
+    this.sound.play('player-exit')
+    this.isLeaving = true
+    this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
+      if (p === 1) {
+        registry.set('lastZoom', registry.values.activeZoom)
+        registry.set('activeZoom', -1)
+        this.scene.start('WorldMap')
+      }
+    })
   }
 
   getNearestNode = () =>

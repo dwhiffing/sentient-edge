@@ -14,6 +14,7 @@ export class Hud extends Scene {
   playerHealthBar: HealthBar
   enemyNameText: Phaser.GameObjects.BitmapText
   enemyHealthBar: HealthBar
+  music: Phaser.Sound.BaseSound
   constructor() {
     super('Hud')
   }
@@ -21,6 +22,11 @@ export class Hud extends Scene {
   create() {
     const { width: w, height: h } = this.cameras.main
     const c = 0x000000
+
+    registry.set('pauseMusic', false)
+
+    this.music = this.sound.add('music-game', { loop: true, volume: 0.5 })
+    this.music.play()
 
     this.topBar = this.add.rectangle(0, 0, w, 12, c).setOrigin(0, 0)
     this.bottomBar = this.add
@@ -58,6 +64,19 @@ export class Hud extends Scene {
     const bottomText = `Gold: ${gold ?? 0}${
       registry.values.lastGold ? ` +${registry.values.lastGold}` : ''
     }`
+
+    if (registry.values.pauseMusic && !this.music.isPaused) {
+      this.tweens.add({
+        targets: this.music,
+        volume: 0,
+        duration: 500,
+        onComplete: () => this.music.pause(),
+      })
+    }
+
+    if (!registry.values.pauseMusic && this.music.isPaused) {
+      this.music.play({ volume: 0.5 })
+    }
 
     let cellScene = this.game.scene.getScene('CellMap') as CellMap
     let fightScene = this.game.scene.getScene('Fight') as Fight

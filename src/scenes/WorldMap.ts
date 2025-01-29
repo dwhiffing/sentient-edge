@@ -31,10 +31,17 @@ export class WorldMap extends Scene {
 
     if (registry.values.activeZoom !== -1) {
       this.goToCell(registry.values.activeZoom)
+    } else {
+      this.cameras.main.fadeFrom(250, 0, 0, 0)
     }
 
-    this.input.on('pointerdown', () => {
-      this.goToCell(this.getPlayerCellIndex())
+    this.input.once('pointerdown', () => {
+      this.sound.play('player-enter')
+      this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
+        if (p === 1) {
+          this.goToCell(this.getPlayerCellIndex())
+        }
+      })
     })
   }
 

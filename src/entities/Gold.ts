@@ -28,6 +28,10 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
     if (!this.active || !this.visible) return
 
     this.setActive(false).setVisible(false).setPosition(-20, -20)
+    this.scene.sound.play('gold', {
+      volume: 4,
+      rate: Phaser.Math.RND.realInRange(0.8, 1.2),
+    })
     registry.set(
       'gold',
       registry.values.gold +

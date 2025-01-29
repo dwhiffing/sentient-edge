@@ -170,6 +170,8 @@ export class Player {
     if (!this.sprite.active || this.sword.angle !== 0 || !this.attackReady)
       return
 
+    this.scene.sound.play('player-attack')
+
     this.attackReady = false
     this.sprite.anims.play(`player-stab`, true)
     this.sword.setAngle(this.sword.flipX ? -90 : 90)
@@ -229,6 +231,8 @@ export class Player {
       amount *= 0.5
     }
 
+    this.scene.sound.play('player-hit')
+
     amount = Phaser.Math.Clamp(amount, 0, 999)
 
     this.justHit = true
@@ -249,6 +253,7 @@ export class Player {
   }
 
   die = async () => {
+    this.scene.sound.play('player-die')
     this.sprite.setActive(false).setVisible(false)
     this.head.setActive(false).setVisible(false)
     this.shouldMove = false
@@ -272,7 +277,17 @@ export class Player {
     registry.set('faceIndex', (registry.values.faceIndex + 1) % 4)
 
     await this.delay(1000)
-    this.scene.scene.start('WorldMap')
+
+    registry.set('pauseMusic', true)
+    this.scene.cameras.main.fadeOut(1500, 0, 0, 0, (_event: any, p: number) => {
+      if (p === 1) {
+        this.scene.sound.play('game-over')
+        this.scene.time.delayedCall(5000, () => {
+          registry.set('pauseMusic', false)
+          this.scene.scene.start('WorldMap')
+        })
+      }
+    })
   }
 
   isNearEdge = () =>

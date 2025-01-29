@@ -14,6 +14,7 @@ export class Fight extends Scene {
   gold: Phaser.GameObjects.Group
   node: INode
   canAttack: boolean
+  isLeaving: boolean
   enemyNameDebounceEvent: Phaser.Time.TimerEvent
   lastGoldAmountDebounceEvent: Phaser.Time.TimerEvent
 
@@ -24,6 +25,8 @@ export class Fight extends Scene {
   create() {
     const { width, height } = this.cameras.main
     this.background = this.add.sprite(width / 2, height / 2, 'map', 1)
+    this.isLeaving = false
+    this.cameras.main.fadeFrom(250, 0, 0, 0)
 
     this.enemies = this.add.group({
       classType: Enemy,
@@ -129,9 +132,18 @@ export class Fight extends Scene {
   }
 
   backToMap() {
-    this.scene.start('WorldMap')
-    registry.set('enemyName', '')
-    registry.set('lastGold', 0)
+    if (this.isLeaving) return
+
+    this.isLeaving = true
+    this.sound.play('player-exit')
+
+    this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
+      if (p === 1) {
+        this.scene.start('WorldMap')
+        registry.set('enemyName', '')
+        registry.set('lastGold', 0)
+      }
+    })
   }
 
   hitEnemyBullet = (_enemy: unknown, _bullet: unknown) => {

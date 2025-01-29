@@ -1,100 +1,56 @@
-# tasks
-
-document that you take half damage if you are ready to attack
-ensure you cant bring up stats in fight scene
-take more damage if your attack isn't ready
-explode some colored particles on enemy death
-some enemies should explode on death
-
-# enemy movement
-
-variants should have same movement, just higher stats and alt color/name
-
-bee: fly around randomly near spawn point
-snake: move randomly in longer bursts, with short wait between
-anubis: dash toward player, then wait in place for awhile and shoot at player (like roller but with ranged attack)
-
-spider: dash around randomly (like bee, but shoots bullets)
-snail: move around slowly but very tanky (like slow snake)
-knight: dashes toward player, then shoots a 3 spread, repeat 3 times, then do sin wave
-
-roller: dash toward player very quickly, wait in place for awhile (like anubis but without ranged attack)
-ogre: move around slowly, tanky, stops for a second, then flashes and shoots big, fast, bullet (slow snake, but with stopping to shoot)
-golem: dashes toward player 5 times, then waits and shoots circular burst around self
-
-zombie: constantly moves toward player
-skeleton: dash around randomly and shoot bullets (like snake but with many bullets)
-death: circle + sin wave + bullet hell
-
 # work on progression
 
-- each biome should have a different tier of enemy damage/health
-- bee: 3 health
-- snake: 10 health
-- anubis: 100 health
-- spider: 20 health
-- snail: 50 health
-- knight: 500 health
-- roller: 80 health
-- ogre: 120 health
-- golem: 1000 health
-- zombie: 250 health
-- skeleton: 200 health
-- death: 5000 health
+test desert progression
 
-- sword base damage should be 10, and go up by 10 each upgrade
+test forest progression
 
-playtest and tweak:
+implement ogre behaviour
+implement golem behaviour
+test mountain progression
 
-- enemy behaviour (ensure all behaviours are implemented and working)
-- enemy stats (enemies stats should go up in tiers based on biome)
-- node enemy spawns (should have fewer enemies in early areas, and increase as you get further)
-- upgrade stats (ensure that area enemies are beatable with upgrades available)
-- upgrade costs/ gold drop rates last
+implement zombie behaviour
+implement skeleton behaviour
+implement death behaviour
+test castle progression
 
-cellmap: position nodes closer to path
+# tasks
+
+add mute
+
+appear in cell relative to where you were on world map
+ensure sword size changes right away
+ensure you cant bring up stats in fight scene
+make it harder to exit by mistake during a fight
+
 finalize map
-add sounds
-improve stats scene
-nicer menu/win screen
-main menu title art
+cellmap: position nodes closer to path
+
+add credits scene
 add reset save option to menu
+add remaining sounds
+add game over scene (text saying "name is dead, but you have been recovered by new name")
+pickup gold from a distance, increase with gold earn rate upgrade
+zombie should explode bullets on death
 
-add music
-add credits/help scene
-add game over scene (show player is dead, and new player picking you up)
+explode some colored particles on enemy death?
+if stat is at base value, hide it from stat screen
+
 make a bg for each biome node (desert, forest, mountain, castle, shop)
-
 mobile controls
-fight: add homing bullets, dies after homing for long enough
-cellmap: when node is first hovered, should be discovered?
+mention that you take half damage if you are ready to attack somewhere
 
 # add sounds
 
-player swing
-player shoot
-player hit
-player pickup gold
-player enter node/cell
-player exit node/cell
-player buy upgrade
-player cant afford upgrade
-player die
-sword die
-ui click
-enemy hit
-enemy swing
-enemy shoot
-enemy die
 boss hit
-boss swing
+boss charge
 boss shoot
 boss die
+boss victory music
 
-# add music
+# credits
 
-menu/game
-win
-gameover
+Icons: https://piiixl.itch.io/1-bit-16px-icons-part-1
 
-credits: https://piiixl.itch.io/1-bit-16px-icons-part-1
+Music: Context Sensitive - [song name goes here]
+https://www.youtube.com/ContextSensitive
+https://contextsensitive.bandcamp.com/
