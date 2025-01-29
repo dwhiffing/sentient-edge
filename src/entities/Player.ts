@@ -15,7 +15,7 @@ type IPlayerParams = {
 }
 
 const SWORD_OFFSET_X = 10
-const BASE_SPEED = 40
+const BASE_SPEED = 42
 
 export class Player {
   scene: Phaser.Scene
