@@ -116,7 +116,7 @@ export class Shop extends Scene {
     const level = registry.values.upgrades[key as IUpgradeKeys]
     const cost = _item.effects[level]?.cost
     if (level >= _item.effects.length) {
-      this.sound.play('menu-deny')
+      this.sound.play('menu-deny', { volume: 2 })
       this.shopkeepTalk("You've already maxed it out")
     } else if (currentGold >= cost) {
       registry.set('gold', currentGold - cost)
@@ -128,7 +128,7 @@ export class Shop extends Scene {
       this.sound.play('menu-confirm')
       this.shopkeepTalk('Pleasure doing business\nwith you! :)', 1500)
     } else {
-      this.sound.play('menu-deny')
+      this.sound.play('menu-deny', { volume: 2 })
       this.shopkeepTalk("You can't afford that", 1500)
     }
   }
@@ -146,7 +146,7 @@ export class Shop extends Scene {
     const item = _item as Phaser.Physics.Arcade.Sprite
     const itemKey = item.getData('key') as IUpgradeKeys
     if (itemKey !== this.activeItemKey) {
-      this.sound.play('menu-select')
+      this.sound.play('menu-select', { volume: 2 })
     }
     this.activeItemKey = itemKey
     const itemData = ITEMS.find((i) => i.key === this.activeItemKey)!
@@ -175,7 +175,7 @@ export class Shop extends Scene {
     if (this.isLeaving) return
 
     this.isLeaving = true
-    this.sound.play('player-exit')
+    this.sound.play('player-exit', { volume: 0.6 })
 
     this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
       if (p === 1) {

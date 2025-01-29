@@ -135,7 +135,7 @@ export class Fight extends Scene {
     if (this.isLeaving) return
 
     this.isLeaving = true
-    this.sound.play('player-exit')
+    this.sound.play('player-exit', { volume: 0.6 })
 
     this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
       if (p === 1) {

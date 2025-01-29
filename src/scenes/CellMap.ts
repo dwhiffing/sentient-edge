@@ -63,8 +63,11 @@ export class CellMap extends Scene {
     }
 
     const nearSpotName = this.getNearestNode()?.getData('name') ?? ''
-    if (nearSpotName !== registry.values.hudText)
+    if (nearSpotName !== registry.values.hudText) {
+      if (nearSpotName) this.sound.play('menu-select', { volume: 2 })
+
       registry.set('hudText', nearSpotName)
+    }
   }
 
   updateNodes() {
@@ -125,7 +128,7 @@ export class CellMap extends Scene {
   unzoom() {
     if (this.isLeaving) return
 
-    this.sound.play('player-exit')
+    this.sound.play('player-exit', { volume: 0.6 })
     this.isLeaving = true
     this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
       if (p === 1) {
