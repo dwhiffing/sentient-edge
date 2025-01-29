@@ -101,7 +101,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
-    items: ['damageMeleeFreq', 'speedMoveMulti'],
+    items: ['damageMeleeBase', 'speedMoveMulti'],
   },
 
   {
@@ -112,7 +112,7 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.4,
     y: 0.8,
-    items: ['healthMax', 'damageMulti'],
+    items: ['healthMax', 'damageMulti', 'sizeBase'],
   },
 ]
 
@@ -225,7 +225,7 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.4,
     y: 0.8,
-    items: ['rangeCount', 'sizeBase', 'defenseMelee'],
+    items: ['rangeCount', 'speedMeleeMulti', 'defenseMelee'],
   },
 ]
 
@@ -317,7 +317,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.4,
     y: 0.8,
-    items: ['damageRangeBase', 'speedMeleeMulti'],
+    items: ['damageRangeBase', 'defenseRanged', 'damageMeleeFreq'],
   },
 ]
 
@@ -392,7 +392,7 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 4,
     x: 0.4,
     y: 0.8,
-    items: ['damageMeleeFreq', 'defenseRanged', 'earnRateMulti'],
+    items: ['earnRateMulti'],
   },
 ]
 

@@ -181,7 +181,7 @@ export class Player {
     await this.delay(PLAYER_ATTACK_DURATION)
     if (!this.sprite.active) return
     this.sword.setAngle(0).setFrame(this.swordConfig.frame).setDepth(2)
-    await this.delay(PLAYER_ATTACK_DELAY * this.stats.speedMeleeMulti)
+    await this.delay(PLAYER_ATTACK_DELAY / this.stats.speedMeleeMulti)
     if (!this.sprite.active) return
     this.attackReady = true
   }
