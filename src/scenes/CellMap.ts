@@ -169,6 +169,7 @@ export class CellMap extends Scene {
       .sprite(x, y, 'spritesheet', 55)
       .setAngle(angle)
       .setOrigin(0.5, 0.5)
+      .setDepth(20)
 
     this.time.addEvent({
       callback: () => arrow.setAlpha(arrow.alpha === 0.4 ? 1 : 0.4),
