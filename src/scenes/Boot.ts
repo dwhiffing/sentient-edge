@@ -7,8 +7,8 @@ export class Boot extends Scene {
   }
 
   init() {
-    this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff)
-    const bar = this.add.rectangle(0, 64, 10, 128, 0xffffff).setOrigin(0, 0)
+    this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0x222222)
+    const bar = this.add.rectangle(0, 64, 10, 128, 0x222222).setOrigin(0, 0)
 
     this.load.on('progress', (progress: number) => {
       bar.width = this.cameras.main.width * progress

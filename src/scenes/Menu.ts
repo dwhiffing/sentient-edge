@@ -58,7 +58,7 @@ export class Menu extends Scene {
       volume: 0,
       duration: 1000,
       onComplete: () => {
-        this.music.stop()
+        this.music?.stop()
       },
     })
     this.cameras.main.fadeOut(1000, 0, 0, 0, (_event: any, p: number) => {
@@ -92,7 +92,6 @@ export class Menu extends Scene {
           this.sword.y = Math.round(this.sword.y)
         },
       })
-      this.input.once('pointerdown', this.startGame)
       this.time.delayedCall(500, () => {
         if (registry.values.hasWon) {
           this.music = this.sound.add('music-win', { loop: true, volume: 0.5 })
@@ -100,6 +99,7 @@ export class Menu extends Scene {
           this.music = this.sound.add('music-menu', { loop: true, volume: 0.5 })
         }
         this.music.play()
+        this.input.once('pointerdown', this.startGame)
       })
       this.sound.play('sword-land')
       this.tweens.add({

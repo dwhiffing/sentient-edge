@@ -1,6 +1,6 @@
 import { MAP_DATA } from './constants'
 
-const saveKey = '--sentient-edge-save-data'
+export const saveKey = '--sentient-edge-save-data'
 
 export class Registry {
   game: Phaser.Game
