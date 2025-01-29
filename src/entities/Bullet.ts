@@ -6,7 +6,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
     this.damage = 1
-    this.setOrigin(0.5, 0.5).setTint(0xff0000)
+    this.setOrigin(0.5, 0.5).setTint(0xec273f)
   }
 
   spawn(

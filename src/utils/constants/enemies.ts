@@ -64,7 +64,6 @@ const getEnemy = (
     ...normal,
     label: `${_enemy.key}-rare`,
     key: `${_enemy.key}-rare`,
-    color: 0xffff00,
     health: [normal.health[0] * 5, normal.health[1] * 5],
     meleeDamage: [normal.meleeDamage[0] * 5, normal.meleeDamage[1] * 5],
     rangeDamage: [normal.rangeDamage[0] * 5, normal.rangeDamage[1] * 5],

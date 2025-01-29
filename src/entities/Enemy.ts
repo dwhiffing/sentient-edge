@@ -224,7 +224,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     if (this.health <= 0) {
       this.die()
     } else {
-      this.setTintFill(0xff0000)
+      this.setTintFill(0xec273f)
       await this.delay(delay)
       this.setTint(this.color)
       this.justHit = false

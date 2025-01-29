@@ -242,8 +242,8 @@ export class Player {
     if (this.health <= 0) {
       this.die()
     } else {
-      this.sprite.setTintFill(0xff0000)
-      this.head.setTintFill(0xff0000)
+      this.sprite.setTintFill(0xec273f)
+      this.head.setTintFill(0xec273f)
       await this.delay(250)
       this.sprite.clearTint()
       this.head.clearTint()

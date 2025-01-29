@@ -44,8 +44,8 @@ export class Hud extends Scene {
     this.statsButton = new StatsButton(this, w, w)
 
     this.enemyNameText = this.add.bitmapText(85, 0, 'clarity', ' - Snake', 8)
-    this.playerHealthBar = new HealthBar(this, 1, w - 10, 75, 8, 0xff0000)
-    this.enemyHealthBar = new HealthBar(this, 1, 2, 75, 8, 0x00ff00)
+    this.playerHealthBar = new HealthBar(this, 1, w - 10, 75, 8, 0xec273f)
+    this.enemyHealthBar = new HealthBar(this, 1, 2, 75, 8, 0x5ab552)
 
     this.updateText()
     this.registry.events.on('changedata', this.updateText)
