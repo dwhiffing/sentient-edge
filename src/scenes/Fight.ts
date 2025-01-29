@@ -137,7 +137,7 @@ export class Fight extends Scene {
   hitEnemyBullet = (_enemy: unknown, _bullet: unknown) => {
     const bullet = _bullet as Bullet
     const enemy = _enemy as Enemy
-    if (!enemy.active) return
+    if (!enemy.active || !bullet.active) return
 
     bullet.takeDamage(1)
     enemy.takeDamage(
