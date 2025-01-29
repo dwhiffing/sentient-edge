@@ -22,7 +22,10 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.3,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 1, max: 1 }],
+    enemies: [
+      { key: 'bug', chance: 1, min: 1, max: 1 },
+      { key: 'bug-rare', chance: 0.05, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -32,7 +35,10 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.7,
     y: 0.5,
-    enemies: [{ key: 'bug', chance: 1, min: 2, max: 4 }],
+    enemies: [
+      { key: 'bug', chance: 1, min: 2, max: 4 },
+      { key: 'bug-rare', chance: 0.05, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -44,7 +50,7 @@ const LEVEL_1: INode[] = [
     y: 0.5,
     enemies: [
       { key: 'snake', chance: 1, min: 1, max: 1 },
-      // { key: 'bug-rare', chance: 0.5, min: 1, max: 1 },
+      { key: 'snake-rare', chance: 0.05, min: 1, max: 1 },
     ],
   },
   {
@@ -55,7 +61,11 @@ const LEVEL_1: INode[] = [
     cellMapFrame: 1,
     x: 0.7,
     y: 0.5,
-    enemies: [{ key: 'snake', chance: 1, min: 2, max: 3 }],
+    enemies: [
+      { key: 'snake', chance: 1, min: 2, max: 3 },
+      { key: 'bug-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'snake-rare', chance: 0.025, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -68,6 +78,8 @@ const LEVEL_1: INode[] = [
     enemies: [
       { key: 'snake', chance: 1, min: 2, max: 3 },
       { key: 'bug', chance: 1, min: 1, max: 2 },
+      { key: 'bug-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'snake-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {
@@ -81,6 +93,8 @@ const LEVEL_1: INode[] = [
     enemies: [
       { key: 'snake', chance: 1, min: 3, max: 4 },
       { key: 'bug', chance: 1, min: 2, max: 4 },
+      { key: 'bug-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'snake-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {
@@ -125,7 +139,10 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.3,
     y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
+    enemies: [
+      { key: 'spider', chance: 1, min: 1, max: 1 },
+      { key: 'spider-rare', chance: 0.05, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -135,7 +152,10 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.7,
     y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
+    enemies: [
+      { key: 'spider', chance: 1, min: 2, max: 4 },
+      { key: 'spider-rare', chance: 0.05, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -145,7 +165,10 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.3,
     y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
+    enemies: [
+      { key: 'snail', chance: 1, min: 2, max: 2 },
+      { key: 'snail-rare', chance: 0.05, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -155,17 +178,11 @@ const LEVEL_2: INode[] = [
     cellMapFrame: 2,
     x: 0.5,
     y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
-  },
-  {
-    type: 'fight',
-    id: 'forest-2c',
-    name: 'Forest 2c',
-    cellIndex: 4,
-    cellMapFrame: 2,
-    x: 0.7,
-    y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'spider' }],
+    enemies: [
+      { key: 'snail', chance: 1, min: 2, max: 3 },
+      { key: 'spider-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'snail-rare', chance: 0.025, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -176,8 +193,10 @@ const LEVEL_2: INode[] = [
     x: 0.1,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'spider' },
-      { chance: 1, min: 1, max: 1, key: 'snail' },
+      { key: 'snail', chance: 1, min: 2, max: 3 },
+      { key: 'spider', chance: 1, min: 1, max: 2 },
+      { key: 'spider-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'snail-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {
@@ -189,21 +208,10 @@ const LEVEL_2: INode[] = [
     x: 0.2,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'spider' },
-      { chance: 1, min: 1, max: 1, key: 'snail' },
-    ],
-  },
-  {
-    type: 'fight',
-    id: 'forest-3c',
-    name: 'Forest 3c',
-    cellIndex: 3,
-    cellMapFrame: 2,
-    x: 0.3,
-    y: 0.5,
-    enemies: [
-      { chance: 1, min: 1, max: 1, key: 'spider' },
-      { chance: 1, min: 1, max: 1, key: 'snail' },
+      { key: 'snail', chance: 1, min: 3, max: 4 },
+      { key: 'spider', chance: 1, min: 2, max: 4 },
+      { key: 'spider-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'snail-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {
@@ -238,7 +246,10 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.3,
     y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'roller' }],
+    enemies: [
+      { key: 'roller', chance: 1, min: 2, max: 3 },
+      { key: 'roller-rare', chance: 0.05, min: 1, max: 1 },
+    ],
   },
   {
     type: 'fight',
@@ -248,18 +259,12 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 3,
     x: 0.7,
     y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'roller' }],
+    enemies: [
+      { key: 'ogre', chance: 1, min: 2, max: 3 },
+      { key: 'ogre-rare', chance: 0.05, min: 1, max: 1 },
+    ],
   },
-  {
-    type: 'fight',
-    id: 'mountain-1c',
-    name: 'Mountain 1c',
-    cellIndex: 0,
-    cellMapFrame: 3,
-    x: 0.5,
-    y: 0.5,
-    enemies: [{ chance: 1, min: 1, max: 1, key: 'roller' }],
-  },
+
   {
     type: 'fight',
     id: 'mountain-2a',
@@ -269,8 +274,10 @@ const LEVEL_3: INode[] = [
     x: 0.1,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'roller' },
-      { chance: 1, min: 1, max: 1, key: 'ogre' },
+      { key: 'roller', chance: 1, min: 1, max: 2 },
+      { key: 'ogre', chance: 1, min: 1, max: 2 },
+      { key: 'roller-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'ogre-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {
@@ -282,26 +289,15 @@ const LEVEL_3: INode[] = [
     x: 0.2,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'roller' },
-      { chance: 1, min: 1, max: 1, key: 'ogre' },
-    ],
-  },
-  {
-    type: 'fight',
-    id: 'mountain-2c',
-    name: 'Mountain 2c',
-    cellIndex: 1,
-    cellMapFrame: 3,
-    x: 0.3,
-    y: 0.5,
-    enemies: [
-      { chance: 1, min: 1, max: 1, key: 'roller' },
-      { chance: 1, min: 1, max: 1, key: 'ogre' },
+      { key: 'roller', chance: 1, min: 2, max: 3 },
+      { key: 'ogre', chance: 1, min: 2, max: 3 },
+      { key: 'roller-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'ogre-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {
     type: 'fight-boss',
-    id: 'mountain-2d',
+    id: 'mountain-2c',
     name: 'Mountain Boss',
     cellIndex: 1,
     cellMapFrame: 3,
@@ -331,8 +327,8 @@ const LEVEL_4: INode[] = [
     x: 0.1,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'zombie' },
-      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+      { key: 'zombie', chance: 1, min: 2, max: 3 },
+      { key: 'zombie-rare', chance: 0.05, min: 1, max: 1 },
     ],
   },
   {
@@ -344,8 +340,8 @@ const LEVEL_4: INode[] = [
     x: 0.2,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'zombie' },
-      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+      { key: 'skeleton', chance: 1, min: 2, max: 3 },
+      { key: 'skeleton-rare', chance: 0.05, min: 1, max: 1 },
     ],
   },
   {
@@ -357,8 +353,10 @@ const LEVEL_4: INode[] = [
     x: 0.3,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'zombie' },
-      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+      { key: 'zombie', chance: 1, min: 2, max: 3 },
+      { key: 'skeleton', chance: 1, min: 2, max: 3 },
+      { key: 'zombie-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'skeleton-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {
@@ -370,8 +368,10 @@ const LEVEL_4: INode[] = [
     x: 0.5,
     y: 0.5,
     enemies: [
-      { chance: 1, min: 1, max: 1, key: 'zombie' },
-      { chance: 1, min: 1, max: 1, key: 'skeleton' },
+      { key: 'zombie', chance: 1, min: 2, max: 3 },
+      { key: 'skeleton', chance: 1, min: 2, max: 3 },
+      { key: 'zombie-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'skeleton-rare', chance: 0.025, min: 1, max: 1 },
     ],
   },
   {

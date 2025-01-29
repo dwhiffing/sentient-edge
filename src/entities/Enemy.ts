@@ -97,7 +97,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const shouldShoot = Phaser.Math.RND.frac() <= this.stats.rangeShootChance
     if (!shouldShoot) return
 
-    this.forceStop = true
+    if (this.stats.rangeStopOnShoot) {
+      this.forceStop = true
+    }
     this.spriteBody.setVelocity(0, 0)
 
     const p = this.scene.player
