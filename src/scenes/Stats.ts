@@ -2,6 +2,8 @@ import { Scene } from 'phaser'
 import { CellMap } from './CellMap'
 import { WorldMap } from './WorldMap'
 import { IUpgradeKeys } from '../utils/registry'
+import { baseStats } from '../entities/Player'
+import { ITEMS } from '../utils/constants'
 
 export class Stats extends Scene {
   topBar: Phaser.GameObjects.Rectangle
@@ -24,12 +26,20 @@ export class Stats extends Scene {
     let worldScene = this.game.scene.getScene('WorldMap') as WorldMap
     let scene = this.scene.isActive('CellScene') ? cellScene : worldScene
 
-    stats.forEach(({ key, label }) => {
-      text += label
-      text += ' - '
-      text += scene.player.stats[key as IUpgradeKeys]
-      text += '\n'
-    })
+    stats
+      .map(({ key, label }) => ({
+        key,
+        label,
+        value: scene.player.stats[key as IUpgradeKeys],
+      }))
+      .filter((s) => s.value !== baseStats[s.key as keyof typeof baseStats])
+      .forEach(({ label, value, key }) => {
+        const item = ITEMS.find((i) => i.key === key)
+        text += label
+        text += ' - '
+        text += item?.percent ? `${Math.round(value * 100)}%` : value
+        text += '\n'
+      })
 
     this.add.bitmapText(0, 0, 'clarity', text, 8)
     this.updateText()

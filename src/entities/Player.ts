@@ -333,7 +333,7 @@ export class Player {
   }
 }
 
-const baseStats: Record<IUpgradeKeys, number> = {
+export const baseStats: Record<IUpgradeKeys, number> = {
   healthMax: 10,
   defenseMelee: 0,
   defenseRanged: 0,
