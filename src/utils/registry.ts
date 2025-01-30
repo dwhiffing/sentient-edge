@@ -1,4 +1,4 @@
-import { MAP_DATA } from './constants'
+import { CELL_ORDER, MAP_DATA } from './constants'
 
 export const saveKey = '--sentient-edge-save-data'
 
@@ -56,6 +56,20 @@ export class Registry {
 
   get values() {
     return this.game.registry.values as IState
+  }
+
+  get unlockedCellIndexes() {
+    return CELL_ORDER.filter((cellIndex, index) => {
+      if (cellIndex === 6) return true
+
+      const prevCellNodes = MAP_DATA.filter(
+        (d) =>
+          d.cellIndex === CELL_ORDER[index - 1] && d.type.includes('fight'),
+      )
+      return prevCellNodes.every((node) =>
+        registry.values.clearedNodes?.includes(node.id),
+      )
+    })
   }
 
   set = (

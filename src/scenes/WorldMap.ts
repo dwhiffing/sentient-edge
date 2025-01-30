@@ -66,24 +66,10 @@ export class WorldMap extends Scene {
   }
 
   updateCovers() {
-    CELL_ORDER.forEach((cellIndex, index) => {
-      if (cellIndex === 6) return this.removeCover(cellIndex)
-
-      const prevCellNodes = MAP_DATA.filter(
-        (d) =>
-          d.cellIndex === CELL_ORDER[index - 1] && d.type.includes('fight'),
-      )
-      if (
-        prevCellNodes.every((node) =>
-          registry.values.clearedNodes?.includes(node.id),
-        )
-      ) {
-        this.removeCover(cellIndex)
-      }
-    })
+    registry.unlockedCellIndexes.forEach(this.removeCover)
   }
 
-  removeCover(index: number) {
+  removeCover = (index: number) => {
     this.covers[index].setAlpha(0)
     const body = this.covers[index].body! as Phaser.Physics.Arcade.Body
     body.enable = false

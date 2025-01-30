@@ -6,10 +6,12 @@ import { INode, ITEMS, MAP_DATA } from '../utils/constants'
 export class Shop extends Scene {
   background: Phaser.GameObjects.Sprite
   shopkeep: Phaser.GameObjects.Sprite
+  teleporterLeft: Phaser.GameObjects.Sprite
+  teleporterRight: Phaser.GameObjects.Sprite
   player: Player
   isLeaving: boolean
   items: Phaser.Physics.Arcade.Sprite[]
-  activeItemKey?: IUpgradeKeys
+  activeItemKey?: IUpgradeKeys | 'teleporter-left' | 'teleporter-right'
   allowPurchase: boolean
   node: INode
 
@@ -26,11 +28,25 @@ export class Shop extends Scene {
       .play('shopkeep-idle')
       .setOrigin(0.5, 1)
 
+    if (this.getTeleporterDestinations().left) {
+      this.teleporterRight = this.physics.add
+        .sprite(width - 30, height - 40, 'spritesheet', 55)
+        .setOrigin(0.5, 0.5)
+        .setAngle(90)
+
+      this.teleporterLeft = this.physics.add
+        .sprite(30, height - 40, 'spritesheet', 55)
+        .setOrigin(0.5, 0.5)
+        .setAngle(270)
+    }
+
     this.isLeaving = false
     this.activeItemKey = undefined
     this.allowPurchase = true
 
-    this.player = new Player(this, { x: width / 2, y: height - 20 })
+    let px = registry.values.lastPlayerPosition.x ?? width / 2
+    let py = registry.values.lastPlayerPosition.y ?? height / 2
+    this.player = new Player(this, { x: px, y: py })
 
     this.node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
 
@@ -51,12 +67,18 @@ export class Shop extends Scene {
 
     if (this.player.isNearEdge()) this.backToMap()
 
+    const teleporterOverlap = this.physics.overlap(
+      this.player.sprite,
+      [this.teleporterLeft, this.teleporterRight],
+      this.hitPlayerTeleporter,
+    )
+
     const overlap = this.physics.overlap(
       this.player.sprite,
       this.items,
       this.hitPlayerItem,
     )
-    if (!overlap) {
+    if (!overlap && !teleporterOverlap) {
       registry.set('hudText', '')
       this.shopkeep.play('shopkeep-idle')
       this.activeItemKey = undefined
@@ -101,8 +123,51 @@ export class Shop extends Scene {
       .setData('key', key)
   }
 
+  getTeleporterDestinations = () => {
+    const shopList = MAP_DATA.filter(
+      (d) =>
+        d.type === 'shop' &&
+        registry.unlockedCellIndexes.includes(d.cellIndex) &&
+        d.id !== registry.values.activeNode,
+    )
+    const currentIndex = shopList.findIndex(
+      (s) => s.id == registry.values.activeNode,
+    )
+    const len = shopList.length - 1
+    const leftIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : len
+    const rightIndex = currentIndex + 1 <= len ? currentIndex + 1 : 0
+
+    return { left: shopList[leftIndex], right: shopList[rightIndex] }
+  }
+
+  teleport = (key: string) => {
+    const { left, right } = this.getTeleporterDestinations()
+
+    registry.set('lastPlayerPosition', {
+      x: this.player.sprite.x,
+      y: this.player.sprite.y,
+    })
+    if (key.includes('left')) {
+      registry.set('activeNode', left.id)
+      registry.set('activeZoom', left.cellIndex)
+    } else {
+      registry.set('activeNode', right.id)
+      registry.set('activeZoom', right.cellIndex)
+    }
+    this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
+      if (p === 1) {
+        this.scene.start('Shop')
+      }
+    })
+  }
+
   buyItem = (key: string) => {
     if (!this.allowPurchase) return
+
+    if (key.includes('teleporter')) {
+      this.teleport(key)
+      return
+    }
 
     this.allowPurchase = false
 
@@ -142,6 +207,26 @@ export class Shop extends Scene {
       this.time.delayedCall(timeout, () => {
         registry.set('hudText', '')
       })
+  }
+
+  hitPlayerTeleporter = (_player: unknown, _teleporter: unknown) => {
+    let itemKey: 'teleporter-left' | 'teleporter-right' = 'teleporter-left'
+    if (this.activeItemKey) return
+    const { left, right } = this.getTeleporterDestinations()
+
+    if (_teleporter === this.teleporterLeft) {
+      itemKey = 'teleporter-left'
+      this.shopkeepTalk(`This will send you to \n${left.name}`)
+    } else if (_teleporter === this.teleporterRight) {
+      itemKey = 'teleporter-right'
+      this.shopkeepTalk(`This will send you to \n${right.name}`)
+    }
+
+    if (itemKey !== this.activeItemKey) {
+      this.sound.play('menu-select', { volume: 2 })
+    }
+
+    this.activeItemKey = itemKey
   }
 
   hitPlayerItem = (_player: unknown, _item: unknown) => {
