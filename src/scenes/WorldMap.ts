@@ -25,9 +25,10 @@ export class WorldMap extends Scene {
       scale: 0.5,
       speedMultiplier: 0.7,
     })
-    const x = registry.values.lastZoom % 3
-    const y = Math.floor(registry.values.lastZoom / 3)
-    this.player.sprite.setPosition(x * 66 + 33, y * 66 + 33)
+    const cx = registry.values.lastZoom % 3
+    const cy = Math.floor(registry.values.lastZoom / 3)
+    const { x, y } = registry.values.lastPlayerPosition
+    this.player.sprite.setPosition(cx * 66 + x / 3, cy * 66 + y / 3)
 
     if (registry.values.activeZoom !== -1) {
       this.goToCell(registry.values.activeZoom)
@@ -98,5 +99,11 @@ export class WorldMap extends Scene {
   goToCell(cellIndex: number) {
     registry.set('activeZoom', cellIndex)
     this.scene.start('CellMap')
+    const cx = (cellIndex % 3) * 66.66
+    const cy = Math.floor(cellIndex / 3) * 66.66
+    registry.set('lastPlayerPosition', {
+      x: (this.player.sprite.x - cx) * 3,
+      y: (this.player.sprite.y - cy) * 3,
+    })
   }
 }

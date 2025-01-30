@@ -32,8 +32,8 @@ export class CellMap extends Scene {
 
     const node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
     this.player = new Player(this, {
-      x: node ? node.x * w : undefined,
-      y: node ? node.y * w : undefined,
+      x: node ? node.x * w : registry.values.lastPlayerPosition.x,
+      y: node ? node.y * w : registry.values.lastPlayerPosition.y,
     })
     registry.set('health', this.player.stats.healthMax)
     registry.set('activeNode', 0)
@@ -134,6 +134,10 @@ export class CellMap extends Scene {
       if (p === 1) {
         registry.set('lastZoom', registry.values.activeZoom)
         registry.set('activeZoom', -1)
+        registry.set('lastPlayerPosition', {
+          x: this.player.sprite.x,
+          y: this.player.sprite.y,
+        })
         this.scene.start('WorldMap')
       }
     })
