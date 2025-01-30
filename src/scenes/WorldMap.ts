@@ -37,7 +37,7 @@ export class WorldMap extends Scene {
     }
 
     this.input.once('pointerdown', () => {
-      this.sound.play('player-enter')
+      this.sound.play('player-enter', { volume: 0.5 })
       this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
         if (p === 1) {
           this.goToCell(this.getPlayerCellIndex())
