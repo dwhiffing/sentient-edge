@@ -131,6 +131,8 @@ export class Shop extends Scene {
       this.sound.play('menu-deny', { volume: 2 })
       this.shopkeepTalk("You can't afford that", 1500)
     }
+
+    this.player.sword.setFrame(this.player.swordConfig.frame)
   }
 
   shopkeepTalk = (text: string, timeout?: number) => {
