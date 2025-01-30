@@ -52,9 +52,11 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     if (this.collected && this.active) {
-      const angle = Phaser.Math.Angle.BetweenPoints(
-        this,
-        this.scene.player.sprite,
+      const angle = Phaser.Math.Angle.Between(
+        this.x,
+        this.y,
+        this.scene.player.sprite.x,
+        this.scene.player.sprite.y - 10,
       )
       this.setAcceleration(Math.cos(angle) * 450, Math.sin(angle) * 450)
     }
