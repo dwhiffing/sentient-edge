@@ -9,8 +9,10 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'spritesheet', 48)
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
-    this.setSize(12, 12)
+    this.setSize(4, 4)
     this.amount = 1
+    this.setDamping(true)
+    this.setDrag(0.99)
   }
 
   spawn(x: number, y: number, amount = 1) {

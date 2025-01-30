@@ -26,6 +26,8 @@ export class Player {
   headBody: Phaser.Physics.Arcade.Body
   swordHit: Phaser.Physics.Arcade.Sprite
   swordHitBody: Phaser.Physics.Arcade.Body
+  goldHit: Phaser.GameObjects.Arc
+  goldHitBody: Phaser.Physics.Arcade.Body
   swordBody: Phaser.Physics.Arcade.Body
   bullets: Phaser.GameObjects.Group
   attackReady: boolean
@@ -89,6 +91,12 @@ export class Player {
     this.head = this.scene.physics.add.sprite(x, y, 'spritesheet', 8)
     this.head.setScale(scale).setOrigin(0.5, 0.5).setDepth(2).setSize(0.1, 0.1)
     this.headBody = this.head.body as Phaser.Physics.Arcade.Body
+
+    const radius = 27 * this.stats.earnRateMulti
+    this.goldHit = this.scene.add.circle(0, 0, radius)
+    this.scene.physics.add.existing(this.goldHit)
+    this.goldHitBody = this.goldHit.body as Phaser.Physics.Arcade.Body
+    this.goldHitBody.setCircle(radius)
 
     this.setSwordPosition()
   }
@@ -213,6 +221,7 @@ export class Player {
       s.x,
       s.y - (this.sword.angle !== 0 ? 13 : 14) * s.scaleX,
     )
+    this.goldHit.setPosition(s.x, s.y - 10)
     let frame = 8 + registry.values.faceIndex * 2
     if (this.sword.angle !== 0) frame += 1
     this.head.setFrame(frame)

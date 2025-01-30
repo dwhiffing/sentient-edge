@@ -267,7 +267,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.moveEvent?.destroy()
     this.flopEvent?.destroy()
     await this.delay(50)
-    this.setPosition(-500, -500)
   }
 
   get meleeDamage() {

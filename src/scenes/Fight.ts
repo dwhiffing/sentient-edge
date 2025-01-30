@@ -73,6 +73,7 @@ export class Fight extends Scene {
     this.physics.overlap(this.player.swordHit, this.enemies, this.hitSwordEnemy)
     this.physics.overlap(this.player.sprite, this.enemies, this.hitPlayerEnemy)
     this.physics.overlap(this.player.sprite, this.gold, this.hitPlayerGold)
+    this.physics.overlap(this.player.goldHit, this.gold, this.hitGrabGold)
     this.physics.overlap(this.player.sprite, this.bullets, this.hitPlayerBullet)
     this.physics.overlap(this.enemies, this.player.bullets, this.hitEnemyBullet)
 
@@ -200,6 +201,14 @@ export class Fight extends Scene {
     if (allEnemiesDead && allGoldDead) {
       this.time.delayedCall(800, () => this.backToMap())
     }
+  }
+
+  hitGrabGold = (_player: unknown, _gold: unknown) => {
+    const gold = _gold as Gold
+    const player = this.player.sprite
+
+    const angle = Phaser.Math.Angle.BetweenPoints(gold, player)
+    gold.setAcceleration(Math.cos(angle) * 150, Math.sin(angle) * 150)
   }
 
   hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {
