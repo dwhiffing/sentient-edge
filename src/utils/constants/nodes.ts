@@ -13,6 +13,7 @@ export type INode = {
   items?: IUpgradeKeys[]
 }
 
+const RARE_ENEMY_RATE = 0.1
 const LEVEL_1: INode[] = [
   {
     type: 'fight',
@@ -24,7 +25,7 @@ const LEVEL_1: INode[] = [
     y: 0.77,
     enemies: [
       { key: 'bug', chance: 1, min: 1, max: 1 },
-      { key: 'bug-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'bug-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -37,7 +38,7 @@ const LEVEL_1: INode[] = [
     y: 0.6,
     enemies: [
       { key: 'bug', chance: 1, min: 2, max: 4 },
-      { key: 'bug-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'bug-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -50,7 +51,7 @@ const LEVEL_1: INode[] = [
     y: 0.53,
     enemies: [
       { key: 'snake', chance: 1, min: 1, max: 1 },
-      { key: 'snake-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'snake-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -63,8 +64,8 @@ const LEVEL_1: INode[] = [
     y: 0.54,
     enemies: [
       { key: 'snake', chance: 1, min: 2, max: 3 },
-      { key: 'bug-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'snake-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'bug-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'snake-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -78,8 +79,8 @@ const LEVEL_1: INode[] = [
     enemies: [
       { key: 'snake', chance: 1, min: 2, max: 3 },
       { key: 'bug', chance: 1, min: 1, max: 2 },
-      { key: 'bug-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'snake-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'bug-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'snake-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -93,8 +94,8 @@ const LEVEL_1: INode[] = [
     enemies: [
       { key: 'snake', chance: 1, min: 3, max: 4 },
       { key: 'bug', chance: 1, min: 2, max: 4 },
-      { key: 'bug-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'snake-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'bug-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'snake-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -141,7 +142,7 @@ const LEVEL_2: INode[] = [
     y: 0.8,
     enemies: [
       { key: 'spider', chance: 1, min: 1, max: 1 },
-      { key: 'spider-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'spider-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -154,7 +155,7 @@ const LEVEL_2: INode[] = [
     y: 0.58,
     enemies: [
       { key: 'spider', chance: 1, min: 2, max: 4 },
-      { key: 'spider-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'spider-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -167,7 +168,7 @@ const LEVEL_2: INode[] = [
     y: 0.58,
     enemies: [
       { key: 'snail', chance: 1, min: 2, max: 2 },
-      { key: 'snail-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'snail-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -180,8 +181,8 @@ const LEVEL_2: INode[] = [
     y: 0.62,
     enemies: [
       { key: 'snail', chance: 1, min: 2, max: 3 },
-      { key: 'spider-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'snail-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'spider-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'snail-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -195,8 +196,8 @@ const LEVEL_2: INode[] = [
     enemies: [
       { key: 'snail', chance: 1, min: 2, max: 3 },
       { key: 'spider', chance: 1, min: 1, max: 2 },
-      { key: 'spider-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'snail-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'spider-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'snail-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -210,8 +211,8 @@ const LEVEL_2: INode[] = [
     enemies: [
       { key: 'snail', chance: 1, min: 3, max: 4 },
       { key: 'spider', chance: 1, min: 2, max: 4 },
-      { key: 'spider-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'snail-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'spider-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'snail-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -248,7 +249,7 @@ const LEVEL_3: INode[] = [
     y: 0.6,
     enemies: [
       { key: 'roller', chance: 1, min: 2, max: 3 },
-      { key: 'roller-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'roller-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -261,7 +262,7 @@ const LEVEL_3: INode[] = [
     y: 0.4,
     enemies: [
       { key: 'ogre', chance: 1, min: 2, max: 3 },
-      { key: 'ogre-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'ogre-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
 
@@ -276,8 +277,8 @@ const LEVEL_3: INode[] = [
     enemies: [
       { key: 'roller', chance: 1, min: 1, max: 2 },
       { key: 'ogre', chance: 1, min: 1, max: 2 },
-      { key: 'roller-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'ogre-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'roller-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'ogre-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -291,8 +292,8 @@ const LEVEL_3: INode[] = [
     enemies: [
       { key: 'roller', chance: 1, min: 2, max: 3 },
       { key: 'ogre', chance: 1, min: 2, max: 3 },
-      { key: 'roller-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'ogre-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'roller-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'ogre-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
@@ -328,7 +329,7 @@ const LEVEL_4: INode[] = [
     y: 0.8,
     enemies: [
       { key: 'zombie', chance: 1, min: 2, max: 3 },
-      { key: 'zombie-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'zombie-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -341,7 +342,7 @@ const LEVEL_4: INode[] = [
     y: 0.55,
     enemies: [
       { key: 'skeleton', chance: 1, min: 2, max: 3 },
-      { key: 'skeleton-rare', chance: 0.05, min: 1, max: 1 },
+      { key: 'skeleton-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },
   {
@@ -355,8 +356,8 @@ const LEVEL_4: INode[] = [
     enemies: [
       { key: 'zombie', chance: 1, min: 2, max: 3 },
       { key: 'skeleton', chance: 1, min: 2, max: 3 },
-      { key: 'zombie-rare', chance: 0.025, min: 1, max: 1 },
-      { key: 'skeleton-rare', chance: 0.025, min: 1, max: 1 },
+      { key: 'zombie-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
+      { key: 'skeleton-rare', chance: RARE_ENEMY_RATE / 2, min: 1, max: 1 },
     ],
   },
   {
