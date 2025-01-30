@@ -128,7 +128,7 @@ export const ENEMIES: IEnemyStats[] = [
       key: 'snail',
       frame: 28,
       color: 0xcc99ff,
-      label: 'land snail',
+      label: 'snail',
       health: [60, 60],
       gold: [50, 60],
       meleeDamage: [6, 6],

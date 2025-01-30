@@ -4,6 +4,7 @@ import { registry } from '../utils/registry'
 import { shoot } from '../utils/shoot'
 
 const flopRate = 300
+const avoidanceDistance = 20
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   health: number
@@ -50,6 +51,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       .setDepth(20)
   }
 
+  update() {
+    this.setDepth(3 + this.y / 100)
+  }
 
   onMoveEvent = async () => {
     if (this.forceStop || !this.active) return
@@ -70,6 +74,21 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.target.y - this.y,
       this.target.x - this.x,
     )
+
+    let avoidAngle: null | number = null
+
+    this.scene.enemies.children.iterate((_otherEnemy: unknown) => {
+      const otherEnemy = _otherEnemy as Enemy
+      if (otherEnemy === this) return true
+
+      const distance = Phaser.Math.Distance.BetweenPoints(this, otherEnemy)
+      if (distance < avoidanceDistance) {
+        const angle = Phaser.Math.Angle.BetweenPoints(this, otherEnemy)
+        avoidAngle = angle + Math.PI
+      }
+      return true
+    })
+
     const randomAngle = Phaser.Math.RND.between(-180, 180)
 
     const spreadAngle = mixAngles(
@@ -77,7 +96,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       randomAngle,
       this.moveConfig.moveSpreadBias,
     )
-    this.currentAngle = mixAngles(spreadAngle, targetAngle, targetBias)
+    this.currentAngle =
+      typeof avoidAngle === 'number'
+        ? avoidAngle
+        : mixAngles(spreadAngle, targetAngle, targetBias)
 
     this.spriteBody.setVelocity(
       Math.cos(this.currentAngle) * this.moveConfig.speed,

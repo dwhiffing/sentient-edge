@@ -71,7 +71,7 @@ export const moveConfigKnight = [
 
 export const moveConfigSnail = [
   {
-    speed: 10,
+    speed: 30,
     moveTarget: 'player',
     moveEventDelay: 500,
     moveSpreadBias: 1,
