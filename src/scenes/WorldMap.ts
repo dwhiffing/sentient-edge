@@ -97,13 +97,15 @@ export class WorldMap extends Scene {
   }
 
   goToCell(cellIndex: number) {
+    const w = this.cameras.main.width
+    const o = 30
     registry.set('activeZoom', cellIndex)
     this.scene.start('CellMap')
     const cx = (cellIndex % 3) * 66.66
     const cy = Math.floor(cellIndex / 3) * 66.66
     registry.set('lastPlayerPosition', {
-      x: (this.player.sprite.x - cx) * 3,
-      y: (this.player.sprite.y - cy) * 3,
+      x: Phaser.Math.Clamp((this.player.sprite.x - cx) * 3, o, w - o),
+      y: Phaser.Math.Clamp((this.player.sprite.y - cy) * 3, o, w - o),
     })
   }
 }
