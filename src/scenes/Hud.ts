@@ -4,6 +4,7 @@ import { StatsButton } from '../entities/StatsButton'
 import { HealthBar } from '../entities/HealthBar'
 import { CellMap } from './CellMap'
 import { Fight } from './Fight'
+import { MAP_DATA } from '../utils/constants'
 
 export class Hud extends Scene {
   topText: Phaser.GameObjects.BitmapText
@@ -33,7 +34,11 @@ export class Hud extends Scene {
       .rectangle(0, h - 12, w, 12, c)
       .setOrigin(0, 0)
       .setInteractive()
-      .on('pointerdown', () => this.scene.launch('Stats'))
+      .on('pointerdown', () => {
+        const node = MAP_DATA.find((d) => d.id === registry.values.activeNode)
+
+        if (!node?.type.includes('fight')) this.scene.launch('Stats')
+      })
 
     this.topText = this.add
       .bitmapText(w / 2, 0, 'clarity', '', 8, 0.5)
@@ -99,7 +104,8 @@ export class Hud extends Scene {
       this.enemyHealthBar.hide()
     }
 
-    if (registry.values.activeNode || registry.values.activeZoom === -1) {
+    const node = MAP_DATA.find((d) => d.id === registry.values.activeNode)
+    if (node?.type.includes('fight') || registry.values.activeZoom === -1) {
       this.statsButton.hide()
     } else {
       this.statsButton.show()
