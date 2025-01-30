@@ -185,9 +185,9 @@ export class Fight extends Scene {
   }
 
   hitPlayerEnemy = (_player: unknown, _enemy: unknown) => {
-    if (!this.player.sprite.active) return
-
     const enemy = _enemy as Enemy
+    if (!this.player.sprite.active || !enemy.active) return
+
     this.player.takeDamage(enemy.meleeDamage)
   }
 
