@@ -97,7 +97,7 @@ export const ITEMS: IPurchasable[] = [
     temporary: true,
     text: 'That costs {cost} gold.\nIt will increase your\nmax health by {change}',
     effects: getEffects('healthMax', {
-      fixedCosts: [50, 100, 175, 300, 500, 750, 1000, 2500, 5000],
+      fixedCosts: [25, 50, 100, 175, 300, 500, 750, 1000, 2500, 5000],
       maxLevel: 9,
       factor: 1.15,
       statChangePerLevel: 10,
@@ -124,7 +124,7 @@ export const ITEMS: IPurchasable[] = [
     percent: true,
     text: 'That costs {cost} gold.\nIt will increase your\ndamage multiplier by {change}',
     effects: getEffects('damageMulti', {
-      fixedCosts: [50, 100, 175, 300, 500, 750],
+      fixedCosts: [25, 50, 100, 175, 300, 500, 750],
       maxLevel: 20,
       factor: 1.15,
       statChangePerLevel: 0.1,
