@@ -24,10 +24,14 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
     this.collected = false
     this.collectedTriggered = false
 
+    this.setTint(0xf3a833)
+
     if (amount > 50) {
       this.setFrame(49)
+      this.setTint(0xec273f)
     } else if (amount > 100) {
       this.setFrame(50)
+      this.setTint(0x36c5f4)
     }
   }
 
