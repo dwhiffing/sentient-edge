@@ -63,7 +63,7 @@ export class Fight extends Scene {
 
     if (this.player.isNearEdge()) {
       this.edgeTimer++
-      if (this.edgeTimer > 150) {
+      if (this.edgeTimer > 120) {
         this.backToMap()
       }
     } else {
