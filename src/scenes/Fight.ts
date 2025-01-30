@@ -194,6 +194,12 @@ export class Fight extends Scene {
     this.lastGoldAmountDebounceEvent = this.time.delayedCall(1500, () => {
       registry.set('lastGold', 0)
     })
+
+    const allEnemiesDead = this.enemies.children.entries.every((c) => !c.active)
+    const allGoldDead = this.gold.children.entries.every((c) => !c.active)
+    if (allEnemiesDead && allGoldDead) {
+      this.time.delayedCall(800, () => this.backToMap())
+    }
   }
 
   hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {
