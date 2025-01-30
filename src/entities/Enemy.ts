@@ -147,6 +147,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     await this.flash(this.stats.rangeStartDelay)
+    if (!this.active) return
 
     const damage = Phaser.Math.RND.between(
       this.stats.rangeDamage[0],
