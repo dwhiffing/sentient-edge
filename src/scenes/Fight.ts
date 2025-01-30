@@ -35,7 +35,11 @@ export class Fight extends Scene {
       maxSize: 100,
       runChildUpdate: true,
     })
-    this.gold = this.add.group({ classType: Gold, maxSize: 100 })
+    this.gold = this.add.group({
+      classType: Gold,
+      maxSize: 100,
+      runChildUpdate: true,
+    })
     this.player = new Player(this)
     this.bullets = this.add.group({
       classType: Bullet,
@@ -189,6 +193,8 @@ export class Fight extends Scene {
 
   hitPlayerGold = (_player: unknown, _gold: unknown) => {
     const gold = _gold as Gold
+    if (!gold.active) return
+
     gold.pickup()
     registry.set('lastGold', gold.amount)
     this.lastGoldAmountDebounceEvent?.destroy()
@@ -205,10 +211,13 @@ export class Fight extends Scene {
 
   hitGrabGold = (_player: unknown, _gold: unknown) => {
     const gold = _gold as Gold
-    const player = this.player.sprite
+    if (!gold.active || gold.collectedTriggered) return
 
-    const angle = Phaser.Math.Angle.BetweenPoints(gold, player)
-    gold.setAcceleration(Math.cos(angle) * 150, Math.sin(angle) * 150)
+    gold.collectedTriggered = true
+
+    this.time.delayedCall(300, () => {
+      gold.collected = true
+    })
   }
 
   hitSwordEnemy = (_sword: unknown, _enemy: unknown) => {

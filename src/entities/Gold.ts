@@ -3,6 +3,8 @@ import { registry } from '../utils/registry'
 
 export class Gold extends Phaser.Physics.Arcade.Sprite {
   amount: number
+  collected: boolean
+  collectedTriggered: boolean
   declare scene: Fight
 
   constructor(scene: Fight, x: number, y: number) {
@@ -11,14 +13,17 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.add.existing(this)
     this.setSize(4, 4)
     this.amount = 1
-    this.setDamping(true)
-    this.setDrag(0.99)
+    this.collected = false
+    this.collectedTriggered = false
   }
 
   spawn(x: number, y: number, amount = 1) {
     this.setActive(true).setVisible(true).setPosition(x, y)
     this.amount = amount
-    this.setFrame(48)
+    this.setFrame(48).setAcceleration(0).setVelocity(0)
+    this.collected = false
+    this.collectedTriggered = false
+
     if (amount > 50) {
       this.setFrame(49)
     } else if (amount > 100) {
@@ -29,7 +34,11 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
   pickup() {
     if (!this.active || !this.visible) return
 
-    this.setActive(false).setVisible(false).setPosition(-20, -20)
+    this.setActive(false)
+      .setVisible(false)
+      .setPosition(-20, -20)
+      .setAcceleration(0)
+      .setVelocity(0)
     this.scene.sound.play('gold', {
       volume: 4,
       rate: Phaser.Math.RND.realInRange(0.8, 1.2),
@@ -39,5 +48,15 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
       registry.values.gold +
         this.amount * this.scene.player.stats.earnRateMulti,
     )
+  }
+
+  update() {
+    if (this.collected && this.active) {
+      const angle = Phaser.Math.Angle.BetweenPoints(
+        this,
+        this.scene.player.sprite,
+      )
+      this.setAcceleration(Math.cos(angle) * 450, Math.sin(angle) * 450)
+    }
   }
 }
