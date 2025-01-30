@@ -1,7 +1,5 @@
 # work on progression
 
-test desert progression
-
 test forest progression
 
 implement ogre behaviour
@@ -15,11 +13,11 @@ test castle progression
 
 # tasks
 
-ensure first click only focuses, doesnt do any inputs
-Submit and design document link + credits to description
-
 add remaining sounds
 add game over scene (text saying "name is dead, but you have been recovered by new name")
+ensure first click only focuses, doesnt do any inputs
+
+Submit
 
 make a bg for each biome node (desert, forest, mountain, castle, shop)
 mobile controls
@@ -41,6 +39,7 @@ https://docs.google.com/document/d/1dMR1QEl3k0w5pcw4Irm3zjVLuULtn3D-dmgJ235kkEw/
 
 Icons: https://piiixl.itch.io/1-bit-16px-icons-part-1
 
-Music: Context Sensitive - [song name goes here]
-https://www.youtube.com/ContextSensitive
-https://contextsensitive.bandcamp.com/
+Music: Context Sensitive - https://contextsensitive.bandcamp.com/
+
+https://hexany-ives.itch.io/hexanys-monster-menagerie
+https://butterhands.itch.io/doomsphere-charset
