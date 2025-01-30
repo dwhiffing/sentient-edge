@@ -86,6 +86,7 @@ export class WorldMap extends Scene {
     const w = this.cameras.main.width
     const o = 30
     registry.set('activeZoom', cellIndex)
+    registry.set('lastNode', '')
     this.scene.start('CellMap')
     const cx = (cellIndex % 3) * 66.66
     const cy = Math.floor(cellIndex / 3) * 66.66

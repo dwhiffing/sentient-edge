@@ -40,7 +40,7 @@ export class CellMap extends Scene {
       y: node ? node.y * w : registry.values.lastPlayerPosition.y || w - 20,
     })
     registry.set('health', this.player.stats.healthMax)
-    registry.set('activeNode', 0)
+    registry.set('activeNode', '')
     registry.set('enemyName', '')
     registry.set('lastGold', 0)
 
