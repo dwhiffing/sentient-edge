@@ -137,8 +137,8 @@ const LEVEL_2: INode[] = [
     name: 'Forest 1a',
     cellIndex: 5,
     cellMapFrame: 2,
-    x: 0.16,
-    y: 0.58,
+    x: 0.575,
+    y: 0.8,
     enemies: [
       { key: 'spider', chance: 1, min: 1, max: 1 },
       { key: 'spider-rare', chance: 0.05, min: 1, max: 1 },
@@ -150,8 +150,8 @@ const LEVEL_2: INode[] = [
     name: 'Forest 1b',
     cellIndex: 5,
     cellMapFrame: 2,
-    x: 0.575,
-    y: 0.8,
+    x: 0.16,
+    y: 0.58,
     enemies: [
       { key: 'spider', chance: 1, min: 2, max: 4 },
       { key: 'spider-rare', chance: 0.05, min: 1, max: 1 },
