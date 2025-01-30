@@ -21,6 +21,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   shootEvent: Phaser.Time.TimerEvent
   flopEvent: Phaser.Time.TimerEvent
   spriteBody: Phaser.Physics.Arcade.Body
+  particles: Phaser.GameObjects.Particles.ParticleEmitter
   declare scene: Fight
 
   constructor(scene: Fight, x: number, y: number) {
@@ -36,10 +37,22 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.spriteBody = this.body as Phaser.Physics.Arcade.Body
     this.currentAngle = 0
     this._flop = 0
+
+    this.particles = this.scene.add
+      .particles(0, 0, 'spritesheet', {
+        speed: 90,
+        lifespan: 600,
+        alpha: { start: 0.6, end: 0 },
+        angle: { start: 0, end: 360, steps: 8 },
+        frame: { frames: [42, 43], cycle: true },
+      })
+      .stop()
+      .setDepth(20)
   }
 
+
   onMoveEvent = async () => {
-    if (this.forceStop) return
+    if (this.forceStop || !this.active) return
 
     if (this.moveConfig.flashDuration) {
       this.flash(this.moveConfig.flashDuration, 8)
@@ -174,6 +187,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setFrame(this.stats.frame)
     this.color = this.stats.color
     this.setTint(this.color)
+    this.particles.setParticleTint(this.color)
 
     this.scene.time.delayedCall(Phaser.Math.RND.between(0, 500), () => {
       if (this.stats.rangeSpeed > 0) {
@@ -221,10 +235,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     // TODO: if boss, play with slower rate
     this.scene.sound.play('enemy-hit')
 
+    this.setTintFill(0xec273f)
     if (this.health <= 0) {
       this.die()
     } else {
-      this.setTintFill(0xec273f)
       await this.delay(delay)
       this.setTint(this.color)
       this.justHit = false
@@ -233,11 +247,22 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   die = async () => {
     if (!this.active) return
+    this.particles.explode(8, this.x, this.y)
     this.scene.sound.play('enemy-die')
 
     // TODO: if boss, player victory chime after a delay
-    this.setCollideWorldBounds(false)
-    this.setActive(false).setVisible(false)
+    this.setVelocity(0)
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0,
+      duration: 400,
+      onComplete: () => {
+        this.setCollideWorldBounds(false)
+        this.setPosition(-500, -500)
+        this.setVisible(false)
+      },
+    })
+    this.setActive(false)
     this.shootEvent?.destroy()
     this.moveEvent?.destroy()
     this.flopEvent?.destroy()
