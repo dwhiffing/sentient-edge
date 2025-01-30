@@ -42,11 +42,11 @@ export const shootRandom: IShootConfig = {
   rangeStopOnShoot: false,
 }
 
-export const shootPlayer: IShootConfig = {
+export const shootPlayerSpider: IShootConfig = {
   rangeTarget: 'player',
   rangeAccuracy: 10,
-  rangeSpeed: 2000,
-  rangeBulletSpeed: 180,
+  rangeSpeed: 3000,
+  rangeBulletSpeed: 120,
   rangeBulletSize: 1,
   rangeCount: 1,
   rangeShootChance: 1,
