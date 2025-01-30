@@ -119,6 +119,7 @@ type IState = {
   timePlayed: number
   hasWon: boolean
   activeNode: string
+  lastNode: string
   enemyHealth: number
   lastGold: number
   muted: boolean
@@ -141,6 +142,7 @@ const initialSave: IState = {
   lastZoom: 6,
   activeZoom: 6,
   activeNode: '',
+  lastNode: '',
   enemyHealth: -1,
   pauseMusic: false,
   enemyName: '',

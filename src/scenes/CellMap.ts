@@ -30,10 +30,14 @@ export class CellMap extends Scene {
     this.nodes = this.add.group({ defaultKey: 'spritesheet' })
     this.updateNodes()
 
-    const node = MAP_DATA.find((d) => d.id === registry.values.activeNode)!
+    const node = MAP_DATA.find(
+      (d) =>
+        d.id === registry.values.activeNode ||
+        d.id === registry.values.lastNode,
+    )!
     this.player = new Player(this, {
-      x: node ? node.x * w : registry.values.lastPlayerPosition.x,
-      y: node ? node.y * w : registry.values.lastPlayerPosition.y,
+      x: node ? node.x * w : registry.values.lastPlayerPosition.x || 20,
+      y: node ? node.y * w : registry.values.lastPlayerPosition.y || w - 20,
     })
     registry.set('health', this.player.stats.healthMax)
     registry.set('activeNode', 0)
@@ -112,14 +116,22 @@ export class CellMap extends Scene {
       if (p === 1) {
         const id = spot.getData('id')
         registry.set('activeNode', id)
+        registry.set('lastNode', id)
 
         const unlocked = registry.values.unlockedNodes ?? []
         const uniq = Array.from(new Set([...unlocked, id]))
         registry.set('unlockedNodes', uniq)
 
-        const newScene = spot.getData('type').includes('fight')
-          ? 'Fight'
-          : 'Shop'
+        const isFight = spot.getData('type').includes('fight')
+        const newScene = isFight ? 'Fight' : 'Shop'
+
+        const w = this.cameras.main.width
+        if (!isFight) {
+          registry.set('lastPlayerPosition', {
+            x: w / 2,
+            y: w - 40,
+          })
+        }
         this.scene.switch(newScene)
       }
     })

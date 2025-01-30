@@ -31,7 +31,7 @@ export class WorldMap extends Scene {
     this.player.sprite.setPosition(cx * 66 + x / 3, cy * 66 + y / 3)
 
     if (registry.values.activeZoom !== -1) {
-      this.goToCell(registry.values.activeZoom)
+      this.goToCell(registry.values.activeZoom, false)
     } else {
       this.cameras.main.fadeFrom(250, 0, 0, 0)
     }
@@ -82,16 +82,18 @@ export class WorldMap extends Scene {
     return (xIndex % 3) + yIndex * 3
   }
 
-  goToCell(cellIndex: number) {
+  goToCell(cellIndex: number, setPlayerPostion = true) {
     const w = this.cameras.main.width
     const o = 30
     registry.set('activeZoom', cellIndex)
     this.scene.start('CellMap')
     const cx = (cellIndex % 3) * 66.66
     const cy = Math.floor(cellIndex / 3) * 66.66
-    registry.set('lastPlayerPosition', {
-      x: Phaser.Math.Clamp((this.player.sprite.x - cx) * 3, o, w - o),
-      y: Phaser.Math.Clamp((this.player.sprite.y - cy) * 3, o, w - o),
-    })
+    if (setPlayerPostion) {
+      registry.set('lastPlayerPosition', {
+        x: Phaser.Math.Clamp((this.player.sprite.x - cx) * 3, o, w - o),
+        y: Phaser.Math.Clamp((this.player.sprite.y - cy) * 3, o, w - o),
+      })
+    }
   }
 }
