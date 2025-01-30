@@ -8,7 +8,6 @@ import { Hud } from './scenes/Hud'
 import { Stats } from './scenes/Stats'
 
 import { Game, Types } from 'phaser'
-import { saveKey } from './utils/registry'
 
 const config: Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -32,23 +31,3 @@ const config: Types.Core.GameConfig = {
 const game = new Game(config)
 
 export default game
-
-const muteButton = document.getElementById('mute-toggle')
-if (muteButton) {
-  muteButton.innerText = game.sound.mute ? 'unmute' : 'mute'
-  muteButton.addEventListener('click', () => {
-    game.sound.setMute(!game.sound.mute)
-    muteButton.innerText = !game.sound.mute ? 'unmute' : 'mute'
-  })
-}
-
-const resetButton = document.getElementById('reset-save')
-if (resetButton) {
-  resetButton.addEventListener('click', () => {
-    const confirmed = window.confirm('Are you sure?')
-    if (confirmed) {
-      localStorage.removeItem(saveKey)
-      window.location.reload()
-    }
-  })
-}

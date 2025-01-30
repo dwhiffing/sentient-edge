@@ -8,6 +8,29 @@ export class Registry {
   init = (game: Phaser.Game) => {
     this.game = game
     this.loadSave()
+
+    const muteButton = document.getElementById('mute-toggle')
+    if (muteButton) {
+      game.sound.setMute(this.values.muted)
+      muteButton.innerText = this.values.muted ? 'unmute' : 'mute'
+
+      muteButton.addEventListener('click', () => {
+        game.sound.setMute(!game.sound.mute)
+        muteButton.innerText = !game.sound.mute ? 'unmute' : 'mute'
+        this.set('muted', !game.sound.mute)
+      })
+    }
+
+    const resetButton = document.getElementById('reset-save')
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        const confirmed = window.confirm('Are you sure?')
+        if (confirmed) {
+          localStorage.removeItem(saveKey)
+          window.location.reload()
+        }
+      })
+    }
   }
 
   loadSave = () => {
@@ -84,6 +107,7 @@ type IState = {
   activeNode: string
   enemyHealth: number
   lastGold: number
+  muted: boolean
   showClearedArrow: boolean
   enemyName: string
   enemyMaxHealth: number
@@ -109,6 +133,7 @@ const initialSave: IState = {
   enemyMaxHealth: -1,
   health: 10,
   gold: 0,
+  muted: false,
   faceIndex: 0,
   lastGold: 0,
   deathCount: 0,
