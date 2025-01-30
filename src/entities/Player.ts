@@ -140,7 +140,7 @@ export class Player {
   stop() {
     this.swordBody.setVelocity(0)
     this.spriteBody.setVelocity(0)
-    this.head.setVelocity(0, 0)
+    this.head.setVelocity(0)
     const affix = this.sword.visible && this.attackReady ? '-sword' : ''
     if (this.sword.angle === 0) this.sprite.anims.play(`player-idle${affix}`)
   }

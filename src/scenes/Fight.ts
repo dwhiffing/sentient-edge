@@ -14,6 +14,7 @@ export class Fight extends Scene {
   gold: Phaser.GameObjects.Group
   node: INode
   canAttack: boolean
+  edgeTimer: number
   isLeaving: boolean
   enemyNameDebounceEvent: Phaser.Time.TimerEvent
   lastGoldAmountDebounceEvent: Phaser.Time.TimerEvent
@@ -26,8 +27,9 @@ export class Fight extends Scene {
     const { width, height } = this.cameras.main
     this.background = this.add.sprite(width / 2, height / 2, 'map', 1)
     this.isLeaving = false
+    this.edgeTimer = 0
+    this.physics.world.setBounds(-10, 0, width + 15, height + 10)
     this.cameras.main.fadeFrom(250, 0, 0, 0)
-
     this.enemies = this.add.group({
       classType: Enemy,
       maxSize: 100,
@@ -59,7 +61,14 @@ export class Fight extends Scene {
   update() {
     this.player.update()
 
-    if (this.player.isNearEdge()) this.backToMap()
+    if (this.player.isNearEdge()) {
+      this.edgeTimer++
+      if (this.edgeTimer > 150) {
+        this.backToMap()
+      }
+    } else {
+      this.edgeTimer = 0
+    }
 
     this.physics.overlap(this.player.swordHit, this.enemies, this.hitSwordEnemy)
     this.physics.overlap(this.player.sprite, this.enemies, this.hitPlayerEnemy)
