@@ -314,7 +314,7 @@ const LEVEL_3: INode[] = [
     cellMapFrame: 4,
     x: 0.35,
     y: 0.8,
-    items: ['damageRangeBase', 'defenseRanged', 'damageMeleeFreq'],
+    items: ['damageRangeBase', 'defenseRanged', 'earnRateMulti'],
   },
 ]
 
@@ -378,7 +378,7 @@ const LEVEL_4: INode[] = [
     cellMapFrame: 5,
     x: 0.1,
     y: 0.85,
-    items: ['earnRateMulti'],
+    items: ['damageMeleeFreq'],
   },
 ]
 
