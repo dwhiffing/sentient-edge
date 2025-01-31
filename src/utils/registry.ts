@@ -33,6 +33,7 @@ export class Registry {
       resetButton.addEventListener('click', () => {
         const confirmed = window.confirm('Are you sure?')
         if (confirmed) {
+          this.set('hasReset', true)
           localStorage.removeItem(saveKey)
           window.location.reload()
         }
@@ -58,6 +59,7 @@ export class Registry {
   }
 
   saveGame = () => {
+    if (this.values.hasReset) return
     localStorage.setItem(saveKey, JSON.stringify(this.game.registry.values))
   }
 
@@ -125,6 +127,7 @@ type IState = {
   pauseMusic: boolean
   timePlayed: number
   hasWon: boolean
+  hasReset: boolean
   activeNode: string
   lastNode: string
   enemyHealth: number
@@ -152,6 +155,7 @@ const initialSave: IState = {
   lastNode: '',
   enemyHealth: -1,
   pauseMusic: false,
+  hasReset: false,
   enemyName: '',
   enemyMaxHealth: -1,
   health: 10,
