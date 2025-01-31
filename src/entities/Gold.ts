@@ -63,7 +63,9 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
         this.scene.player.sprite.x,
         this.scene.player.sprite.y - 10,
       )
-      this.setAcceleration(Math.cos(angle) * 450, Math.sin(angle) * 450)
+
+      const speed = 100
+      this.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed)
     }
   }
 }
