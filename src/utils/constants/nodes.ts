@@ -154,7 +154,7 @@ const LEVEL_2: INode[] = [
     x: 0.16,
     y: 0.58,
     enemies: [
-      { key: 'spider', chance: 1, min: 2, max: 4 },
+      { key: 'spider', chance: 1, min: 3, max: 4 },
       { key: 'spider-rare', chance: RARE_ENEMY_RATE, min: 1, max: 1 },
     ],
   },

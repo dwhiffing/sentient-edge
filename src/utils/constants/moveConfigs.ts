@@ -142,9 +142,9 @@ export const moveConfigGolem = [
 // circle + sin wave + bullet hell
 export const moveConfigDeath = [
   {
-    speed: 40,
+    speed: 70,
     moveTarget: 'player',
-    moveEventDelay: 1000,
+    moveEventDelay: 1200,
     moveSpreadBias: 0.4,
     moveMaxDistance: 0,
   } as IMoveConfig,
