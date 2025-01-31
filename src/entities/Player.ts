@@ -318,9 +318,9 @@ export class Player {
   get stats() {
     return ITEMS.reduce(
       (obj, item) => {
-        const up = registry.values.upgrades[item.key as IUpgradeKeys]
+        const up = registry.values.upgrades?.[item.key as IUpgradeKeys] ?? 0
 
-        item?.effects.slice(0, up).forEach((effectLevel) => {
+        item.effects?.slice(0, up)?.forEach((effectLevel) => {
           effectLevel.effects.forEach((effect) => {
             obj[effect.statKey] ??= 0
             obj[effect.statKey] += effect.change
