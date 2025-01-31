@@ -23,7 +23,7 @@ export class WorldMap extends Scene {
       x: 0,
       y: 0,
       scale: 0.5,
-      speedMultiplier: 0.7,
+      speedMultiplier: 0.4,
     })
     const cx = registry.values.lastZoom % 3
     const cy = Math.floor(registry.values.lastZoom / 3)
