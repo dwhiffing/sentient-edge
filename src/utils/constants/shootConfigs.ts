@@ -56,62 +56,62 @@ export const shootPlayerSpider: IShootConfig = {
   rangeStopOnShoot: false,
 }
 
-// move around slowly, tanky, stops for a second, then flashes and shoots big, fast, bullet (slow snake, but with stopping to shoot)
 export const shootPlayerOgre: IShootConfig = {
   rangeTarget: 'player',
   rangeAccuracy: 10,
   rangeSpeed: 2000,
-  rangeBulletSpeed: 180,
+  rangeBulletSpeed: 120,
   rangeBulletSize: 3,
   rangeCount: 1,
-  rangeShootChance: 1,
+  rangeShootChance: 0.5,
   rangeCountDelay: 0,
-  rangeStartDelay: 500,
+  rangeStartDelay: 750,
   rangeSpread: 0,
   rangeStopOnShoot: false,
 }
 
-// dashes toward player 5 times, then waits and shoots circular burst around self
+// TODO: dashes toward player 5 times, then waits and shoots circular burst around self
 export const shootPlayerGolem: IShootConfig = {
   rangeTarget: 'player',
-  rangeAccuracy: 10,
-  rangeSpeed: 2000,
-  rangeBulletSpeed: 180,
+  rangeAccuracy: 0,
+  rangeSpeed: 3000,
+  rangeBulletSpeed: 110,
   rangeBulletSize: 3,
-  rangeCount: 1,
-  rangeShootChance: 1,
+  rangeCount: 5,
+  rangeShootChance: 0.66,
   rangeCountDelay: 0,
-  rangeStartDelay: 500,
-  rangeSpread: 0,
+  rangeStartDelay: 750,
+  rangeSpread: 30,
   rangeStopOnShoot: false,
 }
 
-// dash around randomly and shoot bullets (like snake but with many bullets)
+// TODO: dash around randomly and shoot bullets (like snake but with many bullets)
 export const shootPlayerSkeleton: IShootConfig = {
   rangeTarget: 'player',
-  rangeAccuracy: 10,
-  rangeSpeed: 2000,
-  rangeBulletSpeed: 180,
-  rangeBulletSize: 3,
-  rangeCount: 1,
-  rangeShootChance: 1,
-  rangeCountDelay: 0,
+  rangeAccuracy: 20,
+  rangeSpeed: 2500,
+  rangeBulletSpeed: 130,
+  rangeBulletSize: 2,
+  rangeCount: 3,
+  rangeShootChance: 0.66,
+  rangeCountDelay: 150,
   rangeStartDelay: 500,
   rangeSpread: 0,
   rangeStopOnShoot: false,
 }
 
+// TODO: circle + sin wave + bullet hell
 export const shootPlayerDeath: IShootConfig = {
   rangeTarget: 'player',
   rangeAccuracy: 10,
-  rangeSpeed: 2000,
-  rangeBulletSpeed: 180,
+  rangeSpeed: 1500,
+  rangeBulletSpeed: 150,
   rangeBulletSize: 3,
-  rangeCount: 1,
-  rangeShootChance: 1,
+  rangeCount: 7,
+  rangeShootChance: 0.33,
   rangeCountDelay: 0,
   rangeStartDelay: 500,
-  rangeSpread: 0,
+  rangeSpread: 50,
   rangeStopOnShoot: false,
 }
 
@@ -129,7 +129,6 @@ export const shootPlayerKnight: IShootConfig = {
   rangeStopOnShoot: false,
 }
 
-// circle + sin wave + bullet hell
 export const shootPlayerBurst: IShootConfig = {
   rangeTarget: 'player',
   rangeAccuracy: 50,

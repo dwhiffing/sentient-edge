@@ -72,7 +72,7 @@ export const ITEMS: IPurchasable[] = [
     effects: getEffects('damageMeleeBase', {
       fixedCosts: [10, 50, 100, 200, 500, 750],
       maxLevel: 20,
-      factor: 1.3,
+      factor: 1.2,
       statChangePerLevel: 1,
     }),
   },
@@ -126,7 +126,7 @@ export const ITEMS: IPurchasable[] = [
     effects: getEffects('damageMulti', {
       fixedCosts: [25, 50, 100, 175, 300, 500, 750],
       maxLevel: 20,
-      factor: 1.15,
+      factor: 1.1125,
       statChangePerLevel: 0.1,
     }),
   },
@@ -153,7 +153,7 @@ export const ITEMS: IPurchasable[] = [
     effects: getEffects('speedMeleeMulti', {
       fixedCosts: [50, 100, 250, 500],
       maxLevel: 20,
-      factor: 1.15,
+      factor: 1.125,
       statChangePerLevel: 0.15,
     }),
   },
@@ -164,9 +164,9 @@ export const ITEMS: IPurchasable[] = [
     temporary: true,
     text: 'That costs {cost} gold.\nIt will decrease the\nmelee damage you take by {change}',
     effects: getEffects('defenseMelee', {
-      fixedCosts: [50, 100, 250, 500],
+      fixedCosts: [100, 250, 500, 1000],
       maxLevel: 20,
-      factor: 1.15,
+      factor: 1.2,
       statChangePerLevel: 1,
     }),
   },
@@ -177,9 +177,9 @@ export const ITEMS: IPurchasable[] = [
     temporary: true,
     text: 'That costs {cost} gold.\nIt will increase your\nranged defense by {change}',
     effects: getEffects('defenseRanged', {
-      fixedCosts: [50, 100, 250, 500],
+      fixedCosts: [250, 500, 1000],
       maxLevel: 20,
-      factor: 1.15,
+      factor: 1.2,
       statChangePerLevel: 1,
     }),
   },
@@ -190,10 +190,10 @@ export const ITEMS: IPurchasable[] = [
     temporary: false,
     text: 'That costs {cost} gold.\nIt will increase your\nranged strength by {change}',
     effects: getEffects('damageRangeBase', {
-      fixedCosts: [10, 50, 100, 200, 500, 750],
+      fixedCosts: [500, 1000, 2000],
       maxLevel: 20,
-      factor: 1.3,
-      statChangePerLevel: 1,
+      factor: 1.25,
+      statChangePerLevel: 2,
     }),
   },
   {
@@ -217,7 +217,7 @@ export const ITEMS: IPurchasable[] = [
     temporary: false,
     text: 'That costs {cost} gold.\nIt will increase the number\nof times your sword hits\nper attack by {change}',
     effects: getEffects('damageMeleeFreq', {
-      fixedCosts: [5000, 50000, 500000],
+      fixedCosts: [5000, 25000, 50000],
       maxLevel: 3,
       factor: 1.3,
       statChangePerLevel: 1,

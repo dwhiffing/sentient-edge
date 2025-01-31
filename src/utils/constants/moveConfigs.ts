@@ -81,11 +81,11 @@ export const moveConfigSnail = [
 ]
 
 export const moveConfigRoller = [
-  { ...movementStop, flashDuration: 500, moveEventDelay: 500 },
+  { ...movementStop, flashDuration: 750, moveEventDelay: 750 },
   {
-    speed: 120,
+    speed: 80,
     moveTarget: 'player',
-    moveEventDelay: 1000,
+    moveEventDelay: 800,
     moveSpreadBias: 1,
     moveMaxDistance: 0,
   } as IMoveConfig,
@@ -107,13 +107,13 @@ export const moveConfigOgre = [
 // shamble constantly toward player, like snail but stronger and faster, explodes on death
 export const moveConfigZombie = [
   {
-    speed: 10,
+    speed: 30,
     moveTarget: 'player',
     moveEventDelay: 500,
     moveSpreadBias: 1,
     moveMaxDistance: 0,
   } as IMoveConfig,
-  { ...movementStop, moveEventDelay: 500 },
+  { ...movementStop, moveEventDelay: 250 },
 ]
 
 // dash around randomly and shoot bullets (like snake but with many bullets)
@@ -130,13 +130,13 @@ export const moveConfigSkeleton = [
 // dashes toward player 5 times, then waits and shoots circular burst around self
 export const moveConfigGolem = [
   {
-    speed: 40,
+    speed: 30,
     moveTarget: 'player',
-    moveEventDelay: 1000,
-    moveSpreadBias: 0.4,
+    moveEventDelay: 500,
+    moveSpreadBias: 1,
     moveMaxDistance: 0,
   } as IMoveConfig,
-  { ...movementStop, moveEventDelay: 1500 },
+  { ...movementStop, moveEventDelay: 1000 },
 ]
 
 // circle + sin wave + bullet hell
