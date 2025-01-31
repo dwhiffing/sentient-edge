@@ -196,7 +196,6 @@ export class Fight extends Scene {
     if (!gold.active) return
 
     gold.pickup()
-    registry.set('lastGold', gold.amount)
     this.lastGoldAmountDebounceEvent?.destroy()
     this.lastGoldAmountDebounceEvent = this.time.delayedCall(1500, () => {
       registry.set('lastGold', 0)
