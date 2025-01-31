@@ -54,7 +54,6 @@ export class Boot extends Scene {
     this.load.audio('menu-deny', 'sound/cs-menu-deny.mp3')
     this.load.audio('game-over', 'sound/cs-game-over.mp3')
     this.load.audio('gold', 'sound/gold.mp3')
-    this.load.audio('boss-victory', 'sound/cs-defeat-boss.mp3')
   }
 
   create() {
