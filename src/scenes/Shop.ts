@@ -136,11 +136,14 @@ export class Shop extends Scene {
     const leftIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : len
     const rightIndex = currentIndex + 1 <= len ? currentIndex + 1 : 0
 
+    if (shopList.length <= 1) return { left: undefined, right: undefined }
+
     return { left: shopList[leftIndex], right: shopList[rightIndex] }
   }
 
   teleport = (key: string) => {
     const { left, right } = this.getTeleporterDestinations()
+    if (!left || !right) return
 
     registry.set('lastPlayerPosition', {
       x: this.player.sprite.x,
@@ -212,6 +215,7 @@ export class Shop extends Scene {
     let itemKey: 'teleporter-left' | 'teleporter-right' = 'teleporter-left'
     if (this.activeItemKey) return
     const { left, right } = this.getTeleporterDestinations()
+    if (!left || !right) return
 
     if (_teleporter === this.teleporterLeft) {
       itemKey = 'teleporter-left'
