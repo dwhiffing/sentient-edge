@@ -13,7 +13,7 @@ export type INode = {
   items?: IUpgradeKeys[]
 }
 
-const RARE_ENEMY_RATE = 0.1
+const RARE_ENEMY_RATE = 0.2
 const LEVEL_1: INode[] = [
   {
     type: 'fight',
