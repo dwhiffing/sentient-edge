@@ -92,7 +92,7 @@ export class Player {
     this.head.setScale(scale).setOrigin(0.5, 0.5).setDepth(2).setSize(0.1, 0.1)
     this.headBody = this.head.body as Phaser.Physics.Arcade.Body
 
-    const radius = 27 * this.stats.earnRateMulti
+    const radius = 29 * this.stats.earnRateMulti
     this.goldHit = this.scene.add.circle(0, 0, radius)
     this.scene.physics.add.existing(this.goldHit)
     this.goldHitBody = this.goldHit.body as Phaser.Physics.Arcade.Body

@@ -74,11 +74,11 @@ export const shootPlayerOgre: IShootConfig = {
 export const shootPlayerGolem: IShootConfig = {
   rangeTarget: 'player',
   rangeAccuracy: 0,
-  rangeSpeed: 3000,
+  rangeSpeed: 2500,
   rangeBulletSpeed: 110,
   rangeBulletSize: 3,
   rangeCount: 5,
-  rangeShootChance: 0.66,
+  rangeShootChance: 1,
   rangeCountDelay: 0,
   rangeStartDelay: 750,
   rangeSpread: 30,

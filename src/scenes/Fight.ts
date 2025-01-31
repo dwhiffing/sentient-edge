@@ -182,6 +182,8 @@ export class Fight extends Scene {
     bullet.takeDamage(1)
     enemy.takeDamage(
       this.player.stats.damageRangeBase * this.player.stats.damageMulti,
+      PLAYER_ATTACK_DURATION / this.player.stats.damageMeleeFreq,
+      true,
     )
 
     if (enemy.health <= 0) {
@@ -228,7 +230,7 @@ export class Fight extends Scene {
 
     gold.collectedTriggered = true
 
-    this.time.delayedCall(300, () => {
+    this.time.delayedCall(150, () => {
       gold.collected = true
     })
   }

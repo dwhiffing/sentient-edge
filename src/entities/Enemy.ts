@@ -241,10 +241,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     return ENEMIES.find((e) => e.key === this.key)!
   }
 
-  takeDamage = async (amount = 0, delay = 150) => {
-    if (this.justHit || !this.active || !this.visible) return
+  takeDamage = async (amount = 0, delay = 150, isBullet = false) => {
+    if ((this.justHit && !isBullet) || !this.active || !this.visible) return
 
-    this.justHit = true
+    if (!isBullet) this.justHit = true
     this.health -= amount
     registry.set('enemyHealth', this.health)
     registry.set('enemyName', this.stats.label)
@@ -264,7 +264,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     } else {
       await this.delay(delay)
       this.setTint(this.color)
-      this.justHit = false
+      if (!isBullet) this.justHit = false
     }
   }
 
