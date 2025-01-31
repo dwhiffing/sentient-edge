@@ -157,7 +157,7 @@ export const ENEMIES: IEnemyStats[] = [
       meleeDamage: [10, 10],
       moveConfigs: moveConfigRoller,
     },
-    { label: 'speed demon', color: 0x10121c },
+    { label: 'speed demon', color: 0x6b2643 },
   ),
   ...getEnemy(
     {
@@ -216,7 +216,7 @@ export const ENEMIES: IEnemyStats[] = [
   ...getEnemy({
     key: 'death',
     frame: 35,
-    color: 0x2c1e31,
+    color: 0x6b2643,
     health: [500, 500],
     gold: [1000, 2000],
     meleeDamage: [20, 20],
