@@ -126,10 +126,9 @@ export class Shop extends Scene {
   getTeleporterDestinations = () => {
     const shopList = MAP_DATA.filter(
       (d) =>
-        d.type === 'shop' &&
-        registry.unlockedCellIndexes.includes(d.cellIndex) &&
-        d.id !== registry.values.activeNode,
-    )
+        d.type === 'shop' && registry.unlockedCellIndexes.includes(d.cellIndex),
+    ).sort((a, b) => a.name.localeCompare(b.name))
+
     const currentIndex = shopList.findIndex(
       (s) => s.id == registry.values.activeNode,
     )
