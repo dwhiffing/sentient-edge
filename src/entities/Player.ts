@@ -345,7 +345,7 @@ export const baseStats: Record<IUpgradeKeys, number> = {
   damageMeleeBase: 1,
   damageMeleeFreq: 1,
 
-  damageRangeBase: 1,
+  damageRangeBase: 4,
   damageMulti: 1,
 
   earnRateMulti: 1,
