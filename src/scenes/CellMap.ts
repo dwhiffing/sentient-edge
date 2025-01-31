@@ -49,9 +49,18 @@ export class CellMap extends Scene {
       this.showClearedArrow()
     }
 
+    let hasFocus = true
+    this.game.events.on('blur', () => {
+      hasFocus = false
+    })
+
     this.input.on(
       'pointerdown',
       (_pointer: Phaser.Input.Pointer, targets: any[]) => {
+        if (!hasFocus) {
+          hasFocus = true
+          return
+        }
         if (this.scene.isActive('Stats')) return
         if (targets.length === 0) this.enterNearbyNode()
       },

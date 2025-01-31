@@ -1,35 +1,11 @@
-# work on progression
-
-test forest progression
-
-implement ogre behaviour
-implement golem behaviour
-test mountain progression
-
-implement zombie behaviour (should explode bullets on death)
-implement skeleton behaviour
-implement death behaviour
-test castle progression
-
 # tasks
-
-add remaining sounds
-add game over scene (text saying "name is dead, but you have been recovered by new name")
-ensure first click only focuses, doesnt do any inputs
 
 Submit
 
+make zombie explode on death?
+add game over scene (text saying "name is dead, but you have been recovered by new name")
 make a bg for each biome node (desert, forest, mountain, castle, shop)
 mobile controls
-
-# add sounds
-
-boss hit
-boss charge
-boss shoot
-boss die
-boss victory music
-sound for when you have cleared an area
 
 # design document
 
