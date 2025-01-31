@@ -26,10 +26,11 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
 
     this.setTint(0xf3a833)
 
-    if (amount > 50) {
+    if (amount >= 50) {
       this.setFrame(49)
       this.setTint(0xec273f)
-    } else if (amount > 100) {
+    }
+    if (amount >= 500) {
       this.setFrame(50)
       this.setTint(0x36c5f4)
     }
@@ -47,11 +48,11 @@ export class Gold extends Phaser.Physics.Arcade.Sprite {
       volume: 4,
       rate: Phaser.Math.RND.realInRange(0.8, 1.2),
     })
-    registry.set(
-      'gold',
-      registry.values.gold +
-        this.amount * this.scene.player.stats.earnRateMulti,
+    const amount = Math.round(
+      this.amount * this.scene.player.stats.earnRateMulti,
     )
+    registry.set('gold', registry.values.gold + amount)
+    registry.set('lastGold', amount)
   }
 
   update() {
