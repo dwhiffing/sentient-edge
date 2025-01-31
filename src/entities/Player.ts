@@ -171,6 +171,7 @@ export class Player {
       count,
       spread,
       speed: 120,
+      size: Phaser.Math.Clamp(Math.ceil(this.stats.damageRangeBase / 8), 1, 4),
     })
   }
 
