@@ -64,6 +64,16 @@ export class Hud extends Scene {
     })
   }
 
+  shutdown() {
+    this.tweens.add({
+      targets: this.music,
+      volume: 0,
+      duration: 500,
+      onComplete: () => this.music.pause(),
+    })
+    this.registry.events.off('changedata', this.updateText)
+  }
+
   updateText = () => {
     const gold = Math.floor(registry.values.gold)
     const bottomText = `Gold: ${gold ?? 0}${

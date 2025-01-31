@@ -217,7 +217,7 @@ export const ENEMIES: IEnemyStats[] = [
     key: 'death',
     frame: 35,
     color: 0x2c1e31,
-    health: [50, 50],
+    health: [500, 500],
     gold: [1000, 2000],
     meleeDamage: [20, 20],
     rangeDamage: [15, 15],

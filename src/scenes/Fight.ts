@@ -117,7 +117,12 @@ export class Fight extends Scene {
   }
 
   checkIfFinished() {
-    if (registry.values.clearedNodes.includes(this.node.id)) return
+    if (
+      registry.values.hasWon ||
+      (this.node.id !== 'castle-2e' &&
+        registry.values.clearedNodes.includes(this.node.id))
+    )
+      return
 
     if (this.enemies.children.entries.every((c) => !c.active)) {
       const cleared = registry.values.clearedNodes ?? []
@@ -129,7 +134,10 @@ export class Fight extends Scene {
           d.cellIndex === registry.values.activeZoom &&
           d.type.includes('fight'),
       )
-      if (allCellNodes.every((d) => uniq.includes(d.id))) {
+      if (
+        allCellNodes.every((d) => uniq.includes(d.id)) &&
+        this.node.id !== 'castle-2e'
+      ) {
         registry.set('showClearedArrow', true)
       }
 
@@ -139,8 +147,14 @@ export class Fight extends Scene {
         )
       ) {
         registry.set('hasWon', true)
-        this.scene.stop('Hud')
-        this.scene.start('Menu')
+        // @ts-ignore
+        this.scene.get('Hud').shutdown()
+        this.cameras.main.fadeOut(1000, 0, 0, 0, (_event: any, p: number) => {
+          if (p === 1) {
+            this.scene.stop('Hud')
+            this.scene.start('Menu')
+          }
+        })
       }
     }
   }
@@ -153,7 +167,7 @@ export class Fight extends Scene {
 
     this.cameras.main.fadeOut(250, 0, 0, 0, (_event: any, p: number) => {
       if (p === 1) {
-        this.scene.start('WorldMap')
+        this.scene.start('CellMap')
         registry.set('enemyName', '')
         registry.set('lastGold', 0)
       }
@@ -203,7 +217,7 @@ export class Fight extends Scene {
 
     const allEnemiesDead = this.enemies.children.entries.every((c) => !c.active)
     const allGoldDead = this.gold.children.entries.every((c) => !c.active)
-    if (allEnemiesDead && allGoldDead) {
+    if (allEnemiesDead && allGoldDead && this.node.id !== 'castle-2e') {
       this.time.delayedCall(800, () => this.backToMap())
     }
   }
