@@ -143,6 +143,11 @@ export class Player {
     } else {
       this.stop()
     }
+
+    const depthOffset = (this.sprite.y - 10) / 100
+    this.sprite.setDepth(3 + depthOffset)
+    this.sword.setDepth(3 + depthOffset)
+    this.head.setDepth(3 + depthOffset)
   }
 
   stop() {
@@ -184,14 +189,13 @@ export class Player {
     this.attackReady = false
     this.sprite.anims.play(`player-stab`, true)
     this.sword.setAngle(this.sword.flipX ? -90 : 90)
-    this.sword.setDepth(0)
     this.shoot(this.stats.rangeCount)
 
     this.setSwordPosition()
 
     await this.delay(PLAYER_ATTACK_DURATION)
     if (!this.sprite.active) return
-    this.sword.setAngle(0).setFrame(this.swordConfig.frame).setDepth(2)
+    this.sword.setAngle(0).setFrame(this.swordConfig.frame)
     await this.delay(PLAYER_ATTACK_DELAY / this.stats.speedMeleeMulti)
     if (!this.sprite.active) return
     this.attackReady = true
