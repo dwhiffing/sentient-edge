@@ -26,7 +26,10 @@ export class Hud extends Scene {
 
     registry.set('pauseMusic', false)
 
-    this.music = this.sound.add('music-game', { loop: true, volume: 0.5 })
+    this.music = this.sound.add('music-game', {
+      loop: true,
+      volume: registry.values.muted === 1 ? 0 : 0.5,
+    })
     this.music.play()
 
     this.topBar = this.add.rectangle(0, 0, w, 12, c).setOrigin(0, 0)
@@ -90,7 +93,7 @@ export class Hud extends Scene {
     }
 
     if (!registry.values.pauseMusic && this.music.isPaused) {
-      this.music.play({ volume: 0.5 })
+      this.music.play({ volume: registry.values.muted === 1 ? 0 : 0.5 })
     }
 
     let cellScene = this.game.scene.getScene('CellMap') as CellMap

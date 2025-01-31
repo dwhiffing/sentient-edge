@@ -93,10 +93,11 @@ export class Menu extends Scene {
         },
       })
       this.time.delayedCall(500, () => {
+        let volume = registry.values.muted === 1 ? 0 : 0.5
         if (registry.values.hasWon) {
-          this.music = this.sound.add('music-win', { loop: true, volume: 0.5 })
+          this.music = this.sound.add('music-win', { loop: true, volume })
         } else {
-          this.music = this.sound.add('music-menu', { loop: true, volume: 0.5 })
+          this.music = this.sound.add('music-menu', { loop: true, volume })
         }
         this.music.play()
         this.input.once('pointerdown', this.startGame)

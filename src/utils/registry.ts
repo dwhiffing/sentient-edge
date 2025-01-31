@@ -11,13 +11,20 @@ export class Registry {
 
     const muteButton = document.getElementById('mute-toggle')
     if (muteButton) {
-      game.sound.setMute(this.values.muted)
-      muteButton.innerText = this.values.muted ? 'unmute' : 'mute'
+      const val = this.values.muted
+      game.sound.setMute(val === 2)
+      muteButton.innerText =
+        val === 2 ? 'unmute' : val === 1 ? 'mute all' : 'mute music'
 
       muteButton.addEventListener('click', () => {
-        game.sound.setMute(!game.sound.mute)
-        muteButton.innerText = !game.sound.mute ? 'unmute' : 'mute'
-        this.set('muted', !game.sound.mute)
+        const val = (registry.values.muted + 1) % 3
+        this.set('muted', val)
+        muteButton.innerText =
+          val === 2 ? 'unmute' : val === 1 ? 'mute all' : 'mute music'
+        game.sound.setMute(val === 2)
+        game.sound.getAllPlaying().forEach((m) => {
+          if (m.key.includes('music')) m.pause()
+        })
       })
     }
 
@@ -122,7 +129,7 @@ type IState = {
   lastNode: string
   enemyHealth: number
   lastGold: number
-  muted: boolean
+  muted: number
   showClearedArrow: boolean
   enemyName: string
   enemyMaxHealth: number
@@ -149,7 +156,7 @@ const initialSave: IState = {
   enemyMaxHealth: -1,
   health: 10,
   gold: 0,
-  muted: false,
+  muted: 0,
   faceIndex: 0,
   lastGold: 0,
   deathCount: 0,

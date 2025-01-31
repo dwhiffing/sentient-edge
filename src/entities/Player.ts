@@ -144,7 +144,7 @@ export class Player {
       this.stop()
     }
 
-    const depthOffset = (this.sprite.y - 10) / 100
+    const depthOffset = (this.sprite.y - 14) / 100
     this.sprite.setDepth(3 + depthOffset)
     this.sword.setDepth(3 + depthOffset)
     this.head.setDepth(3 + depthOffset)
