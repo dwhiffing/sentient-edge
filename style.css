@@ -1,0 +1,32 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+#game-container {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column-reverse;
+  gap: 8px;
+}
+
+#button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+button {
+  width: 120px;
+  background-color: #111;
+  color: #999;
+}
