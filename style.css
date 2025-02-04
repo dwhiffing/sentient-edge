@@ -9,13 +9,13 @@ body {
 }
 
 #game-container {
-  flex: 1;
+  /* flex: 1;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column-reverse;
-  gap: 8px;
+  gap: 8px; */
 }
 
 #button-container {
@@ -29,4 +29,10 @@ button {
   width: 120px;
   background-color: #111;
   color: #999;
+}
+
+canvas {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
