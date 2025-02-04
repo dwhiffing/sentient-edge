@@ -12,9 +12,9 @@ body {
   flex: 1;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  /* justify-content: center;
   align-items: center;
-  flex-direction: column-reverse;
+  flex-direction: column-reverse; */
   gap: 8px;
 }
 
@@ -32,6 +32,7 @@ button {
 }
 
 canvas {
+  width: 400px;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
