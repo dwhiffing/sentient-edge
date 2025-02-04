@@ -9,13 +9,13 @@ body {
 }
 
 #game-container {
-  /* flex: 1;
+  flex: 1;
   overflow: hidden;
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column-reverse;
-  gap: 8px; */
+  flex-direction: column-reverse; */
+  gap: 8px;
 }
 
 #button-container {
