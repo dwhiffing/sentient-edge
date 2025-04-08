@@ -35,6 +35,7 @@ export class Player {
   speedMultiplier: number
   justHit: boolean
   shouldMove: boolean
+  cursor: Phaser.GameObjects.Arc
 
   constructor(scene: Phaser.Scene, params: IPlayerParams = {}) {
     this.scene = scene
@@ -99,12 +100,35 @@ export class Player {
     this.goldHitBody.setCircle(radius)
 
     this.setSwordPosition()
+
+    this.cursor = this.scene.add
+      .circle(this.sprite.x, this.sprite.y, 2, 0xff0000)
+      .setVisible(false)
+    let pointerDownPos = { x: 0, y: 0 }
+    let cursorDownPos = { x: 0, y: 0 }
+    this.scene.input.on('pointermove', (_pointer: Phaser.Input.Pointer) => {
+      if (_pointer.event instanceof TouchEvent) {
+        this.cursor
+          .setPosition(
+            cursorDownPos.x + (_pointer.x - pointerDownPos.x),
+            cursorDownPos.y + (_pointer.y - pointerDownPos.y),
+          )
+          .setVisible(true)
+      }
+    })
+
+    this.scene.input.on('pointerdown', (_pointer: Phaser.Input.Pointer) => {
+      if (_pointer.event instanceof TouchEvent) {
+        pointerDownPos = { x: _pointer.x, y: _pointer.y }
+        cursorDownPos = { x: this.cursor.x, y: this.cursor.y }
+      }
+    })
   }
 
   update() {
     if (!this.sprite.active) return
 
-    const p = this.scene.input.activePointer
+    const p = this.cursor.visible ? this.cursor : this.scene.input.activePointer
     const s = this.sprite
     const w = this.sword
 

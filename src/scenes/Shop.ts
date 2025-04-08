@@ -55,8 +55,17 @@ export class Shop extends Scene {
       this.createItem(key, i, nodeItems.length),
     )
 
-    this.input.on('pointerdown', () => {
-      if (this.activeItemKey) {
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      if (this.activeItemKey && pointer.event instanceof MouseEvent) {
+        this.buyItem(this.activeItemKey)
+      }
+    })
+    this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+      if (
+        this.activeItemKey &&
+        pointer.event instanceof TouchEvent &&
+        this.time.now - pointer.downTime < 300
+      ) {
         this.buyItem(this.activeItemKey)
       }
     })

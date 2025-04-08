@@ -60,6 +60,15 @@ export class Fight extends Scene {
     this.time.delayedCall(300, () => {
       this.canAttack = true
     })
+
+    this.input.on('pointerup', (_pointer: Phaser.Input.Pointer) => {
+      if (
+        _pointer.event instanceof TouchEvent &&
+        this.time.now - _pointer.downTime < 300
+      ) {
+        if (this.canAttack) this.player.swing()
+      }
+    })
   }
 
   update() {
@@ -81,7 +90,12 @@ export class Fight extends Scene {
     this.physics.overlap(this.player.sprite, this.bullets, this.hitPlayerBullet)
     this.physics.overlap(this.enemies, this.player.bullets, this.hitEnemyBullet)
 
-    if (this.input.activePointer.isDown && this.canAttack) this.player.swing()
+    if (
+      this.input.activePointer.event instanceof MouseEvent &&
+      this.input.activePointer.isDown &&
+      this.canAttack
+    )
+      this.player.swing()
   }
 
   spawnEnemies() {

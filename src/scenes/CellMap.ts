@@ -62,7 +62,20 @@ export class CellMap extends Scene {
           return
         }
         if (this.scene.isActive('Stats')) return
-        if (targets.length === 0) this.enterNearbyNode()
+
+        if (_pointer.event instanceof MouseEvent) {
+          if (targets.length === 0) this.enterNearbyNode()
+        }
+      },
+    )
+
+    this.input.on(
+      'pointerup',
+      (_pointer: Phaser.Input.Pointer, targets: any[]) => {
+        if (_pointer.event instanceof TouchEvent) {
+          if (targets.length === 0 && this.time.now - _pointer.downTime < 300)
+            this.enterNearbyNode()
+        }
       },
     )
   }
